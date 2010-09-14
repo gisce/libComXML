@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xs:schema targetNamespace="http://localhost/elegibilidad" 
+	xmlns="http://localhost/elegibilidad" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified">
+	
+	<xs:include schemaLocation="TiposComplejos.xsd"/>
+	<xs:include schemaLocation="TiposSencillos.xsd"/>
+
+<!--
+		Version 2.0, Junio 2004
+		Rechazo de Solicitud de Acceso al Punto de Suministro
+		(Formato N)
+	-->             
+
+	<xs:complexType name="RechazoSolicitudInfRegistroPS">
+		<xs:sequence>
+			<xs:element name="DatosRechazo" 	type="DatosRechazoSolicitudInfRegistroPS"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Tipos secundarios de la transacción actual -->
+
+	<xs:complexType name="DatosRechazoSolicitudInfRegistroPS">
+		<xs:sequence>
+			<xs:element name="Motivo" 		type="MotivoRechazoSolicitudInfRegistroPS"/>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
+
+

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xs:schema xmlns="http://localhost/elegibilidad" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost/elegibilidad" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="TiposComplejos.xsd"/>
+	<xs:include schemaLocation="TiposSencillos.xsd"/>
+	<!--
+		Version 2.0, Junio 2004
+				
+		Mensaje de negocio,Alta de contrato y solicitud de paso de MR a ML con cambios. Formato A. Proceso A3.            
+
+		Estructura general.
+			Datos solicitud:
+			Datos del cliente: 
+				DNI, CIF	
+				Nombre 
+				Dirección
+			Datos contrato:
+				CodContrato	
+				Fecha final o duración	
+				Tipo de contrato
+				Condiciones Contractuales
+				Dirección de correspondencia				 
+				Contacto
+			Medida:
+				Indicadores
+				Aparatos
+			Comentarios
+		Octubre 2008 Añadido el campo obligatorio IndActivacionLectura
+		Abril 2009 Añadidos los grupos DatosCIE, DatosAPM y RegistrosDocs
+	-->
+	<xs:complexType name="PasoMRAMLConCambiosRestoTarifaAA3">
+		<xs:sequence>
+			<xs:element name="DatosSolicitud" type="DatosPasoMRAMLConCambiosRestoTarifaAA3"/>
+			<xs:element name="Contrato" type="Contrato"/>
+			<xs:element name="Cliente" type="ClienteConDireccion"/>
+			<xs:element name="Medida" type="MedidaResto"/>
+			<xs:element name="DatosCie" type="DatosCIE" minOccurs="0"/>		
+			<xs:element name="DatosApm" type="DatosAPM" minOccurs="0"/>		
+			<xs:element name="Comentarios" type="Comentarios"/>
+			<xs:element name="RegistrosDocumento" type="RegistrosDocs" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Tipos secundarios de la transaccion actual -->
+	<xs:complexType name="DatosPasoMRAMLConCambiosRestoTarifaAA3">
+		<xs:sequence>
+			<xs:element name="LineaNegocioElectrica" type="LineaNegocio"/>
+			<xs:element name="SolicitudAdmContractual" type="X1" minOccurs="0"/>
+			<xs:element name="IndActivacionLectura" type="Indicativo"/>
+			<xs:element name="FechaPrevistaAccion" type="xs:date" minOccurs="0"/>
+			<xs:element name="CNAE" type="X5" minOccurs="0"/>
+			<xs:element name="IndSustitutoMandatario" type="IndSustitutoMandatario"/>
+		</xs:sequence>
+		<!-- 
+		Datos propios de la solicitud, no pertenecen a ninguna entidad 
+		-->
+	</xs:complexType>
+</xs:schema>

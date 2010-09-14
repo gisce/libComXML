@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xs:schema xmlns="http://localhost/elegibilidad" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost/elegibilidad" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="TiposComplejos.xsd"/>
+	<xs:include schemaLocation="TiposSencillos.xsd"/>
+	<xs:annotation>
+		<xs:documentation>
+		Version 2.0, Junio 2004
+		Mensaje de NotificacionBajaATRCB 
+		
+		Cambios realizados:		
+	
+		Julio 2007 Modificación realizada acuerdo Unesa 27/6/07 para ser vigentes en Mayo 2008:nuevo nodo PuntosDeMedida
+		</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="NotificacionBajaATRCB">
+		<xs:sequence>
+			<xs:element name="DatosActivacionYBaja" type="DatosNotificacionBajaATRCB"/>
+			<xs:element name="Contrato" type="ContratoNotificacionBajaATRCB"/>
+			<xs:element name="PuntosDeMedida" type="PuntosDeMedida"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Tipos secundarios de la transacción actual -->
+	<xs:complexType name="DatosNotificacionBajaATRCB">
+		<xs:sequence>
+			<xs:element name="Fecha" type="xs:date"/>
+			<xs:element name="Hora" type="xs:time"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContratoNotificacionBajaATRCB">
+		<xs:sequence>
+			<xs:element name="IdContrato" type="IdContrato"/>
+			<xs:element name="TipoContratoATR" type="TipoContrato"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
