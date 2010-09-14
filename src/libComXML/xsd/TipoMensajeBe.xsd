@@ -3,7 +3,7 @@
 	<xs:include schemaLocation="TiposComplejos.xsd"/>
 	<xs:include schemaLocation="TiposSencillos.xsd"/>
 	<!-- 
-		Version 2.0, Mayo 2008
+		Nuevo Mensaje para aceptaciones de A3, C1 y C2
 				
 -->
 	<!-- Aceptacion -->

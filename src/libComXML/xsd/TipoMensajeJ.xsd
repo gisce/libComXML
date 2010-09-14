@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xs:schema xmlns="http://localhost/elegibilidad" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost/elegibilidad" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="TiposComplejos.xsd"/>
+	<xs:include schemaLocation="TiposSencillos.xsd"/>
+	<xs:complexType name="RespuestaAnomalias01">
+		<xs:sequence>
+			<xs:element name="LineaNegocioElectrica" type="LineaNegocio"/>
+			<xs:element name="Cliente" type="IdCliente" minOccurs="0"/>
+			<xs:element name="CodigoExpediente" type="X10"/>
+			<xs:element name="FechaComentario" type="xs:date"/>
+			<xs:element name="Comentario1" type="X400" minOccurs="0"/>
+			<xs:element name="Comentario2" type="X400" minOccurs="0"/>
+			<xs:element name="AceptacionValoracion" type="Indicativo"/>
+			<xs:element name="SolAplazEmiFac" type="Indicativo"/>
+			<xs:element name="RegistrosDocumento" type="RegistrosDocs" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

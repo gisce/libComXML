@@ -21,7 +21,7 @@
 		ComentariosPM
 		Aparatos
 			Medidas
-
+Octubre 2008 Modificación. Pasa a utilizarse el tipo complejo CondicionesContractualesC
 	-->
 	<xs:complexType name="ActivacionCambiodeComercializadoraConCambiosCC2">
 		<xs:sequence>

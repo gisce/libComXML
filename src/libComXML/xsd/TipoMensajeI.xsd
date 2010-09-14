@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xs:schema xmlns="http://localhost/elegibilidad" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost/elegibilidad" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="TiposComplejos.xsd"/>
+	<xs:include schemaLocation="TiposSencillos.xsd"/>
+	<xs:complexType name="SolicitudAnomalias01">
+		<xs:sequence>
+			<xs:element name="LineaNegocioElectrica" type="LineaNegocio"/>
+			<xs:element name="Cliente" type="IdYNombreCliente" minOccurs="0"/>
+			<xs:element name="Direccion" type="DireccionSinCodPostal" minOccurs="0"/>			
+			<xs:choice>
+				<xs:element name="FechaInspeccion" type="xs:date"/>
+				<xs:element name="FechaAltaExpediente" type="xs:date"/>
+			</xs:choice>
+			<xs:element name="Comentario" type="X400" minOccurs="0"/>
+			<xs:element name="Anomalias" type="Anomalias"/>
+			<xs:element name="NumExpediente" type="X10"/>
+			<xs:element name="ModifTrasObjeciones" type="Indicativo" minOccurs="0"/>
+			<xs:element name="FactorCorreccion" type="X4" minOccurs="0"/>
+			<xs:element name="FechaDesdeAplicFactor" type="xs:date" minOccurs="0"/>
+			<xs:element name="FechaNormalizacion" type="xs:date" minOccurs="0"/>
+			<xs:element name="Tension" type="X10" minOccurs="0"/>
+			<xs:element name="RegistrosDocumento" type="RegistrosDocs" minOccurs="0"/>
+			<xs:element name="RegistrosValAnomalias" type="RegistrosValAnomalias" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

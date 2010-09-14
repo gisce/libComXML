@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<xs:schema targetNamespace="http://localhost/elegibilidad" 
-	xmlns="http://localhost/elegibilidad" 
-	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	elementFormDefault="qualified" 
-	attributeFormDefault="unqualified">
-
+<xs:schema xmlns="http://localhost/elegibilidad" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost/elegibilidad" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:include schemaLocation="TiposComplejos.xsd"/>
 	<xs:include schemaLocation="TiposSencillos.xsd"/>
-
 	<!--
 		Version 2.0, Junio 2004
 		
@@ -38,13 +32,8 @@
 			<xs:element name="RegistrosDocumento" type="RegistrosDocs" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
-
 	<!-- Tipos secundarios de la transacción actual -->
-
 	<xs:complexType name="DatosCambiodeComercializadoraSinCambiosAC1">
-		<!-- 
-		Datos propios de la solicitud, no pertenecen a ninguna entidad 
-		-->
 		<xs:sequence>
 			<xs:element name="LineaNegocioElectrica" type="LineaNegocio"/>
 			<xs:element name="SolicitudAdmContractual" type="IndicativoSi"/>
@@ -52,8 +41,10 @@
 			<xs:element name="FechaPrevistaAccion" type="xs:date" minOccurs="0"/>
 			<xs:element name="IndSustitutoMandatario" type="IndSustitutoMandatario"/>
 		</xs:sequence>
+		<!-- 
+		Datos propios de la solicitud, no pertenecen a ninguna entidad 
+		-->
 	</xs:complexType>
-
 	<xs:complexType name="ContratoCambiodeComercializadoraSinCambiosAC1">
 		<xs:sequence>
 			<xs:element name="IdContrato" type="IdContrato"/>

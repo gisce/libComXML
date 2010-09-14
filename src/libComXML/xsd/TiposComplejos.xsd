@@ -11,6 +11,12 @@
 							Añadido TipoComplejo CondicionesContractualesC
 							Modificado Tipo Complejo PuntoDeMedida (Añadido el campo DireccionPuntoMedida)
 		Enero 2009   Añadido bloque Contacto en ContratoPasoMRAMLTarifa2ConCambios, ContratoConModificacion
+		Febrero 2009 Añadidos TiposComplejos Reclamante, DatosReclamante, IdReclamante, ContactoConDireccion, DatosReclamacion, DatosAutolecturas, ModeloAparatoAutolecturas
+		Abril 2009 Modificación realizada acuerdo Unesa para ser vigentes en Mayo 2009: nuevos tipos complejo
+		DatosCIE, DatosAPM, RegistroDoc y RegistrosDocs
+		Mayo 2009 Añadido PasswordPM en tipoComplejo PuntoDeMedida
+						 Añadido DireccionSinCodPostal
+						 Añadidos Anomalias, Anomalia, Importes, ImportesOtrosConceptos, ImportesTerminoEnergia, ImportesTerminoPotencia, OtrosConceptos, ExcesosPotAFacturar, ReactivasAFacturar, EnergiasAFacturar, PotenciasAFacturar, RegistrosValAnomalias, RegistroValAnomalias
 		</xs:documentation>
 	</xs:annotation>
 	<xs:complexType name="IdContrato">
@@ -73,6 +79,23 @@
 			<xs:element name="Poblacion" type="Decimal7"/>
 			<xs:element name="TipoVia" type="TipoVia"/>
 			<xs:element name="CodPostal" type="Decimal5"/>
+			<xs:element name="Calle" type="X30"/>
+			<xs:element name="NumeroFinca" type="X5"/>
+			<xs:element name="DuplicadorFinca" type="X3" minOccurs="0"/>
+			<xs:element name="Escalera" type="Escalera" minOccurs="0"/>
+			<xs:element name="Piso" type="Piso" minOccurs="0"/>
+			<xs:element name="Puerta" type="Puerta" minOccurs="0"/>
+			<xs:element name="TipoAclaradorFinca" type="TipoAclaradorFinca" minOccurs="0"/>
+			<xs:element name="AclaradorFinca" type="X40" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DireccionSinCodPostal">
+		<xs:sequence>
+			<xs:element name="Pais" type="X25"/>
+			<xs:element name="Provincia" type="Decimal2"/>
+			<xs:element name="Municipio" type="Decimal7"/>
+			<xs:element name="Poblacion" type="Decimal7"/>
+			<xs:element name="TipoVia" type="TipoVia"/>
 			<xs:element name="Calle" type="X30"/>
 			<xs:element name="NumeroFinca" type="X5"/>
 			<xs:element name="DuplicadorFinca" type="X3" minOccurs="0"/>
@@ -325,6 +348,7 @@
 			<xs:element name="FechaVigor" type="xs:date"/>
 			<xs:element name="FechaAlta" type="xs:date"/>
 			<xs:element name="FechaBaja" type="xs:date" minOccurs="0"/>
+			<xs:element name="PasswordPM" type="X10" minOccurs="0"/>
 			<xs:element name="Aparatos" type="Aparatos" minOccurs="0"/>
 			<xs:element name="ComentariosPM" type="ComentariosPM" minOccurs="0"/>
 		</xs:sequence>
@@ -433,6 +457,103 @@
 			<xs:element name="FechaUltimaLectura" type="xs:date"/>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="Reclamante">
+		<xs:sequence>
+			<xs:element name="TipoReclamante" type="TipoReclamante"/>
+			<xs:element name="Reclamante" type="DatosReclamante" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DatosReclamante">
+		<xs:sequence>
+			<xs:element name="IdReclamante" type="IdReclamante"/>
+			<xs:element name="Nombre" type="NombreCliente"/>
+			<xs:element name="Fax" type="TelefonoInternacional" minOccurs="0"/>
+			<xs:element name="Telefono" type="TelefonoInternacional" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IdReclamante">
+		<xs:sequence>
+			<xs:element name="TipoCIFNIF" type="TipoIdentificador">
+				<xs:annotation>
+					<xs:documentation>Tabla 6</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Identificador" type="X9"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContactoConDireccion">
+		<xs:sequence>
+			<xs:element name="NombreDePila" type="X45"/>
+			<xs:element name="PrimerApellido" type="X45"/>
+			<xs:element name="SegundoApellido" type="X45" minOccurs="0"/>
+			<xs:element name="Telefono" type="TelefonoInternacional" minOccurs="0"/>
+			<xs:element name="IndicadorTipoDireccion">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="F"/>
+						<xs:enumeration value="S"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Direccion" type="Direccion" minOccurs="0"/>
+		</xs:sequence>
+		<!-- Nombre Dirección Telefono  -->
+	</xs:complexType>
+	<xs:complexType name="DatosReclamacion">
+		<xs:sequence>
+			<xs:element name="TipoMovimientoSolicitud" type="IndicativoARO"/>
+			<xs:element name="TipoReclamacion" type="TipoReclamacion" minOccurs="0"/>
+			<xs:element name="FechaIncidencia" type="xs:date"/>
+			<xs:element name="Comentario" type="X400"/>
+			<xs:element name="IndemnizacionSolicitada" type="X13"/>
+			<xs:element name="FechaLimiteLegal" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+		<!-- Datos Reclamacion  -->
+	</xs:complexType>
+	<xs:complexType name="DatosReclamacionFactura">
+		<xs:sequence>
+			<xs:element name="CodFiscalFactura" type="X30"/>
+			<xs:element name="ImporteFactReclamada" type="X15"/>
+			<xs:element name="CodAgrupacion" type="X20" minOccurs="0"/>
+			<xs:element name="FechaFactura" type="xs:date"/>
+			<xs:element name="FechaDesdeFact" type="xs:date" minOccurs="0"/>
+			<xs:element name="FechaHastaFact" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+		<!-- Datos ReclamacionFactura  -->
+	</xs:complexType>
+	<xs:complexType name="DatosAutolecturas">
+		<xs:sequence>
+			<xs:element name="TipoDH" type="TipoDH"/>
+			<xs:element name="Periodo" type="TipoCodigoPeriodoDH"/>
+			<xs:element name="MagnitudMedida" type="MagnitudMedida"/>
+			<xs:element name="Aparato" type="ModeloAparatoAutolecturas"/>
+			<xs:element name="Procedencia" type="Procedencia"/>
+			<xs:element name="LecturaPropuesta" type="DecimalS10V2"/>
+			<xs:element name="FechaLectura" type="xs:date"/>
+		</xs:sequence>
+		<!-- Datos Autolecturas  -->
+	</xs:complexType>
+	<xs:complexType name="RegistroAutolecturas">
+		<xs:sequence>
+			<xs:element name="Autolecturas" type="DatosAutolecturas" minOccurs="0" maxOccurs="50"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ModeloAparatoAutolecturas">
+		<xs:sequence>
+			<xs:element name="Tipo" type="TipoAparato">
+				<xs:annotation>
+					<xs:documentation>Tabla 24</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Marca" type="MarcaAparato">
+				<xs:annotation>
+					<xs:documentation>Tabla 25</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ModeloMarca" type="X30" minOccurs="0"/>
+			<xs:element name="NumeroSerie" type="X10"/>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="DatosCIE">
 		<xs:sequence>
 			<xs:element name="CieAportado" type="Indicativo" minOccurs="0"/>
@@ -469,6 +590,146 @@
 	<xs:complexType name="RegistrosDocs">
 		<xs:sequence>
 			<xs:element name="RegistroDoc" type="RegistroDoc" minOccurs="0" maxOccurs="50"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RegistrosValAnomalias">
+		<xs:sequence>
+			<xs:element name="RegistroValAnomalias" type="RegistroValAnomalias" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RegistroValAnomalias">
+		<xs:sequence>
+			<xs:element name="InicioRefacturacion" type="xs:date"/>
+			<xs:element name="FinRefacturacion" type="xs:date"/>
+			<xs:element name="FechaDesdeHistorico" type="xs:date" minOccurs="0"/>
+			<xs:element name="FechaHastaHistorico" type="xs:date" minOccurs="0"/>
+			<xs:element name="CodigoTarifa" type="Tarifa" minOccurs="0"/>
+			<xs:element name="Potencias" type="PotenciasAFacturar" minOccurs="0"/>
+			<xs:element name="Energias" type="EnergiasAFacturar" minOccurs="0"/>
+			<xs:element name="Reactivas" type="ReactivasAFacturar" minOccurs="0"/>
+			<xs:element name="ExcesosPotencia" type="ExcesosPotAFacturar" minOccurs="0"/>
+			<xs:element name="OtrosConceptos" type="OtrosConceptos" minOccurs="0"/>
+			<xs:element name="Importes" type="Importes" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PotenciasAFacturar">
+		<xs:sequence>
+			<xs:element name="PotenciaAFacturar" maxOccurs="6">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="Potencia">
+							<xs:attribute name="periodo" type="xs:integer" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EnergiasAFacturar">
+		<xs:sequence>
+			<xs:element name="EnergiaAFacturar" maxOccurs="6">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="EnergiaFact">
+							<xs:attribute name="periodo" type="xs:integer" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReactivasAFacturar">
+		<xs:sequence>
+			<xs:element name="ReactivaAFacturar" maxOccurs="6">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ReactivaFact">
+							<xs:attribute name="periodo" type="xs:integer" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ExcesosPotAFacturar">
+		<xs:sequence>
+			<xs:element name="ExcesoPotAFacturar" maxOccurs="6">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ExcesoPotFact">
+							<xs:attribute name="periodo" type="xs:integer" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OtrosConceptos">
+		<xs:sequence>
+			<xs:element name="Concepto" maxOccurs="3">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="TipoConcepto"/>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ImportesTerminoPotencia">
+		<xs:sequence>
+			<xs:element name="ImporteTerminoPotencia" maxOccurs="6">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="Importe"/>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ImportesTerminoEnergia">
+		<xs:sequence>
+			<xs:element name="ImporteTerminoEnergia" maxOccurs="6">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="Importe"/>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ImportesOtrosConceptos">
+		<xs:sequence>
+			<xs:element name="ImporteOtrosConceptos" maxOccurs="3">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="Importe"/>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Importes">
+		<xs:sequence>
+			<xs:element name="ImportesTerminoPotencia" type="ImportesTerminoPotencia" minOccurs="0"/>
+			<xs:element name="ImportesTerminoEnergia" type="ImportesTerminoEnergia" minOccurs="0"/>
+			<xs:element name="ImporteReactiva" type="Importe" minOccurs="0"/>
+			<xs:element name="ImporteExcesoPotencia" type="Importe" minOccurs="0"/>
+			<xs:element name="ImporteAlquileres" type="Importe" minOccurs="0"/>
+			<xs:element name="ImportesOtrosConceptos" type="ImportesOtrosConceptos" minOccurs="0"/>
+			<xs:element name="ImpuestoElectrico" type="Importe" minOccurs="0"/>
+			<xs:element name="IVA" type="Importe" minOccurs="0"/>
+			<xs:element name="ImporteTotal" type="Importe" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Anomalias">
+		<xs:sequence>
+			<xs:element name="Anomalia" type="Anomalia" maxOccurs="5"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Anomalia">
+		<xs:sequence>
+			<xs:element name="CodAnomalia" type="TipoAnomalia"/>
+			<xs:element name="Descripcion" type="X45"/>
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>

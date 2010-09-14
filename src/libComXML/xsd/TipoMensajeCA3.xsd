@@ -13,7 +13,7 @@
 		ComentariosPM
 		Aparatos
 			Medidas
-
+	Octubre 2008 Modificación. Pasa a utilizarse el tipo complejo CondicionesContractualesC
 	-->
 	<xs:complexType name="ActivacionPasoMRAMLConCambiosCA3">
 		<xs:sequence>

@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<xs:schema targetNamespace="http://localhost/elegibilidad" 
-	xmlns="http://localhost/elegibilidad" 
-	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	elementFormDefault="qualified" 
-	attributeFormDefault="unqualified">
-
+<xs:schema xmlns="http://localhost/elegibilidad" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost/elegibilidad" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:include schemaLocation="TiposComplejos.xsd"/>
 	<xs:include schemaLocation="TiposSencillos.xsd"/>
-
 	<!--
 		Version 2.0, Junio 2004
 				
-		Mensaje de negocio, solicitud de Baja . Formato A. Proceso B1.            
+		Mensaje de negocio, solicitud de Baja . Formato A. Proceso B1.    
 	Enero 2009 Añadido Contacto
 	Abril 2009 Añadido el grupo RegistrosDocs
 	-->
@@ -27,15 +21,12 @@
 			<xs:element name="RegistrosDocumento" type="RegistrosDocs" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
-
 	<!-- Tipos secundarios de la transacción actual -->
-
 	<xs:complexType name="DatosBajaATRAB1">
 		<xs:sequence>
-			<xs:element name="LineaNegocioElectrica"       	type="LineaNegocio"/>
-			<xs:element name="FechaPrevistaAccion"  	 	type="xs:date"    minOccurs="0"/>
-			<xs:element name="Motivo"			 	type="MotivoBaja"/>
+			<xs:element name="LineaNegocioElectrica" type="LineaNegocio"/>
+			<xs:element name="FechaPrevistaAccion" type="xs:date" minOccurs="0"/>
+			<xs:element name="Motivo" type="MotivoBaja"/>
 		</xs:sequence>
 	</xs:complexType>
-
 </xs:schema>

@@ -18,7 +18,7 @@
 		ComentariosPM
 		Aparatos
 			Medidas
-
+Octubre 2008 Modificación. Pasa a utilizarse el tipo complejo CondicionesContractualesC
 	-->
 	<xs:complexType name="ActivacionModificacionDeATRCM1">
 		<xs:sequence>
@@ -42,3 +42,4 @@
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>
+

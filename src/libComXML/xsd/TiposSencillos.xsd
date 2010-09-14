@@ -15,15 +15,23 @@
 	Agosto 2007 Modificación realizada acuerdo Unesa 27/6/07 para ser vigentes en Mayo 2008: dos nuevos tipos para representar el nuevo indicador de tipo de cambio de titular (IndicativoTipoCambioTitular) y el nuevo valor A del campo existente SolAdmContractual (IndicativoNSA)
 
 	Octubre 2007 Modificación realizada acuerdo Unesa 27/10/07 para ser vigentes en Mayo 2008: Eliminar el valor para el tipo MotivoBaja (03).
+	
 	Octubre 2008 Añadido TipoSencillo X6.
 						Añadido TipoSencillo IndicativoLFC
 						Añadido Motivo Baja 03
+	
 	Enero 2009 Añadidas tarifa 901 y 902
+	
+	Febrero 2009 Añadidos TipoSencillo X255, X400, TipoReclamante, TipoReclamacion, RdoReclamacion, CodDatos, IndicativoARO
+	
 	Mayo 2009 Añadidos TipoSencillo TiposSuministro y TiposDocumentacion
 					 Añadido MotivoBaja 05
 					 Añadidos Tipocontrato 09 y 10
 					 Añadidas TarifaAtr 901 y 902
-	</xs:documentation>
+					 Añadido Tipo X4, X15, X13 y X1000
+					 Añadido EnergiaFact, ReactivaFact e Importe
+	
+		</xs:documentation>
 	</xs:annotation>
 	<xs:simpleType name="Decimal1">
 		<xs:annotation>
@@ -150,6 +158,12 @@
 			<xs:maxLength value="3"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="X4">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="X5">
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1"/>
@@ -184,6 +198,18 @@
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1"/>
 			<xs:maxLength value="11"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="X13">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="13"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="X15">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="15"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="X20">
@@ -238,6 +264,18 @@
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1"/>
 			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="X400">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="400"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="X1000">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="1000"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="Mes">
@@ -471,8 +509,6 @@
 			002	2.0.N.A 	
 			003	3.0A	
 			004	2.0DHA					
-			005	2.1A
-			006	2.1DHA
 			011	3.1A	
 			012	6.1	
 			013	6.2	
@@ -568,8 +604,6 @@
 			<xs:enumeration value="002"/>
 			<xs:enumeration value="003"/>
 			<xs:enumeration value="004"/>
-			<xs:enumeration value="005"/>
-			<xs:enumeration value="006"/>
 			<xs:enumeration value="011"/>
 			<xs:enumeration value="012"/>
 			<xs:enumeration value="013"/>
@@ -746,7 +780,7 @@
 			<xs:documentation>Motivo de baja
 			01	CESE DEFINITIVO DE SUMINISTRO
 			02	RESCISIÓN DE CONTRATO DE ENERGÍA
-			03	CORTE POR IMPAGO
+			03    CORTE POR IMPAGO
 			04	BAJA POR IMPAGO
 			05	BAJA SIN DESCONEXION DEFINITIVA DE INSTALACIONES
 			</xs:documentation>
@@ -1074,6 +1108,15 @@
 		</xs:annotation>
 		<xs:restriction base="xs:integer">
 			<xs:totalDigits value="14"/>
+			<xs:fractionDigits value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EnergiaFact">
+		<xs:annotation>
+			<xs:documentation>Energia a facturar</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="13"/>
 			<xs:fractionDigits value="0"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1644,9 +1687,7 @@
 			001	2.0.A	
 			002	2.0.N.A 	
 			003	3.0A	
-			004	2.0DHA	
-			005	2.1A
-			006	2.1DHA
+			004	2.0DHA					
 			011	3.1A	
 			012	6.1	
 			013	6.2	
@@ -1662,8 +1703,6 @@
 			<xs:enumeration value="002"/>
 			<xs:enumeration value="003"/>
 			<xs:enumeration value="004"/>
-			<xs:enumeration value="005"/>
-			<xs:enumeration value="006"/>
 			<xs:enumeration value="011"/>
 			<xs:enumeration value="012"/>
 			<xs:enumeration value="013"/>
@@ -1692,6 +1731,18 @@
 			<xs:fractionDigits value="0"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="ReactivaFact">
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="13"/>
+			<xs:fractionDigits value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExcesoPotFact">
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="13"/>
+			<xs:fractionDigits value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="IndicativoLFC">
 		<xs:annotation>
 			<xs:documentation>indicativo Tipo Activación prevista (L con ciclo de lectura/ F fecha fija/ C tras actuación en campo)</xs:documentation>
@@ -1699,6 +1750,177 @@
 		<xs:restriction base="xs:string">
 			<xs:length value="1"/>
 			<xs:pattern value="L|F|C"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoReclamante">
+		<xs:annotation>
+			<xs:documentation>Tipo Reclamante Tabla 60
+			1-Cliente
+			2-Afectado no titular
+			3-Compañía de seguros
+			4-Abogado del cliente
+			5-OMIC
+			6-Consumo
+			7-Industria
+			8-Otros
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoReclamacion">
+		<xs:annotation>
+			<xs:documentation>Tipo Reclamacion Tabla 57
+			01-Atención personal
+			02-Facturación
+			03-Cobro
+			04-Contratación
+			05-Gestión de Acometidas
+			06-Calidad de Suministro
+			07-Situación de Instalaciones
+			08-Otros daños
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="06"/>
+			<xs:enumeration value="07"/>
+			<xs:enumeration value="08"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RdoReclamacion">
+		<xs:annotation>
+			<xs:documentation>Resultado de la Reclamacion Tabla 58
+			01-Disculpas. Tomamos nota para evitar a futuro
+			02-No estimar a futuro
+			03-Error lectura. Se rectifica
+			04-Factura  correcta
+			05-Falta de lecturas. Se comunica a lecturas
+			06-Se cambia ICP y se refactura
+			07-Se cambia E.M y se rectifica
+			08-I.H. averiado. Se refactura según históricos
+			09-Se refactura según Verificación Oficial E.M.
+			10-Liquidación Inspección correcta, en base articulo 96 Real Decreto  (anomalía AM) o Articulo 87 (fraude)
+			11-Circuito cruzado. Se refactura para abonar o cargar (   kWh)
+			12-Corte correcto, derechos de reconexión correctos
+			13-Titular del contrato es responsable de la deuda
+			14-No se pudo asignar cobro por no poder identificar el ingreso, por falta de datos
+			15-Deuda correcta, por subrogación de contrato o Traspaso
+			16-Se devuelve. Pago duplicado
+			17-Derechos de contratación correctos
+			18-Procede el cobro de derechos de enganche  (actuación en la medida)
+			19-Se corrige contrato
+			20-Se notifica al servicio operativo correspondiente para corregir situación reclamada
+			21-Instalación ajena a la Distribuidora
+			22-No hay incidencia que pueda provocar daños
+			23-Pedimos facturas para analizar
+			24-Trasladamos a contrata para atención daños
+			25-Se debe solicitar apertura de expediente para modificación de acometida
+			26-No procede indemnización por poda/tala
+			27-Atenderemos daños
+			28-Corte programado correctamente notificado
+			29-Corte erróneo. Estudiamos
+			30-Tensiones dentro margen legal 
+			31-Se corrigen tensiones
+			32-Actuación de nuestras protecciones, no justifica daños
+			33-Avería instalación particular cliente
+			34-Avería en instalaciones de terceros
+			35-Avería causada por terceros
+			36-El tiempo interrupción no justifica perdidas de perecederos
+			37-Indemnización de calidad por RD 1955/2000 y orden ECO 797/2002
+			38-Prescrita
+			39-No es competencia de la Distribuidora
+			40-Se indemniza por incumplimiento de calidad según articulo 105 del RD 1955/2000
+			41-Ya contestada. Reiteramos nuestra anterior contestación
+			42-Otros
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="06"/>
+			<xs:enumeration value="07"/>
+			<xs:enumeration value="08"/>
+			<xs:enumeration value="09"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+			<xs:enumeration value="13"/>
+			<xs:enumeration value="14"/>
+			<xs:enumeration value="15"/>
+			<xs:enumeration value="16"/>
+			<xs:enumeration value="17"/>
+			<xs:enumeration value="18"/>
+			<xs:enumeration value="19"/>
+			<xs:enumeration value="20"/>
+			<xs:enumeration value="21"/>
+			<xs:enumeration value="22"/>
+			<xs:enumeration value="23"/>
+			<xs:enumeration value="24"/>
+			<xs:enumeration value="25"/>
+			<xs:enumeration value="26"/>
+			<xs:enumeration value="27"/>
+			<xs:enumeration value="28"/>
+			<xs:enumeration value="29"/>
+			<xs:enumeration value="30"/>
+			<xs:enumeration value="31"/>
+			<xs:enumeration value="32"/>
+			<xs:enumeration value="33"/>
+			<xs:enumeration value="34"/>
+			<xs:enumeration value="35"/>
+			<xs:enumeration value="36"/>
+			<xs:enumeration value="37"/>
+			<xs:enumeration value="38"/>
+			<xs:enumeration value="39"/>
+			<xs:enumeration value="40"/>
+			<xs:enumeration value="41"/>
+			<xs:enumeration value="42"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CodDatos">
+		<xs:annotation>
+			<xs:documentation>Código de datos Tabla 59
+			01-Faltan facturas de daños
+			02-Faltan datos de contacto en suministro
+			03-Faltan datos bancarios para pago
+			04-Falta fecha de la incidencia
+			05-Falta cuantificación de daños
+			06-Faltan datos de lecturas
+			07-Otros daños
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="01"/>
+			<xs:enumeration value="02"/>
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="06"/>
+			<xs:enumeration value="07"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IndicativoARO">
+		<xs:annotation>
+			<xs:documentation>indicativo Tipo Movimiento Solicitud (A Envío de Autolecturas/ R Reclamaciones/ O Otras Peticiones</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="1"/>
+			<xs:pattern value="A|R|O"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TiposSuministro">
@@ -1797,6 +2019,267 @@
 			<xs:enumeration value="06"/>
 			<xs:enumeration value="07"/>
 			<xs:enumeration value="08"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TipoAnomalia">
+		<xs:annotation>
+			<xs:documentation>Tipos de Anomalía o fraude
+			A100	CONTADOR SIN CONTRATO, ERROR ADMINISTRATIVO
+			A101	SERVICIO DIRECTO NO CONTROLADO          
+			A102	FACTURACION INTERCAMBIO ACTIVA/REACTIVA 
+			A103	ERROR EN LECTURA DE CONSUMOS DE ENERGIA 
+			A104	ERROR EN LA DIRECCION DEL SUMINISTRO    
+			A105	NC CONTADOR MAL O NO ESTA EN BASE DATOS 
+			A107	EL CONTADOR NO SE LEE                   
+			A108	EL CONTADOR FACTURADO NO ES DEL CLIENTE
+			A110	NO SE FACTURA CONSUMO DE ENERGIA REACTIV
+			A111	COEFICIENTE DE FACTURACION ERRONEO      
+			A112	CLAVE DE TENSION ERRONEA                
+			A115	CLAVE ICP ERRONEA O NO ESTA  EN B. DATOS
+			A116	EL ICP NO ESTA INSTALADO Y SE FACTURA
+			A117	EL ICP ESTA INSTALADO Y NO SE FACTURA   
+			A118	ACTIVIDAD ECONOMICA (CNAE) INADECUADA   
+			A119	BAJA REALIZADA SE SIGUE FACTURANDO      
+			A120	TARIFA MAL APLICADA
+			A121	LEIDO NO FACTURADO
+			A199	OTRAS ANOMALIAS ADMINISTRATIVAS         
+			F200		CONEXION DIRECTA SIN CONTRATO           
+			F201		CONEXION DIRECTA CON CONTRATO           
+			F202		TOMA CLANDESTINA ANTES DEL CONTADOR     
+			F203		CONTADOR TALADRADO                      
+			F204		CONTADOR FORZADO                        
+			F205		CONTADOR CON PUENTE DE TENSION MANIPULAD
+			F206		A.M.CAMBIADO SIN CONOCIMIENTO DE IBERDR.
+			F207		CAMBIO PLACA DE CORACTERISTICAS TRAFO. TENS.
+			F208		CAMBIO PLACA DE CORACTERISTICAS CONTADOR
+			F209		TENSIÓN INTERRUMPIDA  EN TRAFO INTENSIDAD
+			F210		INTENSIDAD INTERRUMPIDA EN TRAFO INTENSIDAD
+			F211		CAMBIO PLACA DE CORACTERISTICAS TRAFO. INTENSIDAD
+			F212		CAMBIO FASE/NEUTRO CON NEUTRO ARTIFICIAL
+			F213		INVERSION ENTRADA - SALIDA EN CONTADOR  
+			F214		PUENTE ENTRADA - SALIDA EN LA MISMA FASE
+			F215		USO TRASFORMADOR CONGREJO
+			F216		COMBINACIÓN ENTRE CONTADORES
+			F217		MANIPULACION EN RELOJERIA DEL CONTADOR  
+			F218		DISCRIMINACIÓN HORARIA MANIPULADA
+			F219		EL ICP ESTA PUENTEADO, CAMBIADO O MANIP.
+			F220		MAYOR POTENCIA EN SERVICIOS TEMPORALES  
+			F221		CESION DE ENERGIA
+			F223		CONTADOR INSTALADO SIN CONTRATO         
+			F224		USO DISTINTO AL CONTRATADO              
+			F225		INTENSIDAD INVERTIDA 
+			F226		TENSION PERMUTADA 
+			F298		EQUIPO DE MEDIDA DESAPARECIDO
+			F299		OTROS FRAUDES                           
+			I900		CENTRALIZACION PELIGROSA                
+			I905		IMPEDIMENTO DE ACCESO POR FALTA DE LLAVE
+			I906		MIRILLA ENVEJECIDA (CAMBIO A.M.)        
+			I907		CONTADOR ALTURA SUPERIOR A 2,5 M.       
+			I908		SUMINISTRO DE EMERGENCIA O SOCORRO      
+			I910		CERRADO,NO VIVEN MUC.TIEMPO O CESE NEGOC
+			I912		CERRADO, VIVIENDA VERANEO O 2ª VIVIENDA 
+			I913		CASA EN RUINAS O DERRUIDA               
+			I914		VIVEN PERO SOLO ESTAN POR LA NOCHE      
+			I915		SOLO FINES DE SEMANA                    
+			I916		ILOCALIZABLE (LOS VECINOS NO SABEN NADA)
+			I921		NO ABREN INTENCIONADAMENTE              
+			I922		ACCESO EN MAL ESTADO                    
+			I923		SOLAR                                   
+			I924		REGISTR. APAGADO (SIN TENSIóN)          
+			T001		CONTADOR PARADO PORQUE NO ENGRANA       
+			T002		CONTADOR CON CONEXIÓN INVERTIDA         
+			T003		CONT. CON BOBINA TENS. INTERRUM/DESCON. 
+			T005		CONTADOR PARADO POR DISCO AGARROTADO    
+			T006		CONTADOR QUEMADO POR SOBRECARGA         
+			T007		CONTADOR CON MARCHA DEFECTUOSA          
+			T008		CONTADOR MARCHA EN VACIO                
+			T009		CONTADOR RETRASA                        
+			T010		CONTADOR DESPRENDIDO                    
+			T011		CONTADOR ROTO                           
+			T019		CONTADOR SIN CUBREBORNAS / HILOS        
+			T024		CONTADORES PERMUTADOS ENTRE CLIENTES    
+			T025		CONTADOR REACTIVO SIN INSTALAR          
+			T026		CONTADOR REACTIVO PARADO POR AVERIA     
+			T027		CONTADOR REACTIVO PARADO POR CAPACITIVA 
+			T028		CONTADOR REACTIVO INSTALADO POR ACTIVO  
+			T029		CONT.REACTIV SENTIDO GIRO INVERTIDO(RST)
+			T030		TRANSFORMADOR DE INTENSIDAD AVERIADO    
+			T031		TRAFO. DE INTENSIDAD MAL CONECTADO      
+			T032		TRAFO.DE  INTENSIDAD CON LA RELACION MAL
+			T033		TRAF. INT. NO AJUSTADO A POTEN. CONTRATO
+			T035		TRAFO DE TENSIÓN AVERIADO
+			T036		TRAFO DE TENSION MAL CONECTADO
+			T037		INTENSIDAD INVERTIDA 
+			T038		TENSION PERMUTADA 
+			T039		TENSION O INTENSIDAD ABIERTA   
+			T040		INTERRUPTOR CONTROL POTENCIA AVERIADO   
+			T041		ICP NO CORTA LA FASE DE LA INSTALACION  
+			T042		EL ICP NO CORTA TODA LA INSTALACION     
+			T047		ICP MAYOR QUE  POTENCIA DE CONTRATO     
+			T048		ICP MENOR  QUE POTENCIA DE CONTRATO     
+			T049		CLIENTE SIN LIMITAR                     
+			T050		NO SE TOMA LECTURA INJUSTIFICADAMENTE   
+			T060		INTERRUPTOR HORARIO MAL CONECTADO       
+			T061		INTERRUPTOR HORARIO MAL AJUSTADO        
+			T062		INTERRUPTOR HORARIO AVERIADO            
+			T065		CONTADOR ELECTRONICO CON FALLOS INTERMITENTES
+			T066		ERRORES SUPERIORES A SU CLASE EN ADELANTO
+			T067		ERRORES SUPERIORES A SU CLASE EN ATRASO
+			T068		FALLO INTERMITENTE EN EL RELOJ
+			T069		FALLO DEL DISPLAY O REGISTRADOR DEFECT  
+			T070		PROBLEMAS EN EL SOFTWARE DEL CONTADOR   
+			T071		LED DE VERIFICACIÓN MAL
+			T072		INDICADOR DE LA DIRECCIO DE LA ENRGIA MAL
+			T073		ENVOLVENTE O CAJA DE BORNAS MAL         
+			T074		FALLO EN CONTADOR DE PREPAGO
+			T075		INDICACION DE FRAUDE EN EL CONTADOR
+			T076		FALLO EN EL CAMBIO DE TARIFA            
+			T077		FALLO ENTRADA / SALIDA IMPULSOS
+			T078		FALLO DE LA BATERIA
+			T079		ENERGIA ACUMULADA Y NO FACTURADA
+			T080		TAPA PROTECTORA (CP) ROTA               
+			T081		ACOMETIDA MAL                           
+			T090		MAXIMA REGISTRADA MAYOR QUE POT. AUTORIZ
+			T091		MAXIMETRO AVERIADO
+			T094		FALTA PRECINTOS DE INDUSTRIA            
+			T095		FALTA PRECIN/CUBREBOR. GENER. EN CENTRAL
+			T096		FALTA PRECINTADO EN A.M.                
+			T097		FALTA PRECINTADO EN ARMARIO/ENVOLVENTES 
+			T098		FALTA PRECINTADO SIN INFLUENCIA EN FRAUD
+			T099		OTRAS ANOMALIAS TECNICAS                
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="A100"/>
+			<xs:enumeration value="A101"/>
+			<xs:enumeration value="A102"/>
+			<xs:enumeration value="A103"/>
+			<xs:enumeration value="A104"/>
+			<xs:enumeration value="A105"/>
+			<xs:enumeration value="A107"/>
+			<xs:enumeration value="A108"/>
+			<xs:enumeration value="A110"/>
+			<xs:enumeration value="A111"/>
+			<xs:enumeration value="A112"/>
+			<xs:enumeration value="A115"/>
+			<xs:enumeration value="A116"/>
+			<xs:enumeration value="A117"/>
+			<xs:enumeration value="A118"/>
+			<xs:enumeration value="A119"/>
+			<xs:enumeration value="A120"/>
+			<xs:enumeration value="A121"/>
+			<xs:enumeration value="A199"/>
+			<xs:enumeration value="F200"/>
+			<xs:enumeration value="F201"/>
+			<xs:enumeration value="F202"/>
+			<xs:enumeration value="F203"/>
+			<xs:enumeration value="F204"/>
+			<xs:enumeration value="F205"/>
+			<xs:enumeration value="F206"/>
+			<xs:enumeration value="F207"/>
+			<xs:enumeration value="F208"/>
+			<xs:enumeration value="F209"/>
+			<xs:enumeration value="F210"/>
+			<xs:enumeration value="F211"/>
+			<xs:enumeration value="F212"/>
+			<xs:enumeration value="F213"/>
+			<xs:enumeration value="F214"/>
+			<xs:enumeration value="F215"/>
+			<xs:enumeration value="F216"/>
+			<xs:enumeration value="F217"/>
+			<xs:enumeration value="F218"/>
+			<xs:enumeration value="F219"/>
+			<xs:enumeration value="F220"/>
+			<xs:enumeration value="F221"/>
+			<xs:enumeration value="F222"/>
+			<xs:enumeration value="F223"/>
+			<xs:enumeration value="F224"/>
+			<xs:enumeration value="F225"/>
+			<xs:enumeration value="F226"/>
+			<xs:enumeration value="F298"/>
+			<xs:enumeration value="F299"/>
+			<xs:enumeration value="I900"/>
+			<xs:enumeration value="I905"/>
+			<xs:enumeration value="I906"/>
+			<xs:enumeration value="I907"/>
+			<xs:enumeration value="I908"/>
+			<xs:enumeration value="I910"/>
+			<xs:enumeration value="I912"/>
+			<xs:enumeration value="I913"/>
+			<xs:enumeration value="I914"/>
+			<xs:enumeration value="I915"/>
+			<xs:enumeration value="I916"/>
+			<xs:enumeration value="I921"/>
+			<xs:enumeration value="I922"/>
+			<xs:enumeration value="I923"/>
+			<xs:enumeration value="I924"/>
+			<xs:enumeration value="T001"/>
+			<xs:enumeration value="T002"/>
+			<xs:enumeration value="T003"/>
+			<xs:enumeration value="T005"/>
+			<xs:enumeration value="T006"/>
+			<xs:enumeration value="T007"/>
+			<xs:enumeration value="T008"/>
+			<xs:enumeration value="T009"/>
+			<xs:enumeration value="T010"/>
+			<xs:enumeration value="T011"/>
+			<xs:enumeration value="T019"/>
+			<xs:enumeration value="T024"/>
+			<xs:enumeration value="T025"/>
+			<xs:enumeration value="T026"/>
+			<xs:enumeration value="T027"/>
+			<xs:enumeration value="T028"/>
+			<xs:enumeration value="T029"/>
+			<xs:enumeration value="T030"/>
+			<xs:enumeration value="T031"/>
+			<xs:enumeration value="T032"/>
+			<xs:enumeration value="T033"/>
+			<xs:enumeration value="T035"/>
+			<xs:enumeration value="T036"/>
+			<xs:enumeration value="T037"/>
+			<xs:enumeration value="T038"/>
+			<xs:enumeration value="T039"/>
+			<xs:enumeration value="T040"/>
+			<xs:enumeration value="T041"/>
+			<xs:enumeration value="T042"/>
+			<xs:enumeration value="T047"/>
+			<xs:enumeration value="T048"/>
+			<xs:enumeration value="T049"/>
+			<xs:enumeration value="T050"/>
+			<xs:enumeration value="T060"/>
+			<xs:enumeration value="T061"/>
+			<xs:enumeration value="T062"/>
+			<xs:enumeration value="T065"/>
+			<xs:enumeration value="T066"/>
+			<xs:enumeration value="T067"/>
+			<xs:enumeration value="T068"/>
+			<xs:enumeration value="T069"/>
+			<xs:enumeration value="T070"/>
+			<xs:enumeration value="T071"/>
+			<xs:enumeration value="T072"/>
+			<xs:enumeration value="T073"/>
+			<xs:enumeration value="T074"/>
+			<xs:enumeration value="T075"/>
+			<xs:enumeration value="T076"/>
+			<xs:enumeration value="T077"/>
+			<xs:enumeration value="T078"/>
+			<xs:enumeration value="T079"/>
+			<xs:enumeration value="T080"/>
+			<xs:enumeration value="T081"/>
+			<xs:enumeration value="T090"/>
+			<xs:enumeration value="T091"/>
+			<xs:enumeration value="T094"/>
+			<xs:enumeration value="T095"/>
+			<xs:enumeration value="T096"/>
+			<xs:enumeration value="T097"/>
+			<xs:enumeration value="T098"/>
+			<xs:enumeration value="T099"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Importe">
+		<xs:restriction base="xs:long">
+			<xs:totalDigits value="11"/>
+			<xs:fractionDigits value="0"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

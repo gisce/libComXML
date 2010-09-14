@@ -16,7 +16,7 @@
 		(no lleva condiciones Contractuales)
 	Puntos de Medida
 		(no lleva)
-
+Octubre 2008 Modificación. Pasa a utilizarse el tipo complejo CondicionesContractualesC
 	-->
 	<xs:complexType name="ActivacionCambiodeComercializadoraSinCambiosCC1">
 		<xs:sequence>

@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://localhost/elegibilidad" targetNamespace="http://localhost/elegibilidad" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:include schemaLocation="TipoCabecera.xsd"/>
-	<xs:include schemaLocation="TipoMensajeM.xsd"/>
+	<xs:include schemaLocation="TipoMensajeR.xsd"/>
 	<xs:include schemaLocation="TiposSencillos.xsd"/>
 	<xs:annotation>
 		<xs:documentation>
-		Version 2.0, Junio 2004
-		Mensaje de negocio, intercambiado entre agentes 
-		Octubre 2008 Eliminado Bloque contrato
-		Diciembre 2008 Añadido bloque contrato como opcional
+				Reclamaciones
 		</xs:documentation>
 	</xs:annotation>
-	<xs:element name="MensajeSolicitudInformacionAlRegistrodePS">
+	<xs:element name="MensajeSolicitudReclamacion">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="Cabecera" type="Cabecera"/>
-				<xs:element name="SolicitudInformacionAlRegistrodePS" type="SolicitudInformacionAlRegistrodePS" minOccurs="0"/>
+				<xs:element name="SolicitudReclamacion" type="SolicitudReclamacion01"/>
 			</xs:sequence>
 			<xs:attribute name="AgenteSolicitante" type="Agente" use="required"/>
 		</xs:complexType>

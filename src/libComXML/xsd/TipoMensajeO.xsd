@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<xs:schema targetNamespace="http://localhost/elegibilidad" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://localhost/elegibilidad" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://localhost/elegibilidad" targetNamespace="http://localhost/elegibilidad" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:include schemaLocation="TiposComplejos.xsd"/>
 	<xs:include schemaLocation="TiposSencillos.xsd"/>
 	<!--
@@ -11,6 +11,8 @@
 
 		Diciembre 2007 Modificación tipo Historia FechaAlta por FechaTarifa
 		Mayo 2008 Añadir FechaLimiteDerechosAcceso
+		Octubre 2008 Añadido PotenciaDisponibleCaja
+
 	-->
 	<xs:complexType name="EnvioInformacionAlRegistroDePuntosDeSuministro">
 		<xs:sequence>
@@ -23,11 +25,11 @@
 			<xs:element name="Equipo" type="Equipo" minOccurs="0" maxOccurs="100"/>
 		</xs:sequence>
 	</xs:complexType>
-	<!-- Tipos secundarios de la transacción actual -->
+	<!-- Tipos secundarios de la transacción actual  -->
 	<xs:complexType name="DerechosReconocidos">
 		<xs:sequence>
 			<xs:element name="DerechosAcceso" type="Decimal11"/>
-			<xs:element name="FechaLimiteDerechosAcceso" type="xs:date" minOccurs="0"/>			
+			<xs:element name="FechaLimiteDerechosAcceso" type="xs:date" minOccurs="0"/>
 			<xs:element name="DerechosExtension" type="Decimal11"/>
 			<xs:element name="FechaLimiteDerechos" type="xs:date" minOccurs="0"/>
 		</xs:sequence>
@@ -36,6 +38,7 @@
 		<xs:sequence>
 			<xs:element name="PotenciaMaximaAutorizadaPorBIE" type="Decimal11" minOccurs="0"/>
 			<xs:element name="PotenciaMaximaAutorizadaPorActa" type="Decimal11" minOccurs="0"/>
+			<xs:element name="PotenciaDisponibleCaja" type="Decimal11" minOccurs="0"/>
 			<xs:element name="InstalacionICP" type="InstalacionICP" minOccurs="0"/>
 			<xs:element name="SuministroLiberalizado" type="Indicativo" minOccurs="0"/>
 			<xs:element name="TipoPuntoMedida" type="TipoPM" minOccurs="0"/>
@@ -146,3 +149,5 @@
 		</xs:sequence>
 	</xs:complexType>
 </xs:schema>
+
+

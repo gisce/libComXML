@@ -44,7 +44,7 @@
 		<xs:sequence>
 			<xs:element name="LineaNegocioElectrica" type="LineaNegocio"/>
 			<xs:element name="SolicitudAdmContractual" type="X1" minOccurs="0"/>
-			<xs:element name="IndActivacionLectura" type="Indicativo"/>
+			<xs:element name="IndActivacionLectura" type="Indicativo" minOccurs="0"/>
 			<xs:element name="FechaPrevistaAccion" type="xs:date" minOccurs="0"/>
 			<xs:element name="CNAE" type="X5" minOccurs="0"/>
 			<xs:element name="IndSustitutoMandatario" type="IndSustitutoMandatario"/>
