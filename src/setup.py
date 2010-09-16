@@ -7,7 +7,7 @@ from distutils.core import Command
 
 class build_bindings(Command):
     import pyxb.binding.generate
-    known_xsd = ['Facturacion.xsd', 'AceptacionAnulacion.xsd']
+    known_xsd = ['Facturacion.xsd']
     known_xsd_str = '* '+'\n* '.join(known_xsd)
     description = "Build bindings for known XSDs:\n %s" % (known_xsd_str)
     for xsd_file in known_xsd:
