@@ -66,7 +66,7 @@ class clean(_clean):
             if os.path.exists(python_file):
                 os.unlink(python_file)
 
-packages = ['libComXML', 'libComXML.bindings', 'libComXML.models', 'libComXML.xsd']
+packages = ['libComXML', 'libComXML.bindings', 'libComXML.generators', 'libComXML.models', 'libComXML.xsd']
 packages_data = {'libComXML.xsd': []}
 
 xsd_re = re.compile('^.*\.xsd$')
