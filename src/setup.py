@@ -28,7 +28,7 @@ class BuildBindings(Command):
             self.build_base = 'build'
 
     def run (self):
-        module_path = 'libComXML.bindings'
+        module_path = 'libcomxml.bindings'
         file_package = open('%s%s__init__.py' %
                             (module_path.replace('.', os.path.sep), 
                              os.path.sep), 'w')
@@ -36,7 +36,7 @@ class BuildBindings(Command):
         for xsd_file in self.known_xsd:
             print "Building module for %s..." % xsd_file
             module_name = '%s.%s' % (module_path, xsd_file.strip('.xsd'))
-            xsd = 'libComXML/xsd/%s' % xsd_file
+            xsd = 'libcomxml/xsd/%s' % xsd_file
             # Ugly using os.system(), but there was an error importing
             # pyxb.bindings.generate with more than one xsd file.
             os.system('pyxbgen -m %s %s' % (module_name, xsd))
@@ -58,7 +58,7 @@ class Clean(_clean):
             print "Cleaning %s dir" % self.build_base
             shutil.rmtree(self.build_base)
         print "Removing generated bindings..."
-        package = 'libComXML.bindings'
+        package = 'libcomxml.bindings'
         package_file = open('%s%s__init__.py' %
                             (package.replace('.', os.path.sep),
                              os.path.sep), 'w')
@@ -71,15 +71,15 @@ class Clean(_clean):
             if os.path.exists(python_file):
                 os.unlink(python_file)
 
-PACKAGES = ['libComXML', 
-            'libComXML.bindings', 
-            'libComXML.generators', 
-            'libComXML.models', 
-            'libComXML.xsd']
-PACKAGES_DATA = {'libComXML.xsd': []}
+PACKAGES = ['libcomxml', 
+            'libcomxml.bindings', 
+            'libcomxml.generators', 
+            'libcomxml.models', 
+            'libcomxml.xsd']
+PACKAGES_DATA = {'libcomxml.xsd': []}
 
 XSD_RE = re.compile('^.*\.xsd$')
-XSD_DIR = os.path.sep.join('libComXML.xsd'.split('.'))
+XSD_DIR = os.path.sep.join('libcomxml.xsd'.split('.'))
 
 XSD_FILELIST = []
 # loop on all files and select files matching 'regx'
@@ -91,8 +91,8 @@ for root, dirs, files in os.walk(XSD_DIR):
 
 PACKAGES_DATA.update({XSD_DIR.replace(os.path.sep, '.'): XSD_FILELIST})
 
-setup(name='libComXML',
-      description = 'libComXML is Python package that generates Python source \
+setup(name='libcomxml',
+      description = 'libcomxml is Python package that generates Python source \
       code for classes that correspond to data structures defined by OCSUM',
       author='GISCE Enginyeria',
       author_email='devel@gisce.net',
@@ -100,7 +100,7 @@ setup(name='libComXML',
       version='1.14.0',
       license='General Public Licence 2',
       long_description='''Long description''',
-      provides=['libComXML'],
+      provides=['libcomxml'],
       requires=['PyXB(==1.0.0)'],
       packages=PACKAGES,
       package_data=PACKAGES_DATA,

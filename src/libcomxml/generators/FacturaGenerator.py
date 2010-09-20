@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from libComXML.bindings import Facturacion
-from libComXML.models.Factura import Factura
+from libcomxml.bindings import Facturacion
+from libcomxml.models.Factura import Factura
 
 class FacturaGenerator(object):
     

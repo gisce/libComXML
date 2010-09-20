@@ -2,6 +2,7 @@
 '''
 Mòdul per treballar amb les Factures XML. 
 Consta de:
+
 * Funcións per treballar amb lectures
 * Classe per mapejar una factura
 * Classe per mapejar una lectura
