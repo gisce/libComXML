@@ -2,5 +2,5 @@
 .settings
 .pydevproject
 *.pyc
-*/libComXML/bindings/*.py
+*/libcomxml/bindings/*.py
 src/build/*
