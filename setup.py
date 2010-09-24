@@ -7,8 +7,7 @@ from distutils.core import setup, Command
 from distutils.command.build import build as _build
 from distutils.command.clean import clean as _clean
 
-KNOWN_XSD = ['Facturacion.xsd', 
-             'CambiodeComercializadoraSinCambios.xsd']
+KNOWN_XSD = ['Facturacion.xsd']
 
 class BuildBindings(Command):
     def __init__(self, dist):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from libcomxml.bindings import Facturacion
-from libcomxml.models.Factura import Factura
+from libcomxml.models.Factura import Factura, Comptador, Lectura
 
 class FacturaGenerator(object):
     
@@ -12,6 +12,9 @@ class FacturaGenerator(object):
         '''
         Genera les factures a través d'un binding passat com a paràmetre.
         Aquesta funció comprovarà que el binding és del tipus _Facturacion_
+        :param Facturacion binding: Binding amb la Factura XML
+        :returns Llista de factures Creades
+        :rtype list of Factura
         '''
         if not isinstance(binding, Facturacion):
             raise Exception("This binding is not supported")
@@ -23,6 +26,9 @@ class FacturaGenerator(object):
         '''
         Genera les factures a través d'un XML i creant un binding per aquest
         XML.
+        :param string xml_text: Contingut XML de la Factura
+        :returns Llista de factures Creades
+        :rtype list of Factura
         '''
         self.binding = Facturacion.CreateFromDocument(xml_text)
         self._generate_factures()
@@ -44,14 +50,14 @@ class FacturaGenerator(object):
             periode += 1
         return res_termes
     
-    def _generate_termes_energia_activa(self, termes):
+    def _gen_termes_energia_activa(self, termes):
         '''
         Generem els termes d'energia activa
         '''
         claus_valors = {'valor': 'ValorEnergiaActiva', 'preu': 'PrecioEnergia'}
         return self._generate_termes(termes, claus_valors)
     
-    def _generate_termes_energia_reactiva(self, termes):
+    def _gen_termes_energia_reactiva(self, termes):
         '''
         Generem els termes d'energia reactiva
         '''
@@ -59,7 +65,7 @@ class FacturaGenerator(object):
                         'preu': 'PrecioEnergiaReactiva'}
         return self._generate_termes(termes, claus_valors)
     
-    def _generate_termes_potencia(self, termes):
+    def _gen_termes_potencia(self, termes):
         '''
         Generem els termes de potència
         '''
@@ -84,7 +90,6 @@ class FacturaGenerator(object):
             data_factura = dgf.FechaFactura
             emisor_nif = dgf.DatosCIFEmisora
             factura = Factura(numero_factura, data_factura, client_nif, emisor_nif)
-            
             factura.contracte = f.DatosGeneralesFacturaATR.Contrato
             factura.tipus = dgf.TipoFactura
             factura.rectificativa = dgf.IndicativoFacturaRectificadora
@@ -105,7 +110,7 @@ class FacturaGenerator(object):
             tp = f.Potencia.TerminoPotencia
             f.potencia_data_inici = tp.FechaDesde
             f.potencia_data_final = tp.FechaHasta
-            factura.potencies_contactades = self._generate_termes_potencia(tp.Periodo)
+            factura.potencies_contactades = self._gen_termes_potencia(tp.Periodo)
             factura.import_total_potencia = f.Potencia.ImporteTotalTerminoPotencia
             factura.penalitzacio_no_icp = f.Potencia.PenalizacionNoICP
             # Mapping TerminoEnergiaActiva
@@ -113,14 +118,13 @@ class FacturaGenerator(object):
             factura.energia_activa_data_inici = tea.FechaDesde
             factura.energia_activa_data_final = tea.FechaHasta
             # Generem els termes d'energia activa
-            factura.termes_energia_activa = self._generate_termes_energia_activa(tea.Periodo)
+            factura.termes_energia_activa = self._gen_termes_energia_activa(tea.Periodo)
             factura.import_total_energia_activa = f.EnergiaActiva.ImporteTotalEnergiaActiva
             # Mapping TerminoEnergiaReactiva
             ter = f.EnergiaReactiva.TerminoEnergiaReactiva
             factura.energia_reactiva_data_inici = ter.FechaDesde
             factura.energia_reactiva_data_final = ter.FechaHasta
-            factura.termes_energia_reactiva = self._generate_termes_energia_reactiva(ter.Periodo)
-            
+            factura.termes_energia_reactiva = self._gen_termes_energia_reactiva(ter.Periodo)
             # Mapping ImpuestoElectrico
             ie = f.ImpuestoElectrico
             factura.impost_electric_base = ie.BaseImponible
@@ -133,5 +137,8 @@ class FacturaGenerator(object):
             factura.iva_base_imponible = f.IVA.BaseImponible
             factura.iva_percentatge = f.IVA.Porcentaje
             factura.iva_import = f.IVA.Importe
+            # Comencem amb les lectures
+            for aparato in f.Medidas.Aparato:
+                comptador = Comptador(aparato.NumeroSerie)
             
         self.factures.append(factura)

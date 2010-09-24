@@ -6,6 +6,7 @@ Consta de:
 * Funcións per treballar amb lectures
 * Classe per mapejar una factura
 * Classe per mapejar una lectura
+* Classe per mapejar un comptador
 '''
 def calc_consum(lectura_anterior, lectura_actual, rodes):
     '''
@@ -13,12 +14,35 @@ def calc_consum(lectura_anterior, lectura_actual, rodes):
     i la lectura actual. Si la lectura actual és inferior a l'anterior vol
     dir que el comptador ha donat la volta i sap calcular l'increment segons
     el número de rodes.
+    :param numeric lectura_anterior: Lectura anterior
+    :param numeric lectura_actual: Lectura actual
+    :param integer rodes: Número de rodes del comptador
     '''
     giro = 10**rodes
     consum = lectura_actual - lectura_anterior
     if lectura_actual < lectura_anterior:
         consum += giro
     return consum
+
+class Comptador(object):
+    '''
+    Classe per mapejar un comptador
+    '''
+    def __init__(self, numero_serie):
+        '''
+        Creem un comptador nou
+        :param numero_serie: Numero de sèrie del comptador
+        '''
+        self.numero_serie = numero_serie
+        self.lectures = []
+    
+    def append_lectura(self, lectura):
+        '''
+        Afegim una lectura al comptador
+        :param Lectura lectura: Lectura a afegir
+        :returns None
+        '''
+        self.lectures.append(lectura)
 
 class Lectura(object):
     '''
@@ -44,9 +68,10 @@ class Lectura(object):
         '''
         Funció per calcular el consum
         '''
-        calc_consum(self.lectura_anterior, self.lectura_actual, self.rodes)
+        return calc_consum(self.lectura_anterior, 
+                           self.lectura_actual, self.rodes)
 
-class Factura:
+class Factura(object):
     '''
     Classe per mapejar una Factura XML (F1)
     '''
@@ -54,11 +79,16 @@ class Factura:
         '''
         Creem la factura, camps bàsics: Número, NIF Client, data factura,
         NIF Emisor
+        :param numero: Número de la factura
+        :param date data_factura: Data de la factura
+        :param client_nif: NIF del Client
+        :param emisor_nif: NIF de l'Emisor
         '''
         self.numero = numero
         self.data = data_factura
         self.client_nif = client_nif
         self.emisor_nif = emisor_nif
+        self.comptadors = []
         
     # Funcions per accedir a l'abonat
     def get_cups(self):
@@ -118,3 +148,12 @@ class Factura:
     
     def get_consum_periode(self, unitat_mesura, periode):
         pass
+    
+    def append_lectures_comptador(self, comptador):
+        '''
+        Afegim un comptador amb lectures a una factura
+        :param Comptador comptador: Comptador a afegir
+        :returns None
+        '''
+        if comptador not in self.comptadors:
+            self.comptadors.append(comptador)
