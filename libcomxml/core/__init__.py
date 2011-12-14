@@ -133,42 +133,33 @@ class XmlModel(Model):
     ...     root_field = XmlField('OneField')
     ...     child_field = XmlField('ChildField', value=123, parent='OneField')
     ...
-    >>> mymodel = MyModel('MyModel')
-    >>> mymodel.set_root('root_field')
+    >>> mymodel = MyModel('MyModel', root='root_field')
+    >>> mymodel.build_tree()
     >>> print(mymodel)
     <OneField><ChildField>123</ChildField></OneField>
     >>>
 
     """
-    def __init__(self, name):
+    def __init__(self, name, root):
         self.name = name
-        self.root = None
-        self.doc_root = None
         super(XmlModel, self).__init__(name)
+        self.root = getattr(self, root)
+        self.doc_root = self.root.element()
 
-    def set_root(self, root):
-        """Sets the root element of the XML representation and generates the
-        tree with all the fields.
+
+    def build_tree(self):
+        """Bulids the tree with all the fields converted to Elements
         """
-        try:
-            self.root = getattr(self, root)
-            self.doc_root = self.root.element()
-        except AttributeError:
-            raise AttributeError('You must have a root element')
-        # now that we have a root node, let's build the entire tree
         for _, field in self._fields.items():
             if field != self.root:
                 if field.parent == self.root.name:
                     field = field.element(parent=self.doc_root)
 
 
-    def element(self):
-        """Returns the etree.Element of the XmlModel
-        """
-        if not self.root:
-            raise AttributeError('You must have defined a root element')
-        return self.doc_root
 
     def __str__(self):
         return etree.tostring(self.doc_root)
 
+
+    def __unicode__(self):
+        return self.__str__()
