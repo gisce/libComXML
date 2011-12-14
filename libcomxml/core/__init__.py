@@ -150,7 +150,7 @@ class XmlModel(Model):
     def build_tree(self):
         """Bulids the tree with all the fields converted to Elements
         """
-        for _, field in self._fields.items():
+        for field in self._fields.values():
             if field != self.root:
                 if field.parent == self.root.name:
                     field = field.element(parent=self.doc_root)
