@@ -128,7 +128,7 @@ class XmlModel(Model):
 
     This class is intended to be subclassed as follows:
 
-    >>> freom libcomxml.core import XmlField, XmlModel
+    >>> from libcomxml.core import XmlField, XmlModel
     >>> class MyModel(XmlModel):
     ...     root_field = XmlField('OneField')
     ...     child_field = XmlField('ChildField', value=123, parent='OneField')
