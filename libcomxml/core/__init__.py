@@ -111,7 +111,7 @@ class Model(object):
             if not member.startswith('_'): 
                 s_member = getattr(self, member)
                 if isinstance(s_member, Field):
-                    fields[s_member.name] = s_member
+                    fields[member] = s_member
         self.__fields = fields
         return fields
 
@@ -154,7 +154,6 @@ class XmlModel(Model):
             if field != self.root:
                 if field.parent == self.root.name:
                     field = field.element(parent=self.doc_root)
-
 
 
     def __str__(self):
