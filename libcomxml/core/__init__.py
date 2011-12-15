@@ -65,6 +65,8 @@ class XmlField(Field):
                 element.append(value.element())
             elif isinstance(value, list):
                 for val in value:
+                    if isinstance(val, XmlField):
+                        val.parent = element.tag
                     self._parse_value(element, val)
             else:  # default: cast to string
                 element.text = str(value)
@@ -154,6 +156,11 @@ class XmlModel(Model):
             if field != self.root:
                 if field.parent == self.root.name:
                     field = field.element(parent=self.doc_root)
+                else:
+                    nodes = [n for n in self.doc_root.iterdescendants(
+                                            tag=field.parent)]
+                    if nodes:
+                        field = field.element(parent=nodes[0])
 
 
     def __str__(self):
@@ -162,3 +169,4 @@ class XmlModel(Model):
 
     def __unicode__(self):
         return self.__str__()
+
