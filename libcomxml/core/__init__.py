@@ -73,7 +73,7 @@ class XmlField(Field):
     def element(self, parent=None):
         """Constructs the lxml.Element that represents the field
 
-        :param parent: an etree element to be used as parent for this one
+        :param parent: an etree Element to be used as parent for this one
         """
         if parent is not None:
             ele = etree.SubElement(parent, self.name, **self.attributes)
