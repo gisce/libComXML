@@ -63,6 +63,9 @@ class XmlField(Field):
                 element.text = value
             elif isinstance(value, XmlField):
                 element.append(value.element())
+            elif isinstance(value, XmlModel):
+                value.build_tree()
+                element.append(value.doc_root)
             elif isinstance(value, list):
                 for val in value:
                     if isinstance(val, XmlField):
@@ -86,6 +89,8 @@ class XmlField(Field):
 
     def __str__(self):
         """Returns the XML repr of the field
+
+        It does not take care of the parent field, if any.
         """
         return etree.tostring(self.element())
 
@@ -112,7 +117,8 @@ class Model(object):
         for member in dir(self):
             if not member.startswith('_'): 
                 s_member = getattr(self, member)
-                if isinstance(s_member, Field):
+                if (isinstance(s_member, Field) or
+                    isinstance(s_member, Model)):
                     fields[member] = s_member
         self.__fields = fields
         return fields
@@ -154,13 +160,18 @@ class XmlModel(Model):
         """
         for field in self._fields.values():
             if field != self.root:
-                if field.parent == self.root.name:
+                if isinstance(field, XmlModel):
+                    field.build_tree()
+                    self.doc_root.append(field.doc_root)
+                elif field.parent == self.root.name:
                     field = field.element(parent=self.doc_root)
                 else:
                     nodes = [n for n in self.doc_root.iterdescendants(
                                             tag=field.parent)]
                     if nodes:
                         field = field.element(parent=nodes[0])
+                    else:
+                        raise RuntimeError("No parent found!")
 
 
     def __str__(self):
