@@ -103,9 +103,18 @@ class Model(object):
     """
 
     __fields = None
+    _sort_order = None
+
 
     def __init__(self, name):
         self.name = name
+
+
+    def sorted_fields(self):
+        if self._sort_order:
+            return self._sort_order
+        return self._fields.keys()
+
 
     def _get_fields(self):
         """Lookups the fields of the model and store them in a dict using the
@@ -148,6 +157,7 @@ class XmlModel(Model):
     >>>
 
     """
+
     def __init__(self, name, root):
         self.name = name
         super(XmlModel, self).__init__(name)
@@ -158,7 +168,8 @@ class XmlModel(Model):
     def build_tree(self):
         """Bulids the tree with all the fields converted to Elements
         """
-        for field in self._fields.values():
+        for key in self.sorted_fields():
+            field = self._fields[key]
             if field != self.root:
                 if isinstance(field, XmlModel):
                     field.build_tree()
