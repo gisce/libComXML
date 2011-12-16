@@ -143,19 +143,30 @@ class Model(object):
 class XmlModel(Model):
     """Model with XML capabilities
 
-    This class is intended to be subclassed as follows:
+    This class is intended to be subclassed and used as follows:
 
     >>> from libcomxml.core import XmlField, XmlModel
-    >>> class MyModel(XmlModel):
-    ...     root_field = XmlField('OneField')
-    ...     child_field = XmlField('ChildField', value=123, parent='OneField')
+    >>> class Cliente(XmlModel):
+    ...     _sort_order = ('cliente', 'cli_urls', 'apellido1', 'apellido2',
+    ...                    'nombre')
+    ...     cliente = XmlField('Cliente')
+    ...     nombre = XmlField('Nombre', value='Pepe', parent='Cliente')
+    ...     apellido1 = XmlField('Apellido', value='Gotera', parent='Cliente')
+    ...     apellido2 = XmlField('Apellido', value='Otilio', parent='Cliente')
+    ...     cli_urls = XmlField('Urls', value=[
+                        XmlField('Email', value='mailto:pepe@otilio.com'),
+                        XmlField('XMPP', value='xmpp:pepe@otilio.com')
+                        ], parent='Cliente')
     ...
-    >>> mymodel = MyModel('MyModel', root='root_field')
-    >>> mymodel.build_tree()
-    >>> print(mymodel)
-    <OneField><ChildField>123</ChildField></OneField>
-    >>>
-
+    >>> class FacturaF1(XmlModel):
+    ...     factura = XmlField('Factura')
+    ...     numero = XmlField('Numero', value=1234, parent='Factura')
+    ...     datos_cliente = Cliente('Cliente', root='cliente')
+    ...
+    >>> f1 = FacturaF1('Factura', root='factura')
+    >>> f1.build_tree()
+    >>> print(f1)
+    <Factura><Cliente><Urls><Email>mailto:pepe@otilio.com</Email><XMPP>xmpp:pepe@otilio.com</XMPP></Urls><Apellido>Gotera</Apellido><Apellido>Otilio</Apellido><Nombre>Pepe</Nombre></Cliente><Numero>1234</Numero></Factura>
     """
 
     def __init__(self, name, root):
@@ -191,4 +202,5 @@ class XmlModel(Model):
 
     def __unicode__(self):
         return self.__str__()
+
 
