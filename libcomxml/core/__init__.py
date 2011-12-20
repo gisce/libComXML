@@ -163,28 +163,6 @@ class XmlModel(Model):
 
     This class is intended to be subclassed and used as follows:
 
-    >>> from libcomxml.core import XmlField, XmlModel
-    >>> class Cliente(XmlModel):
-    ...     _sort_order = ('cliente', 'cli_urls', 'apellido1', 'apellido2',
-    ...                    'nombre')
-    ...     cliente = XmlField('Cliente')
-    ...     nombre = XmlField('Nombre', value='Pepe', parent='Cliente')
-    ...     apellido1 = XmlField('Apellido', value='Gotera', parent='Cliente')
-    ...     apellido2 = XmlField('Apellido', value='Otilio', parent='Cliente')
-    ...     cli_urls = XmlField('Urls', value=[
-                        XmlField('Email', value='mailto:pepe@otilio.com'),
-                        XmlField('XMPP', value='xmpp:pepe@otilio.com')
-                        ], parent='Cliente')
-    ...
-    >>> class FacturaF1(XmlModel):
-    ...     factura = XmlField('Factura')
-    ...     numero = XmlField('Numero', value=1234, parent='Factura')
-    ...     datos_cliente = Cliente('Cliente', root='cliente')
-    ...
-    >>> f1 = FacturaF1('Factura', root='factura')
-    >>> f1.build_tree()
-    >>> print(f1)
-    <Factura><Cliente><Urls><Email>mailto:pepe@otilio.com</Email><XMPP>xmpp:pepe@otilio.com</XMPP></Urls><Apellido>Gotera</Apellido><Apellido>Otilio</Apellido><Nombre>Pepe</Nombre></Cliente><Numero>1234</Numero></Factura>
     """
 
     def __init__(self, name, root):
@@ -212,14 +190,6 @@ class XmlModel(Model):
                         field = field.element(parent=nodes[0])
                     #else:
                     #    raise RuntimeError("No parent found!")
-
-
-    def feed(self, vals):
-        """On an XmlModel we have to rebuild the tree after feeding the fields'
-        values.
-        """
-        super(XmlModel, self).feed(vals)
-        self.build_tree()
 
 
     def __str__(self):
