@@ -111,6 +111,8 @@ class Model(object):
 
 
     def sorted_fields(self):
+        """Returns a sorted list of the model fields' names.
+        """
         if self._sort_order:
             return self._sort_order
         return self._fields.keys()
@@ -133,6 +135,22 @@ class Model(object):
         return fields
 
     _fields = property(fget=_get_fields)
+
+
+    def feed(self, vals):
+        """Populates the vals dictionary to the value property of the fields.
+
+        :param vals: a dictionary with key:value pairs for this model's fields.
+        """
+
+        for key in vals:
+            if hasattr(self, key):
+                field = getattr(self, key)
+                if isinstance(field, Field):
+                    field.value = vals[key]
+                elif isinstance(field, Model) and isinstance(vals[key], Model):
+                    field = vals[key]
+
 
     def __str__(self):
         return "<Model:%s>" % (self.name,)
@@ -185,15 +203,23 @@ class XmlModel(Model):
                 if isinstance(field, XmlModel):
                     field.build_tree()
                     self.doc_root.append(field.doc_root)
-                elif field.parent == self.root.name:
+                elif (field.parent or self.root.name) == self.root.name:
                     field = field.element(parent=self.doc_root)
                 else:
                     nodes = [n for n in self.doc_root.iterdescendants(
                                             tag=field.parent)]
                     if nodes:
                         field = field.element(parent=nodes[0])
-                    else:
-                        raise RuntimeError("No parent found!")
+                    #else:
+                    #    raise RuntimeError("No parent found!")
+
+
+    def feed(self, vals):
+        """On an XmlModel we have to rebuild the tree after feeding the fields'
+        values.
+        """
+        super(XmlModel, self).feed(vals)
+        self.build_tree()
 
 
     def __str__(self):
