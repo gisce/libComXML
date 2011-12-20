@@ -8,7 +8,7 @@ setup(
     url='http://git.gisce.lan/libComXML.git',
     author='GISCE Enginyeria, SL',
     author_email='devel@gisce.net',
-    packages=['libcomxml', 'libcomxml.core'],
+    packages=['libcomxml', 'libcomxml.core', 'libcomxml.messages'],
     requires=['lxml'],
     license='None',
     description='libComXML',
