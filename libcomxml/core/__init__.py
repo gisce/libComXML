@@ -14,6 +14,7 @@ try:
     from lxml import etree
 except ImportError:
     try:
+        super(Cabecera, self).__init__(name, root)
         import xml.etree.cElementTree as etree
     except ImportError:
         import xml.etree.ElementTree as etree
@@ -26,6 +27,7 @@ class Field(object):
         """Constructor
 
         :param name: the name of the field
+        super(Cabecera, self).__init__(name, root)
         :param value: the value of the field
         :param attributes: a dict with optional field attributes
         """
@@ -53,6 +55,15 @@ class XmlField(Field):
         self.parent = parent
         super(XmlField, self).__init__(name, value=value, attributes=attributes)
 
+    def _parse_list(self, element, value):
+        for val in value:
+            if isinstance(val, XmlField):
+                val.parent = element.tag
+                self.parse_value(element, val)
+            elif isinstance(val, XmlModel):
+                val.build_tree()
+                element.append(val.doc_root)
+
     def _parse_value(self, element, value=None):
         """Generates the XML for the value according to its type
         """
@@ -67,12 +78,10 @@ class XmlField(Field):
                 value.build_tree()
                 element.append(value.doc_root)
             elif isinstance(value, list):
-                for val in value:
-                    if isinstance(val, XmlField):
-                        val.parent = element.tag
-                    self._parse_value(element, val)
+                self._parse_list(element, value)
             else:  # default: cast to string
                 element.text = str(value)
+
         return element
 
     def element(self, parent=None):
@@ -86,6 +95,7 @@ class XmlField(Field):
             ele = etree.Element(self.name, **self.attributes)
         ele = self._parse_value(ele)
         return ele
+
 
     def __str__(self):
         """Returns the XML repr of the field
@@ -122,14 +132,15 @@ class Model(object):
         """Lookups the fields of the model and store them in a dict using the
         field name as key.
         """
-        if self.__fields:
-            return self.__fields
+        #if self.__fields:
+        #    return self.__fields
         fields = {}
         for member in dir(self):
             if not member.startswith('_'): 
                 s_member = getattr(self, member)
                 if (isinstance(s_member, Field) or
-                    isinstance(s_member, Model)):
+                    isinstance(s_member, Model) or
+                    isinstance(s_member, list)):
                     fields[member] = s_member
         self.__fields = fields
         return fields
@@ -147,9 +158,11 @@ class Model(object):
             if hasattr(self, key):
                 field = getattr(self, key)
                 if isinstance(field, Field):
-                    field.value = vals[key]
+                    setattr(field, 'value', vals[key])
                 elif isinstance(field, Model) and isinstance(vals[key], Model):
-                    field = vals[key]
+                    setattr(self, key, vals[key])
+                else:
+                    setattr(self, key, vals[key])
 
 
     def __str__(self):
@@ -181,6 +194,14 @@ class XmlModel(Model):
                 if isinstance(field, XmlModel):
                     field.build_tree()
                     self.doc_root.append(field.doc_root)
+                elif isinstance(field, list):
+                    # we just allow XmlFields and XmlModels in the list
+                    for item in field:
+                        if isinstance(item, XmlField):
+                            self.doc_root.append(item.element())
+                        elif isinstance(item, XmlModel):
+                            item.build_tree()
+                            self.doc_root.append(item.doc_root)
                 elif (field.parent or self.root.name) == self.root.name:
                     field = field.element(parent=self.doc_root)
                 else:
