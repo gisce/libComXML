@@ -37,7 +37,7 @@ class DatosGeneralesFactura(XmlModel):
         self.cif = XmlField('CIFEmisora')
         self.codigo = XmlField('CodigoFiscalFactura')
         self.obs = XmlField('Observaciones')
-        self.importe = XmlField('Importe')
+        self.importe = XmlField('ImporteTotalFactura')
         self.saldo = XmlField('SaldoFactura')
         self.saldocobro = XmlField('SaldoCobro')
         self.moneda = XmlField('TipoMoneda', value='02')
