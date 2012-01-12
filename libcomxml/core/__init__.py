@@ -183,11 +183,15 @@ class XmlModel(Model):
         super(XmlModel, self).__init__(name)
         self.root = getattr(self, root)
         self.doc_root = self.root.element()
+        self.built = False
 
 
     def build_tree(self):
         """Bulids the tree with all the fields converted to Elements
         """
+        if self.built:
+            return
+
         for key in self.sorted_fields():
             field = self._fields[key]
             if field != self.root:
@@ -202,6 +206,7 @@ class XmlModel(Model):
                         elif isinstance(item, XmlModel):
                             item.build_tree()
                             self.doc_root.append(item.doc_root)
+                        item = None
                 elif (field.parent or self.root.name) == self.root.name:
                     field = field.element(parent=self.doc_root)
                 else:
@@ -211,6 +216,7 @@ class XmlModel(Model):
                         field = field.element(parent=nodes[0])
                     #else:
                     #    raise RuntimeError("No parent found!")
+        self.built = True
 
 
     def __str__(self):
