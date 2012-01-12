@@ -15,7 +15,7 @@ class Cabecera(XmlModel):
         self.ree_emisora = XmlField('CodigoREEEmpresaEmisora')
         self.ree_destino = XmlField('CodigoREEEmpresaDestino')
         self.proceso = XmlField('CodigoDelProceso')
-        self.paso = XmlField('CodigoDelPaso')
+        self.paso = XmlField('CodigoDePaso')
         self.solicitud = XmlField('CodigoDeSolicitud')
         self.secuencia = XmlField('SecuencialDeSolicitud')
         self.codigo = XmlField('Codigo')
