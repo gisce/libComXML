@@ -88,7 +88,7 @@ potencia = f1.Potencia()
 potencia.feed({
     'icp': 'N',
     'importe': 2677.5100,
-    'termino': terminopotencia,
+    'termino': [terminopotencia],
 })
 
 datosgrlatr = f1.DatosGeneralesFacturaATR()
@@ -115,12 +115,18 @@ terminoactiva.feed({
 
 energia = f1.EnergiaActiva()
 energia.feed({
-    'termino': terminoactiva,
+    'termino': [terminoactiva],
     'importe': 212.23
 })
 
 periodoreactiva = f1.PeriodoEnergiaReactiva()
 periodoreactiva.feed({
+    'valor': 45.12,
+    'precio': 0.123456
+})
+
+preactiva2 = f1.PeriodoEnergiaReactiva()
+preactiva2.feed({
     'valor': 45.12,
     'precio': 0.123456
 })
@@ -132,9 +138,16 @@ terminoreactiva.feed({
     'periodos': [periodoreactiva],
 })
 
+treactiva2 = f1.TerminoEnergiaReactiva()
+treactiva2.feed({
+    'fecha_desde': '2011-12-01',
+    'fecha_hasta': '2011-12-31',
+    'periodos': [preactiva2],
+})
+
 reactiva = f1.EnergiaReactiva()
 reactiva.feed({
-    'termino': terminoreactiva,
+    'termino': [terminoreactiva, treactiva2],
     'importe': 12.34,
 })
 

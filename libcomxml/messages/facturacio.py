@@ -114,14 +114,13 @@ class TerminoPotencia(XmlModel):
         self.periodos = []
         super(TerminoPotencia, self).__init__('TerminoPotencia', 'termino')
 
-# TODO Migrate 'termino's to a list
 
 class Potencia(XmlModel):
     _sort_order = ('potencia', 'termino', 'icp', 'importe')
 
     def __init__(self):
         self.potencia = XmlField('Potencia')
-        self.termino = TerminoPotencia()
+        self.termino = []
         self.icp = XmlField('PenalizacionNoICP')
         self.importe = XmlField('ImporteTotalTerminoPotencia')
         super(Potencia, self).__init__('Potencia', 'potencia')
@@ -153,7 +152,7 @@ class EnergiaActiva(XmlModel):
 
     def __init__(self):
         self.activa = XmlField('EnergiaActiva')
-        self.termino = TerminoEnergiaActiva()
+        self.termino = []
         self.importe = XmlField('ImporteTotalEnergiaActiva')
         super(EnergiaActiva, self).__init__('EnergiaActiva', 'activa')
 
@@ -175,7 +174,7 @@ class EnergiaReactiva(XmlModel):
 
     def __init__(self):
         self.reactiva = XmlField('EnergiaReactiva')
-        self.termino = TerminoEnergiaActiva()
+        self.termino = []
         self.importe = XmlField('ImporteTotalEnergiaReactiva')
         super(EnergiaReactiva, self).__init__('EnergiaRectiva', 'reactiva')
 
