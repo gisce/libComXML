@@ -5,3 +5,5 @@
 libcomxml/bindings/*.py
 build/*
 .*.swp
+MANIFEST
+dist/*
