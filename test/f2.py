@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import pdb
-
 from libcomxml.messages import facturacio as f1
+from libcomxml.messages import mesures as m
 
 mensaje = f1.MensajeFacturacion()
 mensaje.set_agente('0474')
@@ -78,14 +77,12 @@ ppotencia2.feed({
     'precio': 0.002700,
 })
 
-#pdb.set_trace()
 terminopotencia = f1.TerminoPotencia()
 terminopotencia.feed({
     'fecha_desde': '2011-01-01',
     'fecha_hasta': '2011-01-30',
     'periodos': [ppotencia1, ppotencia2],
 })
-# terminopotencia.build_tree()
 
 potencia = f1.Potencia()
 potencia.feed({
@@ -161,6 +158,46 @@ iva.feed({
     'importe': 140.12,
 })
 
+ldesde = m.LecturaDesde()
+ldesde.feed({
+    'fechahora': '2011-11-01T00:00:00',
+    'procedencia': '10',
+    'lectura': 123,
+})
+lhasta = m.LecturaHasta()
+lhasta.feed({
+    'fechahora': '2011-11-30T00:00:00',
+    'procedencia': '10',
+    'lectura': 234
+})
+
+integrador = m.Integrador()
+integrador.feed({
+    'magnitud': 'AE',
+    'codperiodo': '61',
+    'multi': 1.0,
+    'enteras': 5,
+    'decimales': 3,
+    'consumo': 110,
+    'desde': ldesde,
+    'hasta': lhasta,
+})
+
+aparato = m.Aparato()
+aparato.feed({
+    'tipo': 'CC',
+    'marca': 105,
+    'numserie': '123456',
+    'codigodh': 6,
+    'integradores': [integrador],
+})
+
+medidas = m.Medidas()
+medidas.feed({
+    'cups': 'ES0310000000133550XV  ',
+    'aparatos': [aparato],
+})
+
 facturaatr = f1.FacturaATR()
 facturaatr.feed({
     'datosatr': datosgrlatr,
@@ -170,6 +207,7 @@ facturaatr.feed({
     'iese': iese,
     'alquileres': alquileres,
     'iva': iva,
+    'medidas': medidas,
 })
 
 ccc = f1.CuentaBancaria()

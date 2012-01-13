@@ -38,6 +38,7 @@ class Integrador(XmlModel):
         self.multi = XmlField('ConstanteMultiplicadora')
         self.enteras = XmlField('NumeroRuedasEnteras')
         self.decimales = XmlField('NumeroRuedasDecimales')
+        self.consumo = XmlField('ConsumoCalculado')
         self.desde = LecturaDesde()
         self.hasta = LecturaHasta()
         super(Integrador, self).__init__('Integrador', 'integrador')

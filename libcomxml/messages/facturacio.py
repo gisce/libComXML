@@ -5,6 +5,7 @@
 # pylint: disable=C0111
 
 from ..core import XmlModel, XmlField
+import libcomxml.messages.mesures as m
 
 class Cabecera(XmlModel):
     _sort_order = ('cabecera', 'ree_emisora', 'ree_destino', 'proceso', 'paso',
@@ -248,7 +249,7 @@ class IVA(XmlModel):
 
 class FacturaATR(XmlModel):
     _sort_order = ('factura', 'datosatr', 'potencia', 'energia', 'reactiva',
-                   'iese', 'alquileres', 'iva')
+                   'iese', 'alquileres', 'iva', 'medidas')
 
     def __init__(self):
         self.factura = XmlField('FacturaATR')
@@ -259,6 +260,7 @@ class FacturaATR(XmlModel):
         self.iese = ImpuestoElectrico()
         self.alquileres = Alquileres()
         self.iva = IVA()
+        self.medidas = m.Medidas()
         super(FacturaATR, self).__init__('FacturaATR', 'factura')
 
 
@@ -300,7 +302,7 @@ class MensajeFacturacion(XmlModel):
     def __init__(self):
         self.doc_root = None
         self.mensaje = XmlField('MensajeFacturacion', attributes={
-                           'xmlns': 'http://localhost/elegibilidad'})
+                          'xmlns': 'http://localhost/elegibilidad'})
         self.cabecera = Cabecera()
         self.facturas = XmlField('Facturas')
         super(MensajeFacturacion, self).__init__('MensajeFacturacion',
