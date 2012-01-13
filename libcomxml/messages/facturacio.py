@@ -179,18 +179,6 @@ class EnergiaReactiva(XmlModel):
         super(EnergiaReactiva, self).__init__('EnergiaRectiva', 'reactiva')
 
 
-class FacturaATR(XmlModel):
-    _sort_order = ('factura', 'datosatr', 'potencia', 'energia', 'reactiva')
-
-    def __init__(self):
-        self.factura = XmlField('FacturaATR')
-        self.datosatr = DatosGeneralesFacturaATR()
-        self.potencia = Potencia()
-        self.energia = EnergiaActiva()
-        self.reactiva = EnergiaReactiva()
-        super(FacturaATR, self).__init__('FacturaATR', 'factura')
-
-
 class PeriodoPotencia(XmlModel):
     _sort_order = ('periodo', 'contratada', 'maxdemandada', 'afacturar',
                    'precio')
@@ -245,6 +233,22 @@ class Alquileres(XmlModel):
         self.alquileres = XmlField('Alquileres')
         self.importe = XmlField('ImporteFacturacionAlquileres')
         super(Alquileres, self).__init__('Alquileres', 'alquileres')
+
+
+class FacturaATR(XmlModel):
+    _sort_order = ('factura', 'datosatr', 'potencia', 'energia', 'reactiva',
+                   'iese', 'alquileres')
+
+    def __init__(self):
+        self.factura = XmlField('FacturaATR')
+        self.datosatr = DatosGeneralesFacturaATR()
+        self.potencia = Potencia()
+        self.energia = EnergiaActiva()
+        self.reactiva = EnergiaReactiva()
+        self.iese = ImpuestoElectrico()
+        self.alquileres = Alquileres()
+        super(FacturaATR, self).__init__('FacturaATR', 'factura')
+
 
 
 class MensajeFacturacion(XmlModel):
