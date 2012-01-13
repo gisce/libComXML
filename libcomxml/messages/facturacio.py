@@ -235,9 +235,20 @@ class Alquileres(XmlModel):
         super(Alquileres, self).__init__('Alquileres', 'alquileres')
 
 
+class IVA(XmlModel):
+    _sort_order = ('iva', 'base', 'porcentaje', 'importe')
+
+    def __init__(self):
+        self.iva = XmlField('IVA')
+        self.base = XmlField('BaseImponible')
+        self.porcentaje = XmlField('Porcentaje')
+        self.importe = XmlField('Importe')
+        super(IVA, self).__init__('IVA', 'iva')
+
+
 class FacturaATR(XmlModel):
     _sort_order = ('factura', 'datosatr', 'potencia', 'energia', 'reactiva',
-                   'iese', 'alquileres')
+                   'iese', 'alquileres', 'iva')
 
     def __init__(self):
         self.factura = XmlField('FacturaATR')
@@ -247,7 +258,39 @@ class FacturaATR(XmlModel):
         self.reactiva = EnergiaReactiva()
         self.iese = ImpuestoElectrico()
         self.alquileres = Alquileres()
+        self.iva = IVA()
         super(FacturaATR, self).__init__('FacturaATR', 'factura')
+
+
+class CuentaBancaria(XmlModel):
+    _sort_order = ('ccc', 'banco', 'sucursal', 'digcontrol', 'cuenta')
+
+    def __init__(self):
+        self.ccc = XmlField('CuentaBancaria')
+        self.banco = XmlField('Banco')
+        self.sucursal = XmlField('Sucursal')
+        self.digcontrol = XmlField('DC')
+        self.cuenta = XmlField('Cuenta')
+        super(CuentaBancaria, self).__init__('CuentaBancaria', 'ccc')
+
+
+class RegistroFin(XmlModel):
+    _sort_order = ('registro', 'importe', 'sfacturacion', 'scobro', 'totalrec',
+                   'tipomoneda', 'fvalor', 'flimite', 'ccc', 'idremesa')
+
+    def __init__(self):
+        self.registro = XmlField('RegistroFin')
+        self.importe = XmlField('ImporteTotal')
+        self.sfacturacion = XmlField('SaldoTotalFacturacion')
+        self.scobro = XmlField('SaldoTotalCobro')
+        self.totalrec = XmlField('TotalRecibos')
+        self.tipomoneda = XmlField('TipoMoneda')
+        self.fvalor = XmlField('FechaValor')
+        self.flimite = XmlField('FechaLimitePago')
+        self.ccc = CuentaBancaria()
+        self.idremesa = XmlField('IdRemesa')
+        super(RegistroFin, self).__init__('RegistroFin', 'registro')
+
 
 
 

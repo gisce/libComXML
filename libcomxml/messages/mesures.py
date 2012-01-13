@@ -57,36 +57,6 @@ class Aparato(XmlModel):
         super(Aparato, self).__init__('Aparato', 'aparato')
 
 
-class CuentaBancaria(XmlModel):
-    _sort_order = ('ccc', 'banco', 'sucursal', 'digcontrol', 'cuenta')
-
-    def __init__(self):
-        self.ccc = XmlField('CuentaBancaria')
-        self.banco = XmlField('Banco')
-        self.sucursal = XmlField('Sucursal')
-        self.digcontrol = XmlField('DC')
-        self.cuenta = XmlField('Cuenta')
-        super(CuentaBancaria, self).__init__('CuentaBancaria', 'ccc')
-
-
-class RegistroFin(XmlModel):
-    _sort_order = ('registro', 'importe', 'sfacturacion', 'scobro', 'totalrec',
-                   'tipomoneda', 'fvalor', 'flimite', 'ccc', 'idremesa')
-
-    def __init__(self):
-        self.registro = XmlField('RegistroFin')
-        self.importe = XmlField('ImporteTotal')
-        self.sfacturacion = XmlField('SaldoTotalFacturacion')
-        self.scobro = XmlField('SaldoTotalCobro')
-        self.totalrec = XmlField('TotalRecibos')
-        self.tipomoneda = XmlField('TipoMoneda')
-        self.fvalor = XmlField('FechaValor')
-        self.flimite = XmlField('FechaLimitePago')
-        self.ccc = CuentaBancaria()
-        self.idremesa = XmlField('IdRemesa')
-        super(RegistroFin, self).__init__('RegistroFin', 'registro')
-
-
 class Medidas(XmlModel):
     _sort_order = ('medidas', 'cups', 'aparatos')
 
