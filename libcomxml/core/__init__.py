@@ -23,17 +23,38 @@ except ImportError:
 class Field(object):
     """Base Field class
     """
-    def __init__(self, name, value=None, attributes=None):
+
+    def __init__(self, name, value=None, attributes=None, rep=None):
         """Constructor
 
-        :param name: the name of the field
-        super(Cabecera, self).__init__(name, root)
+        :param name: the name of the field super(Cabecera, self).__init__(name, root)
         :param value: the value of the field
         :param attributes: a dict with optional field attributes
+        :param rep: function that returns the representation of 'value'
         """
         self.name = name
-        self.value = value
+        self.__value = value
         self.attributes = attributes or {}
+        self.rep = rep
+
+    def get_value(self):
+        """self.__value getter
+        """
+        # if we have a rep function, use it
+        if self.rep:
+            return self.rep(self.__value)
+        # else, return the raw value
+        return self.__value
+
+
+    def set_value(self, value):
+        """self.__value setter
+        """
+        self.__value = value
+
+
+    value = property(get_value, set_value)
+
 
     def __str__(self):
         return "<Field:%s>" % (self.name,)
@@ -45,7 +66,8 @@ class Field(object):
 class XmlField(Field):
     """Field with XML capabilities
     """
-    def __init__(self, name, value=None, parent=None, attributes=None):
+    def __init__(self, name, value=None, parent=None, attributes=None,
+                 rep=None):
         """Constructor
 
         .. see: Field.__init__
@@ -53,7 +75,8 @@ class XmlField(Field):
         :param attribute: the name of the parent field, for the XML repr.
         """
         self.parent = parent
-        super(XmlField, self).__init__(name, value=value, attributes=attributes)
+        super(XmlField, self).__init__(name, value=value,
+                                       attributes=attributes, rep=rep)
 
     def _parse_list(self, element, value):
         for val in value:
