@@ -19,8 +19,8 @@ class Cabecera(XmlModel):
         self.paso = XmlField('CodigoDePaso')
         self.solicitud = XmlField('CodigoDeSolicitud')
         self.secuencia = XmlField('SecuencialDeSolicitud')
-        self.codigo = XmlField('Codigo')
-        self.fecha = XmlField('FechaSolicitud')
+        self.codigo = XmlField('Codigo', rep=lambda x: x.ljust(22, '0'))
+        self.fecha = XmlField('FechaSolicitud', rep=lambda x: '%sT00:00:00' % x)
         self.version = XmlField('Version', value='02')
         super(Cabecera, self).__init__('Cabecera', 'cabecera')
 
@@ -87,7 +87,7 @@ class Cliente(XmlModel):
     def __init__(self):
         self.cliente = XmlField('Cliente')
         self.cifnif = XmlField('TipoCIFNIF')
-        self.identificador = XmlField('Identificador')
+        self.identificador = XmlField('Identificador', rep=lambda x: x[2:])
         super(Cliente, self).__init__('Cliente', 'cliente')
 
 class DatosGeneralesFacturaATR(XmlModel):
@@ -188,7 +188,7 @@ class PeriodoPotencia(XmlModel):
         self.contratada = XmlField('PotenciaContratada')
         self.maxdemandada = XmlField('PotenciaMaxDemandada')
         self.afacturar = XmlField('PotenciaAFacturar')
-        self.precio = XmlField('PrecioPotencia')
+        self.precio = XmlField('PrecioPotencia', rep=lambda x: '%.8f' % x)
         super(PeriodoPotencia, self).__init__('PeriodoPotencia', 'periodo')
 
 
@@ -197,7 +197,7 @@ class PeriodoEnergiaActiva(XmlModel):
 
     def __init__(self):
         self.periodo = XmlField('Periodo')
-        self.valor = XmlField('ValorEnergiaActiva')
+        self.valor = XmlField('ValorEnergiaActiva', rep=lambda x: '%.2f' % x)
         self.precio = XmlField('PrecioEnergia')
         super(PeriodoEnergiaActiva, self).__init__('PeriodoEnergiaActiva',
                                                    'periodo')
