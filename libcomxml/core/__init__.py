@@ -147,7 +147,7 @@ class Model(object):
         """Returns a sorted list of the model fields' names.
         """
         if self._sort_order:
-            return self._sort_order
+            return [field for field in self._sort_order if field in dir(self)]
         return self._fields.keys()
 
 
@@ -216,6 +216,8 @@ class XmlModel(Model):
         if self.built:
             return
         for key in self.sorted_fields():
+            if not key in self._fields:
+                continue
             field = self._fields[key]
             if field != self.root:
                 if isinstance(field, XmlModel):
