@@ -201,12 +201,13 @@ class XmlModel(Model):
 
     """
 
-    def __init__(self, name, root):
+    def __init__(self, name, root, drop_empty=True):
         self.name = name
         super(XmlModel, self).__init__(name)
         self.root = getattr(self, root)
         self.doc_root = self.root.element()
         self.built = False
+        self.drop_empty = drop_empty
 
 
     def build_tree(self):
@@ -214,29 +215,44 @@ class XmlModel(Model):
         """
         if self.built:
             return
-
         for key in self.sorted_fields():
             field = self._fields[key]
             if field != self.root:
                 if isinstance(field, XmlModel):
                     field.build_tree()
+                    if self.drop_empty and len(field.doc_root) == 0:
+                        continue
                     self.doc_root.append(field.doc_root)
                 elif isinstance(field, list):
                     # we just allow XmlFields and XmlModels in the list
                     for item in field:
                         if isinstance(item, XmlField):
-                            self.doc_root.append(item.element())
+                            ele = item.element()
+                            if self.drop_empty and len(ele) == 0:
+                                continue
+                            self.doc_root.append(ele)
                         elif isinstance(item, XmlModel):
                             item.build_tree()
+                            print(len(item.doc_root))
+                            print(item.name)
+                            print(etree.tostring(item.doc_root))
+                            if self.drop_empty and len(item.doc_root) == 0:
+                                continue
                             self.doc_root.append(item.doc_root)
                         item = None
                 elif (field.parent or self.root.name) == self.root.name:
-                    field = field.element(parent=self.doc_root)
+                    ele = field.element()
+                    if self.drop_empty and len(ele) == 0 and not ele.text:
+                        continue
+                    ele = field.element(parent=self.doc_root)
                 else:
                     nodes = [n for n in self.doc_root.iterdescendants(
                                             tag=field.parent)]
                     if nodes:
-                        field = field.element(parent=nodes[0])
+                        ele = field.element()
+                        if (self.drop_empty and len(ele) == 0 and not ele.text):
+                            continue
+                        ele = field.element(parent=nodes[0])
                     #else:
                     #    raise RuntimeError("No parent found!")
         self.built = True
