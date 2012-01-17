@@ -94,7 +94,7 @@ class XmlField(Field):
             value = self.value
         if value:
             if isinstance(value, str):
-                element.text = value
+                element.text = value.encode('utf-8')
             elif isinstance(value, XmlField):
                 element.append(value.element())
             elif isinstance(value, XmlModel):
@@ -102,8 +102,8 @@ class XmlField(Field):
                 element.append(value.doc_root)
             elif isinstance(value, list):
                 self._parse_list(element, value)
-            else:  # default: cast to string
-                element.text = str(value)
+            else:  # default: cast to unicode
+                element.text = u"%s" % value
 
         return element
 
@@ -128,7 +128,7 @@ class XmlField(Field):
         return etree.tostring(self.element())
 
     def __unicode__(self):
-        return self.__str__()
+        return self.__str__().encode('utf-8')
 
 
 class Model(object):
