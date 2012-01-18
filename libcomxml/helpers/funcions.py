@@ -3,8 +3,19 @@
 """Helper functions for libComXml
 """
 
-__all__ = ['codi_periode', 'codi_dh']
+__all__ = ['codi_periode', 'codi_dh', 'extreu_periode', 'rodes']
 
+def rodes(giro):
+    """Retorna el nombre de rodes senceres segons el giro
+    """
+    return len(str(giro)) - 1
+
+def extreu_periode(name):
+    """Extreu el nom del període del name de la lectura
+    """
+    if '(' not in name:
+        return name
+    return name.split('(')[-1].split(')')[0]
 
 def codi_periode(tarifa, periode):
     """Retorna el codi OCSUM del periode segons
