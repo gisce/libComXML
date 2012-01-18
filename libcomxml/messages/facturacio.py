@@ -243,9 +243,9 @@ class IVA(XmlModel):
 
     def __init__(self):
         self.iva = XmlField('IVA')
-        self.base = XmlField('BaseImponible')
-        self.porcentaje = XmlField('Porcentaje')
-        self.importe = XmlField('Importe')
+        self.base = XmlField('BaseImponible', rep=lambda x: '%.4f' % x)
+        self.porcentaje = XmlField('Porcentaje', rep=lambda x: '%.2f' % x)
+        self.importe = XmlField('Importe', rep=lambda x: '%.4f' % x)
         super(IVA, self).__init__('IVA', 'iva')
 
 
