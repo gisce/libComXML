@@ -12,7 +12,7 @@ class LecturaDesde(XmlModel):
         self.desde = XmlField('LecturaDesde')
         self.fechahora = XmlField('FechaHora', rep=lambda x: '%sT00:00:00' % x)
         self.procedencia = XmlField('Procedencia')
-        self.lectura = XmlField('Lectura')
+        self.lectura = XmlField('Lectura', rep=lambda x: '%.2f' % x)
         super(LecturaDesde, self).__init__('LecturaDesde', 'desde')
 
 
@@ -23,7 +23,7 @@ class LecturaHasta(XmlModel):
         self.hasta = XmlField('LecturaHasta')
         self.fechahora = XmlField('FechaHora', rep=lambda x: '%sT00:00:00' % x)
         self.procedencia = XmlField('Procedencia')
-        self.lectura = XmlField('Lectura')
+        self.lectura = XmlField('Lectura', rep=lambda x: '%.2f' % x)
         super(LecturaHasta, self).__init__('LecturaHasta', 'hasta')
 
 
@@ -38,7 +38,7 @@ class Integrador(XmlModel):
         self.multi = XmlField('ConstanteMultiplicadora')
         self.enteras = XmlField('NumeroRuedasEnteras')
         self.decimales = XmlField('NumeroRuedasDecimales')
-        self.consumo = XmlField('ConsumoCalculado')
+        self.consumo = XmlField('ConsumoCalculado', rep=lambda x: '%.2f' % x)
         self.desde = LecturaDesde()
         self.hasta = LecturaHasta()
         super(Integrador, self).__init__('Integrador', 'integrador')
