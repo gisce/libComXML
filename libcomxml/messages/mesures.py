@@ -10,7 +10,7 @@ class LecturaDesde(XmlModel):
 
     def __init__(self):
         self.desde = XmlField('LecturaDesde')
-        self.fechahora = XmlField('FechaHora')
+        self.fechahora = XmlField('FechaHora', rep=lambda x: '%sT00:00:00' % x)
         self.procedencia = XmlField('Procedencia')
         self.lectura = XmlField('Lectura')
         super(LecturaDesde, self).__init__('LecturaDesde', 'desde')
@@ -21,7 +21,7 @@ class LecturaHasta(XmlModel):
 
     def __init__(self):
         self.hasta = XmlField('LecturaHasta')
-        self.fechahora = XmlField('FechaHora')
+        self.fechahora = XmlField('FechaHora', rep=lambda x: '%sT00:00:00' % x)
         self.procedencia = XmlField('Procedencia')
         self.lectura = XmlField('Lectura')
         super(LecturaHasta, self).__init__('LecturaHasta', 'hasta')
