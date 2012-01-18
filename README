@@ -3,3 +3,5 @@ libComXML
 =========
 
 Aquesta llibreria permet la generació de fitxers XML a partir de models Python.
+
+Es poden veure exemples al directori test/
