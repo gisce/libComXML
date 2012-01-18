@@ -183,11 +183,14 @@ class PeriodoPotencia(XmlModel):
     _sort_order = ('periodo', 'contratada', 'maxdemandada', 'afacturar',
                    'precio')
 
+    def _pot_rep(self, val):
+        return ('%.0f' % val)[:11]
+
     def __init__(self):
         self.periodo = XmlField('Periodo')
-        self.contratada = XmlField('PotenciaContratada')
-        self.maxdemandada = XmlField('PotenciaMaxDemandada')
-        self.afacturar = XmlField('PotenciaAFacturar')
+        self.contratada = XmlField('PotenciaContratada', rep=self._pot_rep)
+        self.maxdemandada = XmlField('PotenciaMaxDemandada', rep=self._pot_rep)
+        self.afacturar = XmlField('PotenciaAFacturar', rep=self._pot_rep)
         self.precio = XmlField('PrecioPotencia', rep=lambda x: '%.8f' % x)
         super(PeriodoPotencia, self).__init__('PeriodoPotencia', 'periodo')
 
