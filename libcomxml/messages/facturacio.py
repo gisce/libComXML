@@ -285,8 +285,9 @@ class RegistroFin(XmlModel):
     def __init__(self):
         self.registro = XmlField('RegistroFin')
         self.importe = XmlField('ImporteTotal')
-        self.sfacturacion = XmlField('SaldoTotalFacturacion')
-        self.scobro = XmlField('SaldoTotalCobro')
+        self.sfacturacion = XmlField('SaldoTotalFacturacion',
+                                     rep=lambda x: '%.2f' % x)
+        self.scobro = XmlField('SaldoTotalCobro', rep=lambda x: '%.2f' % x)
         self.totalrec = XmlField('TotalRecibos')
         self.tipomoneda = XmlField('TipoMoneda')
         self.fvalor = XmlField('FechaValor')
