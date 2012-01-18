@@ -235,9 +235,6 @@ class XmlModel(Model):
                             self.doc_root.append(ele)
                         elif isinstance(item, XmlModel):
                             item.build_tree()
-                            print(len(item.doc_root))
-                            print(item.name)
-                            print(etree.tostring(item.doc_root))
                             if self.drop_empty and len(item.doc_root) == 0:
                                 continue
                             self.doc_root.append(item.doc_root)
