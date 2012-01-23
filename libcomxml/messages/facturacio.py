@@ -35,16 +35,16 @@ class DatosGeneralesFactura(XmlModel):
 
     def __init__(self):
         self.datos = XmlField('DatosGeneralesFactura')
-        self.numero = XmlField('NumeroFactura')
+        self.numero = XmlField('NumeroFactura', rep=lambda x: x[:26])
         self.tipo = XmlField('TipoFactura')
         self.rectificadora = XmlField('IndicativoFacturaRectificadora')
         self.fecha = XmlField('FechaFactura')
         self.cif = XmlField('CIFEmisora')
-        self.codigo = XmlField('CodigoFiscalFactura')
+        self.codigo = XmlField('CodigoFiscalFactura', rep=lambda x: x[:17])
         self.obs = XmlField('Observaciones')
-        self.importe = XmlField('ImporteTotalFactura')
-        self.saldo = XmlField('SaldoFactura')
-        self.saldocobro = XmlField('SaldoCobro')
+        self.importe = XmlField('ImporteTotalFactura', rep=lambda x: '%.2f' % x)
+        self.saldo = XmlField('SaldoFactura', rep=lambda x: '%.2f' % x)
+        self.saldocobro = XmlField('SaldoCobro', rep=lambda x: '%.2f' % x)
         self.moneda = XmlField('TipoMoneda', value='02')
         super(DatosGeneralesFactura, self).__init__('DatosGeneralesFactura',
                                                     'datos')
