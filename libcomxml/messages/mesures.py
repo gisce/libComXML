@@ -31,13 +31,17 @@ class Integrador(XmlModel):
     _sort_order = ('integrador', 'magnitud', 'codperiodo', 'multi', 'enteras',
                    'decimales', 'consumo', 'desde', 'hasta')
 
+    def rep_ruedas(self, num):
+        return '%d' % num
+
+
     def __init__(self):
         self.integrador = XmlField('Integrador')
         self.magnitud = XmlField('Magnitud')
         self.codperiodo = XmlField('CodigoPeriodo')
         self.multi = XmlField('ConstanteMultiplicadora')
-        self.enteras = XmlField('NumeroRuedasEnteras')
-        self.decimales = XmlField('NumeroRuedasDecimales')
+        self.enteras = XmlField('NumeroRuedasEnteras', rep=self.rep_ruedas)
+        self.decimales = XmlField('NumeroRuedasDecimales', rep=self.rep_ruedas)
         self.consumo = XmlField('ConsumoCalculado', rep=lambda x: '%.2f' % x)
         self.desde = LecturaDesde()
         self.hasta = LecturaHasta()
