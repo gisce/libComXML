@@ -14,7 +14,6 @@ try:
     from lxml import etree
 except ImportError:
     try:
-        super(Cabecera, self).__init__(name, root)
         import xml.etree.cElementTree as etree
     except ImportError:
         import xml.etree.ElementTree as etree
