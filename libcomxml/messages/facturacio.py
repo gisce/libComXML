@@ -126,7 +126,8 @@ class Potencia(XmlModel):
         self.potencia = XmlField('Potencia')
         self.termino = []
         self.icp = XmlField('PenalizacionNoICP')
-        self.importe = XmlField('ImporteTotalTerminoPotencia')
+        self.importe = XmlField('ImporteTotalTerminoPotencia',
+                                rep=lambda x: '%.2f' % x)
         super(Potencia, self).__init__('Potencia', 'potencia')
 
 class ExcesoPotencia(XmlModel):
@@ -157,7 +158,8 @@ class EnergiaActiva(XmlModel):
     def __init__(self):
         self.activa = XmlField('EnergiaActiva')
         self.termino = []
-        self.importe = XmlField('ImporteTotalEnergiaActiva')
+        self.importe = XmlField('ImporteTotalEnergiaActiva',
+                                rep=lambda x: '%.2f' % x)
         super(EnergiaActiva, self).__init__('EnergiaActiva', 'activa')
 
 
