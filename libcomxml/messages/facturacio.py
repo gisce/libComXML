@@ -181,7 +181,8 @@ class EnergiaReactiva(XmlModel):
     def __init__(self):
         self.reactiva = XmlField('EnergiaReactiva')
         self.termino = []
-        self.importe = XmlField('ImporteTotalEnergiaReactiva')
+        self.importe = XmlField('ImporteTotalEnergiaReactiva',
+                                rep=lambda x: '%.2f' % x)
         super(EnergiaReactiva, self).__init__('EnergiaRectiva', 'reactiva')
 
 
@@ -240,7 +241,8 @@ class Alquileres(XmlModel):
 
     def __init__(self):
         self.alquileres = XmlField('Alquileres')
-        self.importe = XmlField('ImporteFacturacionAlquileres')
+        self.importe = XmlField('ImporteFacturacionAlquileres',
+                                rep=lambda x: '%.2f' % x)
         super(Alquileres, self).__init__('Alquileres', 'alquileres')
 
 
@@ -290,7 +292,7 @@ class RegistroFin(XmlModel):
 
     def __init__(self):
         self.registro = XmlField('RegistroFin')
-        self.importe = XmlField('ImporteTotal')
+        self.importe = XmlField('ImporteTotal', rep=lambda x: '%.2f' % x)
         self.sfacturacion = XmlField('SaldoTotalFacturacion',
                                      rep=lambda x: '%.2f' % x)
         self.scobro = XmlField('SaldoTotalCobro', rep=lambda x: '%.2f' % x)
