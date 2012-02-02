@@ -182,7 +182,7 @@ class EnergiaReactiva(XmlModel):
         self.reactiva = XmlField('EnergiaReactiva')
         self.termino = []
         self.importe = XmlField('ImporteTotalEnergiaReactiva',
-                                rep=lambda x: '%.2f' % x)
+                                rep=lambda x: '%.2f' % (x or bool(x)))
         super(EnergiaReactiva, self).__init__('EnergiaRectiva', 'reactiva')
 
 
@@ -208,7 +208,7 @@ class PeriodoEnergiaActiva(XmlModel):
     def __init__(self):
         self.periodo = XmlField('Periodo')
         self.valor = XmlField('ValorEnergiaActiva', rep=lambda x: '%.2f' % x)
-        self.precio = XmlField('PrecioEnergia')
+        self.precio = XmlField('PrecioEnergia', rep=lambda x: '%.8f' % x)
         super(PeriodoEnergiaActiva, self).__init__('PeriodoEnergiaActiva',
                                                    'periodo')
 
@@ -218,8 +218,9 @@ class PeriodoEnergiaReactiva(XmlModel):
 
     def __init__(self):
         self.periodo = XmlField('Periodo')
-        self.valor = XmlField('ValorEnergiaReactiva')
-        self.precio = XmlField('PrecioEnergiaReactiva')
+        self.valor = XmlField('ValorEnergiaReactiva', rep=lambda x: '%.2f' % x)
+        self.precio = XmlField('PrecioEnergiaReactiva',
+                               rep=lambda x: '%.8f' % x)
         super(PeriodoEnergiaReactiva, self).__init__('PeriodoEnergiaReactiva',
                                                      'periodo')
 
