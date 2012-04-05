@@ -22,7 +22,7 @@ class DatosSolicitud(XmlModel):
         super(DatosSolicitud, self).__init__('DatosSolicitud', 'datos')
 
 
-class DireccionCorrespondencia():
+class DireccionCorrespondencia(XmlModel):
     _sort_order = ('direccion', 'indicador')
 
     def __init__(self):
@@ -32,7 +32,7 @@ class DireccionCorrespondencia():
                         __init__('DireccionCorrespondencia', 'direccion')
 
 
-class IdContrato():
+class IdContrato(XmlModel):
     _sort_order = ('idcontrato', 'codigo')
 
     def __init__(self):
@@ -72,19 +72,19 @@ class CambiodeComercializadoraSinCambios(XmlModel):
                              drop_empty=False)
 
 
-class CambiodeComercializadoraSinCambios(XmlModel):
+class MensajeCambiodeComercializadoraSinCambios(XmlModel):
     _sort_order = ('mensaje', 'cabecera', 'cambio')
 
     def __init__(self):
         self.doc_root = None
-        self.mensaje = XmlField('CambiodeComercializadoraSinCambios', 
+        self.mensaje = XmlField('MensajeCambiodeComercializadoraSinCambios', 
                           attributes={
                               'xmlns': 'http://localhost/elegibilidad'
                            })
         self.cabecera = Cabecera()
         self.cambio = CambiodeComercializadoraSinCambios()
-        super(MensajeFacturacion, self).__init__('MensajeFacturacion',
-                                                 'mensaje')
+        super(MensajeCambiodeComercializadoraSinCambios, self).\
+                      __init__('MensajeCambiodeComercializadoraSinCambios', 'mensaje')
 
     def set_agente(self, agente):
         self.mensaje.attributes.update({'AgenteSolicitante': agente})
