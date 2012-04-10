@@ -38,3 +38,13 @@ class Cliente(XmlModel):
         super(Cliente, self).__init__('Cliente', 'cliente')
 
 
+class IdCliente(XmlModel):
+    _sort_order = ('idcliente', 'cifnif', 'identificador')
+
+    def __init__(self):
+        self.idcliente = XmlField('IdCliente')
+        self.cifnif = XmlField('TipoCIFNIF')
+        self.identificador = XmlField('Identificador', rep=lambda x: x[2:])
+        super(IdCliente, self).__init__('IdCliente', 'idcliente')
+
+

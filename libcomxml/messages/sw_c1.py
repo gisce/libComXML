@@ -6,7 +6,7 @@
 
 from ..core import XmlModel, XmlField
 
-from libcomxml.messages.switching import Cabecera, Cliente
+from libcomxml.messages.switching import Cabecera, IdCliente
 
 
 class DatosSolicitud(XmlModel):
@@ -53,6 +53,28 @@ class Contrato(XmlModel):
         self.tipo = XmlField('TipoContratoATR')
         self.direccion = DireccionCorrespondencia()
         super(Contrato, self).__init__('Contrato', 'contrato')
+
+
+class Nombre(XmlModel):
+    _sort_order = ('nombre', 'nombrepila', 'apellido1','apellido2', 'razon')
+
+    def __init__(self):
+        self.nombre = XmlField('Nombre')
+        self.nombrepila = XmlField('NombreDePila')
+        self.apellido1 = XmlField('PrimerApellido')
+        self.apellido2 = XmlField('SegundoApellido')
+        self.razon = XmlField('RazonSocial')
+        super(Nombre, self).__init__('Nombre', 'nombre')
+
+
+class Cliente(XmlModel):
+    _sort_order = ('cliente', 'idcliente', 'nombre')
+
+    def __init__(self):
+        self.cliente = XmlField('Cliente')
+        self.idcliente = IdCliente()
+        self.nombre = Nombre()
+        super(Cliente, self).__init__('Cliente', 'cliente')
 
 
 class CambiodeComercializadoraSinCambios(XmlModel):
