@@ -11,15 +11,15 @@ from libcomxml.messages.switching import Cabecera, IdCliente
 
 class DatosSolicitud(XmlModel):
     _sort_order = ('datos', 'linea', 'solicitudadm', 'activacionlectura',
-                   'sustituto', 'fechaprevista')
+                   'fechaprevista', 'sustituto')
     
     def __init__(self):
         self.datos = XmlField('DatosSolicitud')
         self.linea = XmlField('LineaNegocioElectrica')
         self.solicitudadm = XmlField('SolicitudAdmContractual')
         self.activacionlectura = XmlField('IndActivacionLectura')
-        self.sustituto = XmlField('IndSustitutoMandatario') 
         self.fechaprevista = XmlField('FechaPrevistaAccion')
+        self.sustituto = XmlField('IndSustitutoMandatario') 
         super(DatosSolicitud, self).__init__('DatosSolicitud', 'datos')
 
 
@@ -104,13 +104,24 @@ class Nombre(XmlModel):
         super(Nombre, self).__init__('Nombre', 'nombre')
 
 
+class Telefono(XmlModel):
+    _sort_order = ('telefono', 'prefijo', 'numero')
+        
+    def __init__(self):
+        self.telefono = XmlField('Telefono')
+        self.prefijo = XmlField('PrefijoPais')
+        self.numero = XmlField('Numero')
+        super(Telefono, self).__init__('Telefono', 'telefono')
+
+
 class Cliente(XmlModel):
-    _sort_order = ('cliente', 'idcliente', 'nombre')
+    _sort_order = ('cliente', 'idcliente', 'nombre', 'telefono')
 
     def __init__(self):
         self.cliente = XmlField('Cliente')
         self.idcliente = IdCliente()
         self.nombre = Nombre()
+        self.telefono = Telefono()
         super(Cliente, self).__init__('Cliente', 'cliente')
 
 
