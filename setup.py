@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='libComXML',
-    version='0.0.7',
+    version='0.0.8',
     url='http://git.gisce.lan/libComXML.git',
     author='GISCE Enginyeria, SL',
     author_email='devel@gisce.net',
