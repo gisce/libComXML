@@ -47,7 +47,7 @@ class PotenciasContratadas(XmlModel):
                    'p9', 'p10')
 
     def __init__(self):
-        self.potencies = XmlField('CondicionesContractuales')
+        self.potencies = XmlField('PotenciasContratadas')
         self.p1 = XmlField('Potencia', attributes={'Periodo': '1'})
         self.p2 = XmlField('Potencia', attributes={'Periodo': '2'})
         self.p3 = XmlField('Potencia', attributes={'Periodo': '3'})
@@ -74,9 +74,9 @@ class CondicionesContractuales(XmlModel):
 
 
 class Contrato(XmlModel):
-    _sort_order = ('contrato', 'idcontrato', 'duracion', 'fechafin', 'tipo',
-                   'direccion', 'consumoanual', 'tipoactivacion', 
-                   'fechaactivacion', 'condiciones')
+    _sort_order = ('contrato', 'idcontrato', 'condiciones', 'duracion',
+                   'fechafin', 'tipo', 'direccion', 'consumoanual', 
+                   'tipoactivacion', 'fechaactivacion')
 
     def __init__(self):
         self.contrato = XmlField('Contrato')
@@ -191,12 +191,52 @@ class MensajeAceptacionCambiodeComercializadoraSinCambios(XmlModel):
     def __init__(self):
         self.doc_root = None
         self.missatge = XmlField('MensajeAceptacionCambiodeComercializadoraSinCambios',
-                            attributes={'xmlns': 'http://localhost/elegibilidad'})
+                         attributes={'xmlns': 'http://localhost/elegibilidad'})
         self.capcalera = Cabecera()
         self.acceptacio = AceptacionCambiodeComercializadoraSinCambios() 
         super(MensajeAceptacionCambiodeComercializadoraSinCambios, self).\
-         __init__('MensajeAceptacionCambiodeComercializadoraSinCambios', 'missatge')
+                __init__('MensajeAceptacionCambiodeComercializadoraSinCambios',
+                         'missatge')
         
     def set_agente(self, agente):
-        self.mensaje.attributes.update({'AgenteSolicitante': agente})
+        self.missatge.attributes.update({'AgenteSolicitante': agente})
+        self.doc_root = self.root.element()
+
+
+class Rechazo(XmlModel):
+    _sort_order = ('rechazo', 'secuencial', 'motiu', 'text', 'data', 'hora',
+                   'idcontracte')
+    
+    def __init__(self):
+        self.rechazo = XmlField('Rechazo')
+        self.secuencial = XmlField('Secuencial')
+        self.motiu = XmlField('CodigoMotivo')
+        self.text = XmlField('Texto')
+        self.data = XmlField('Fecha')    
+        self.hora = XmlField('Hora')
+        self.idcontracte = IdContrato()
+
+ 
+class RechazoATRDistribuidoras(XmlModel):
+    _sort_order = ('rechazo', 'rebuig')
+
+    def __init__(self):
+        self.rechazo = XmlField('RechazoATRDistribuidoras')
+        self.rebuig = Rechazo()
+
+
+class MensajeRechazoATRDistribuidoras(XmlModel):
+    _sort_order = ('missatge', 'capcalera', 'rebuig')
+    
+    def __init__(self):
+        self.doc_root = None
+        self.missatge = XmlField('MensajeRechazoATRDistribuidoras',
+                     attributes={'xmlns': 'http://localhost/elegibilidad'})
+        self.capcalera = Cabecera()
+        self.rebuig = RechazoATRDistribuidoras()
+        super(MensajeRechazoATRDistribuidoras, self).\
+                     __init__('MensajeRechazoATRDistribuidoras', 'missatge')
+
+    def set_agente(self, agente):
+        self.missatge.attributes.update({'AgenteSolicitante': agente})
         self.doc_root = self.root.element()
