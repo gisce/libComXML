@@ -210,19 +210,22 @@ class Rechazo(XmlModel):
     def __init__(self):
         self.rechazo = XmlField('Rechazo')
         self.secuencial = XmlField('Secuencial')
-        self.motiu = XmlField('CodigoMotivo')
+        self.motiu = XmlField('CodigoMotivo', rep=lambda x: x.rjust(2, '0'))
         self.text = XmlField('Texto')
         self.data = XmlField('Fecha')    
         self.hora = XmlField('Hora')
         self.idcontracte = IdContrato()
+        super(Rechazo, self).__init__('Rechazo', 'rechazo')
 
  
 class RechazoATRDistribuidoras(XmlModel):
-    _sort_order = ('rechazo', 'rebuig')
+    _sort_order = ('rechazoatr', 'rebuig')
 
     def __init__(self):
-        self.rechazo = XmlField('RechazoATRDistribuidoras')
+        self.rechazoatr = XmlField('RechazoATRDistribuidoras')
         self.rebuig = Rechazo()
+        super(RechazoATRDistribuidoras, self).\
+                __init__('RechazoATRDistribuidoras', 'rechazoatr')
 
 
 class MensajeRechazoATRDistribuidoras(XmlModel):
