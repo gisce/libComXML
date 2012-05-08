@@ -56,10 +56,10 @@ class Field(object):
 
 
     def __str__(self):
-        return "<Field:%s>" % (self.name,)
+        return (u"<Field:%s>" % (self.name,)).encode('utf8')
 
     def __unicode__(self):
-        return self.__str__()
+        return unicode(self.__str__(), 'utf8')
 
 
 class XmlField(Field):
@@ -124,10 +124,10 @@ class XmlField(Field):
 
         It does not take care of the parent field, if any.
         """
-        return etree.tostring(self.element())
+        return etree.tostring(self.element(), encoding='UTF-8')
 
     def __unicode__(self):
-        return self.__str__().encode('utf-8')
+        return unicode(self.__str__(), 'utf-8')
 
 
 class Model(object):
@@ -188,10 +188,10 @@ class Model(object):
 
 
     def __str__(self):
-        return "<Model:%s>" % (self.name,)
+        return (u"<Model:%s>" % (self.name,)).encode('utf8')
 
     def __unicode__(self):
-        return self.__str__()
+        return unicode(self.__str__(), 'utf8')
 
 class XmlModel(Model):
     """Model with XML capabilities
@@ -257,10 +257,10 @@ class XmlModel(Model):
 
 
     def __str__(self):
-        return etree.tostring(self.doc_root)
+        return etree.tostring(self.doc_root, encoding="UTF-8")
 
 
     def __unicode__(self):
-        return self.__str__()
+        return unicode(self.__str__(), 'utf-8')
 
 
