@@ -93,7 +93,7 @@ class XmlField(Field):
             value = self.value
         if value:
             if isinstance(value, str):
-                element.text = value.encode('utf-8')
+                element.text = unicode(value, 'utf8')
             elif isinstance(value, XmlField):
                 element.append(value.element())
             elif isinstance(value, XmlModel):
