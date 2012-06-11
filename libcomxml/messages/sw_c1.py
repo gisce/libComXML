@@ -74,8 +74,8 @@ class CondicionesContractuales(XmlModel):
 
 
 class Contrato(XmlModel):
-    _sort_order = ('contrato', 'idcontrato', 'condiciones', 'duracion',
-                   'fechafin', 'tipo', 'direccion', 'consumoanual', 
+    _sort_order = ('contrato', 'idcontrato', 'tipo', 'condiciones', 'duracion',
+                   'fechafin', 'direccion', 'consumoanual', 
                    'tipoactivacion', 'fechaactivacion')
 
     def __init__(self):
@@ -243,3 +243,42 @@ class MensajeRechazoATRDistribuidoras(XmlModel):
     def set_agente(self, agente):
         self.missatge.attributes.update({'AgenteSolicitante': agente})
         self.doc_root = self.root.element()
+
+
+class DatosActivacion(XmlModel):
+    _sort_order = ('dades', 'data', 'hora')
+    
+    def __init__(self):
+        self.dades = XmlField('DatosActivacion')
+        self.data = XmlField('Fecha')
+        self.hora = XmlField('Hora')
+        super(DatosActivacion, self).__init__('DatosActivacion', 'dades')
+
+
+class ActivacionCambiodeComercializadoraSinCambios(XmlModel):
+    _sort_order = ('activacio', 'dades', 'contracte')
+    
+    def __init__(self):
+        self.activacio = XmlField('ActivacionCambiodeComercializadoraSinCambios')
+        self.dades = DatosActivacion()
+        self.contracte = Contrato()
+        super(ActivacionCambiodeComercializadoraSinCambios, self).\
+                __init__('ActivacionCambiodeComercializadoraSinCambios', 'activacio')
+
+
+class MensajeActivacionCambiodeComercializadoraSinCambios(XmlModel):
+    _sort_order = ('missatge', 'capcalera', 'activacio')
+
+    def __init__(self):
+        self.doc_root = None
+        self.missatge = XmlField('MensajeActivacionCambiodeComercializadoraSinCambios',
+                     attributes={'xmlns': 'http://localhost/elegibilidad'})
+        self.capcalera = Cabecera()
+        self.activacio = ActivacionCambiodeComercializadoraSinCambios()
+        super(MensajeActivacionCambiodeComercializadoraSinCambios, self).\
+                     __init__('MensajeActivacionCambiodeComercializadoraSinCambios', 'missatge')
+
+    def set_agente(self, agente):
+        self.missatge.attributes.update({'AgenteSolicitante': agente})
+        self.doc_root = self.root.element()
+    
