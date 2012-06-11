@@ -255,13 +255,43 @@ class DatosActivacion(XmlModel):
         super(DatosActivacion, self).__init__('DatosActivacion', 'dades')
 
 
+class PuntoDeMedida(XmlModel):
+    _sort_order = ('punt_mesura', 'CodPM', 'TipoMovimiento', 'CUPS', 'TipoPM',
+                   'ModoLectura', 'EstadoPM', 'Funcion', 'direccio', 'tensio',
+                   'FechaVigor', 'FechaAlta')
+    
+    def __init__(self):
+        self.punt_mesura = XmlField('PuntoDeMedida')
+        self.CodPM = XmlField('CodPM')
+        self.TipoMovimiento = XmlField('TipoMovimiento')
+        self.CUPS = XmlField('CUPS')
+        self.TipoPM = XmlField('TipoPM')
+        self.ModoLectura = XmlField('ModoLectura')
+        self.EstadoPM = XmlField('EstadoPM')
+        self.Funcion = XmlField('Funcion')
+        self.direccio = XmlField('DireccionPuntoMedida')
+        self.tensio = XmlField('TensionPM')
+        self.FechaVigor = XmlField('FechaVigor')
+        self.FechaAlta = XmlField('FechaAlta')
+        super(PuntoDeMedida, self).__init__('PuntoDeMedida', 'punt_mesura')
+
+
+class PuntosDeMedida(XmlModel):
+    _sort_order = ('punts_mesura', 'punt')
+    
+    def __init__(self):
+        self.punts_mesura = XmlField('PuntosDeMedida')
+        self.punt = PuntoDeMedida()
+        super(PuntosDeMedida, self).__init__('PuntosDeMedida', 'punts_mesura')
+
 class ActivacionCambiodeComercializadoraSinCambios(XmlModel):
-    _sort_order = ('activacio', 'dades', 'contracte')
+    _sort_order = ('activacio', 'dades', 'contracte', 'punts_mesura')
     
     def __init__(self):
         self.activacio = XmlField('ActivacionCambiodeComercializadoraSinCambios')
         self.dades = DatosActivacion()
         self.contracte = Contrato()
+        self.punts_mesura = PuntosDeMedida()
         super(ActivacionCambiodeComercializadoraSinCambios, self).\
                 __init__('ActivacionCambiodeComercializadoraSinCambios', 'activacio')
 
