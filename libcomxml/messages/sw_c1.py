@@ -74,8 +74,8 @@ class CondicionesContractuales(XmlModel):
 
 
 class Contrato(XmlModel):
-    _sort_order = ('contrato', 'idcontrato', 'tipo', 'condiciones', 'duracion',
-                   'fechafin', 'direccion', 'consumoanual', 
+    _sort_order = ('contrato', 'idcontrato', 'duracion', 'fechafin',
+                   'tipo', 'condiciones', 'direccion', 'consumoanual',
                    'tipoactivacion', 'fechaactivacion')
 
     def __init__(self):
