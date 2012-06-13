@@ -311,4 +311,46 @@ class MensajeActivacionCambiodeComercializadoraSinCambios(XmlModel):
     def set_agente(self, agente):
         self.missatge.attributes.update({'AgenteSolicitante': agente})
         self.doc_root = self.root.element()
+
+
+class DatosNotificacion(XmlModel):
+    _sort_order = ('dades_notificacio', 'data')
+    
+    def __init__(self):
+        self.dades_notificacio = XmlField('DatosNotificacion')
+        self.data = XmlField('FechaActivacion')
+        super(DatosNotificacion, self).__init__('DatosNotificacion', 'dades_notificacio')
+
+
+class NotificacionComercializadoraSaliente(XmlModel):        
+    _sort_order = ('notificacio', 'dades', 'contracte', 'punts_mesura')
+
+    def __init__(self):
+        self.notificacio = XmlField('NotificacionComercializadoraSaliente')
+        self.dades = DatosNotificacion()
+        self.contracte = Contrato()
+        self.punts_mesura = PuntosDeMedida()
+        super(NotificacionComercializadoraSaliente, self).\
+                __init__('NotificacionComercializadoraSaliente', 'notificacio')
+
+
+class MensajeNotificacionComercializadoraSaliente(XmlModel):
+    _sort_order = ('missatge', 'capcalera', 'notificacio')
+    
+    def __init__(self):
+        self.doc_root = None
+        self.missatge = XmlField('MensajeNotificacionComercializadoraSaliente',
+                         attributes={'xmlns': 'http://localhost/elegibilidad'})
+        self.capcalera = Cabecera()
+        self.notificacio = NotificacionComercializadoraSaliente()
+        super(MensajeNotificacionComercializadoraSaliente, self).\
+                     __init__('MensajeNotificacionComercializadoraSaliente', 'missatge')
+
+    def set_agente(self, agente):
+        self.missatge.attributes.update({'AgenteSolicitante': agente})
+        self.doc_root = self.root.element()
+        
+        
+
+
     
