@@ -278,8 +278,6 @@ class RegistroFin(XmlModel):
         super(RegistroFin, self).__init__('RegistroFin', 'registro')
 
 
-
-
 class MensajeFacturacion(XmlModel):
     _sort_order = ('mensaje', 'cabecera', 'facturas')
 

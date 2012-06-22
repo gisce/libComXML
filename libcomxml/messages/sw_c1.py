@@ -350,7 +350,40 @@ class MensajeNotificacionComercializadoraSaliente(XmlModel):
         self.missatge.attributes.update({'AgenteSolicitante': agente})
         self.doc_root = self.root.element()
         
-        
+
+class DatosAnulacionATRAN(XmlModel):
+    _sort_order = ('datos', 'linea')
+
+    def __init__(self):
+        self.datos = XmlField('DatosAnulacionATRAN')
+        self.linea = XmlField('LineaNegocioElectrica')
+        super(DatosAnulacionATRAN, self).__init__('DatosAnulacionATRAN', 'datos')
 
 
-    
+class AnulacionATRAN(XmlModel):
+    _sort_order = ('anulacion', 'datos', 'cliente', 'idcontrato')
+
+    def __init__(self):
+        self.anulacion = XmlField('AnulacionATRAN')
+        self.datos = DatosAnulacionATRAN()
+        self.cliente = Cliente()
+        self.idcontrato = IdContrato()
+        super(AnulacionATRAN, self).__init__('AnulacionATRAN', 'anulacion')
+
+
+class MensajeAnulacionSolicitud(XmlModel):
+    _sort_order = ('mensaje', 'cabecera', 'anulacion')
+
+    def __init__(self):
+        self.doc_root = None
+        self.mensaje = XmlField('MensajeAnulacionSolicitud', attributes={
+                          'xmlns': 'http://localhost/elegibilidad'})
+        self.cabecera = Cabecera()
+        self.anulacion = AnulacionATRAN()
+        super(MensajeFacturacion, self).__init__('MensajeAnulacionSolicitud',
+                                                 'mensaje')
+
+    def set_agente(self, agente):
+        self.mensaje.attributes.update({'AgenteSolicitante': agente})
+        self.doc_root = self.root.element()
+  
