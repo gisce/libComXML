@@ -380,12 +380,12 @@ class MensajeAnulacionSolicitud(XmlModel):
 
 
 class AceptacionAnulacion(XmlModel):
-    _sort_order = ('aceptacion', 'datos', 'contracte')
+    _sort_order = ('aceptacion', 'datos', 'contrato')
 
     def __init__(self):
         self.aceptacion = XmlField('AceptacionAnulacion')
         self.datos = DatosAceptacion()
-        self.contracte = Contrato()
+        self.contrato = Contrato()
         super(AceptacionAnulacion, self).__init__('AceptacionAnulacion', 'aceptacion')
 
 
@@ -394,7 +394,7 @@ class MensajeAceptacionAnulacion(XmlModel):
 
     def __init__(self):
         self.doc_root = None
-        self.mensaje = XmlField('MensajeAnulacionSolicitud', attributes={
+        self.mensaje = XmlField('MensajeAceptacionAnulacion', attributes={
                           'xmlns': 'http://localhost/elegibilidad'})
         self.cabecera = Cabecera()
         self.aceptacion = AceptacionAnulacion()
