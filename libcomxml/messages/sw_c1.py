@@ -351,24 +351,15 @@ class MensajeNotificacionComercializadoraSaliente(XmlModel):
         self.doc_root = self.root.element()
         
 
-class DatosAnulacionATRAN(XmlModel):
-    _sort_order = ('datos', 'linea')
-
-    def __init__(self):
-        self.datos = XmlField('DatosAnulacionATRAN')
-        self.linea = XmlField('LineaNegocioElectrica')
-        super(DatosAnulacionATRAN, self).__init__('DatosAnulacionATRAN', 'datos')
-
-
-class AnulacionATRAN(XmlModel):
+class AnulacionSolicitud(XmlModel):
     _sort_order = ('anulacion', 'datos', 'cliente', 'idcontrato')
 
     def __init__(self):
-        self.anulacion = XmlField('AnulacionATRAN')
-        self.datos = DatosAnulacionATRAN()
+        self.anulacion = XmlField('AnulacionSolicitud')
+        self.datos = DatosSolicitud()
         self.cliente = Cliente()
         self.idcontrato = IdContrato()
-        super(AnulacionATRAN, self).__init__('AnulacionATRAN', 'anulacion')
+        super(AnulacionSolicitud, self).__init__('AnulacionSolicitud', 'anulacion')
 
 
 class MensajeAnulacionSolicitud(XmlModel):
@@ -379,8 +370,35 @@ class MensajeAnulacionSolicitud(XmlModel):
         self.mensaje = XmlField('MensajeAnulacionSolicitud', attributes={
                           'xmlns': 'http://localhost/elegibilidad'})
         self.cabecera = Cabecera()
-        self.anulacion = AnulacionATRAN()
-        super(MensajeFacturacion, self).__init__('MensajeAnulacionSolicitud',
+        self.anulacion = AnulacionSolicitud()
+        super(MensajeAnulacionSolicitud, self).__init__('MensajeAnulacionSolicitud',
+                                                 'mensaje')
+
+    def set_agente(self, agente):
+        self.mensaje.attributes.update({'AgenteSolicitante': agente})
+        self.doc_root = self.root.element()
+
+
+class AceptacionAnulacion(XmlModel):
+    _sort_order = ('aceptacion', 'datos', 'contracte')
+
+    def __init__(self):
+        self.aceptacion = XmlField('AceptacionAnulacion')
+        self.datos = DatosAceptacion()
+        self.contracte = Contrato()
+        super(AceptacionAnulacion, self).__init__('AceptacionAnulacion', 'aceptacion')
+
+
+class MensajeAceptacionAnulacion(XmlModel):
+    _sort_order = ('mensaje', 'cabecera', 'aceptacion')
+
+    def __init__(self):
+        self.doc_root = None
+        self.mensaje = XmlField('MensajeAnulacionSolicitud', attributes={
+                          'xmlns': 'http://localhost/elegibilidad'})
+        self.cabecera = Cabecera()
+        self.aceptacion = AceptacionAnulacion()
+        super(MensajeAceptacionAnulacion, self).__init__('MensajeAceptacionAnulacion',
                                                  'mensaje')
 
     def set_agente(self, agente):
