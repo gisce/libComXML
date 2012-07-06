@@ -67,7 +67,8 @@ class Medidas(XmlModel):
 
     def __init__(self):
         self.medidas = XmlField('Medidas')
-        self.cups = XmlField('CodUnificadoPuntoSuministro')
+        self.cups = XmlField('CodUnificadoPuntoSuministro',
+                             rep=lambda x: x.ljust(22, ' '))
         self.aparatos = []
         super(Medidas, self).__init__('Medidas', 'medidas')
 
