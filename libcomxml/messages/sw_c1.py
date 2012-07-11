@@ -207,15 +207,17 @@ class Rechazo(XmlModel):
     _sort_order = ('rechazo', 'secuencial', 'motiu', 'text', 'data', 'hora',
                    'idcontracte')
     
-    def __init__(self):
-        self.rechazo = XmlField('Rechazo')
+    def __init__(self, tagname=None):
+        if not tagname:
+            tagname = 'Rechazo'
+        self.rechazo = XmlField(tagname)
         self.secuencial = XmlField('Secuencial')
         self.motiu = XmlField('CodigoMotivo', rep=lambda x: x.rjust(2, '0'))
         self.text = XmlField('Texto')
         self.data = XmlField('Fecha')    
         self.hora = XmlField('Hora')
         self.idcontracte = IdContrato()
-        super(Rechazo, self).__init__('Rechazo', 'rechazo')
+        super(Rechazo, self).__init__(tagname, 'rechazo')
 
  
 class RechazoATRDistribuidoras(XmlModel):
@@ -404,4 +406,40 @@ class MensajeAceptacionAnulacion(XmlModel):
     def set_agente(self, agente):
         self.mensaje.attributes.update({'AgenteSolicitante': agente})
         self.doc_root = self.root.element()
-  
+
+
+class RechazoAnulacion(XmlModel):
+    _sort_order = ('rechazo', 'rebuig')
+
+    def __init__(self):
+        self.rechazo = XmlField('RechazoAnulacion')
+        self.rebuig = Rechazo('RechazoAnulacion')
+        super(RechazoAnulacion, self).__init__('RechazoAnulacion', 'rechazo')
+
+
+class RechazoDeAnulacionBN(XmlModel):
+    _sort_order = ('rechazobn', 'rechazo')
+
+    def __init__(self):
+        self.rechazobn = XmlField('RechazoDeAnulacion')
+        self.rechazo = RechazoAnulacion()
+        super(RechazoDeAnulacionBN, self).__init__('RechazoDeAnulacion', 'rechazobn')
+
+
+class MensajeRechazoAnulacion(XmlModel):
+    _sort_order = ('mensaje', 'cabecera', 'rechazo')
+
+    def __init__(self):
+        self.doc_root = None
+        self.mensaje = XmlField('MensajeRechazoAnulacion', attributes={
+                          'xmlns': 'http://localhost/elegibilidad'})
+        self.cabecera = Cabecera()
+        self.rechazo = RechazoDeAnulacionBN()
+        super(MensajeRechazoAnulacion, self).__init__('MensajeRechazoAnulacion',
+                                                 'mensaje')
+
+    def set_agente(self, agente):
+        self.mensaje.attributes.update({'AgenteSolicitante': agente})
+        self.doc_root = self.root.element()
+    
+    

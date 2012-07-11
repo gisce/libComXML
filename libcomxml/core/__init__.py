@@ -257,7 +257,8 @@ class XmlModel(Model):
 
 
     def __str__(self):
-        return etree.tostring(self.doc_root, encoding="UTF-8")
+        return etree.tostring(self.doc_root, xml_declaration=True, 
+                                                             encoding="UTF-8")
 
 
     def __unicode__(self):
