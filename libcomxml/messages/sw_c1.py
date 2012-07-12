@@ -417,13 +417,13 @@ class RechazoAnulacion(XmlModel):
         super(RechazoAnulacion, self).__init__('RechazoAnulacion', 'rechazo')
 
 
-class RechazoDeAnulacionBN(XmlModel):
-    _sort_order = ('rechazobn', 'rechazo')
+class RechazoDeAnulacion(XmlModel):
+    _sort_order = ('rechazo', 'rebuig')
 
     def __init__(self):
-        self.rechazobn = XmlField('RechazoDeAnulacion')
-        self.rechazo = RechazoAnulacion()
-        super(RechazoDeAnulacionBN, self).__init__('RechazoDeAnulacion', 'rechazobn')
+        self.rechazo = XmlField('RechazoDeAnulacion')
+        self.rebuig = Rechazo('RechazoAnulacion')
+        super(RechazoDeAnulacion, self).__init__('RechazoDeAnulacion', 'rechazo')
 
 
 class MensajeRechazoAnulacion(XmlModel):
@@ -434,7 +434,7 @@ class MensajeRechazoAnulacion(XmlModel):
         self.mensaje = XmlField('MensajeRechazoAnulacion', attributes={
                           'xmlns': 'http://localhost/elegibilidad'})
         self.cabecera = Cabecera()
-        self.rechazo = RechazoDeAnulacionBN()
+        self.rechazo = RechazoDeAnulacion()
         super(MensajeRechazoAnulacion, self).__init__('MensajeRechazoAnulacion',
                                                  'mensaje')
 
