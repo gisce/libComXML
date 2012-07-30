@@ -59,7 +59,7 @@ class DireccionSuministro(XmlModel):
 
     def __init__(self):
         self.direccion = XmlField('DireccionSuministro')
-        self.cups = XmlField('CUPS')
+        self.cups = XmlField('CUPS', rep=lambda x: x.ljust(22, ' '))
         self.municipio = XmlField('Municipio')
         self.dirsuministro = XmlField('DirSuministro', rep=lambda x: x[:60])
         super(DireccionSuministro, self).__init__('DireccionSuministro',
