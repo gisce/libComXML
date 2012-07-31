@@ -30,14 +30,16 @@ class Cabecera(XmlModel):
 
 
 class DatosGeneralesFactura(XmlModel):
-    _sort_order = ('datos', 'numero', 'tipo', 'rectificadora', 'fecha', 'cif',
-                   'codigo', 'obs', 'importe', 'saldo', 'saldocobro', 'moneda')
+    _sort_order = ('datos', 'numero', 'tipo', 'rectificadora', 'ref', 'fecha',
+                   'cif', 'codigo', 'obs', 'importe', 'saldo', 'saldocobro',
+                   'moneda')
 
     def __init__(self):
         self.datos = XmlField('DatosGeneralesFactura')
         self.numero = XmlField('NumeroFactura', rep=lambda x: x[:26])
         self.tipo = XmlField('TipoFactura')
         self.rectificadora = XmlField('IndicativoFacturaRectificadora')
+        self.ref = XmlField('NumeroFacturaRectificada')
         self.fecha = XmlField('FechaFactura')
         self.cif = XmlField('CIFEmisora')
         self.codigo = XmlField('CodigoFiscalFactura', rep=lambda x: x[:17])
