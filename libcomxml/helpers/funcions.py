@@ -3,7 +3,8 @@
 """Helper functions for libComXml
 """
 
-__all__ = ['codi_periode', 'codi_dh', 'extreu_periode', 'rodes']
+__all__ = ['codi_periode', 'codi_dh', 'extreu_periode', 'rodes',
+           'codi_refacturacio']
 
 def rodes(giro):
     """Retorna el nombre de rodes senceres segons el giro
