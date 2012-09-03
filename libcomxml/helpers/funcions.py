@@ -3,7 +3,8 @@
 """Helper functions for libComXml
 """
 
-__all__ = ['codi_periode', 'codi_dh', 'extreu_periode', 'rodes']
+__all__ = ['codi_periode', 'codi_dh', 'extreu_periode', 'rodes',
+           'codi_refacturacio']
 
 def rodes(giro):
     """Retorna el nombre de rodes senceres segons el giro
@@ -55,3 +56,12 @@ def codi_dh(tarifa, nlectures=6):
         else:
             return '3'
 
+def codi_refacturacio(producte):
+    """Retorna el codi ocsum de refacturació
+    
+    :param producte: nom del producte
+    """
+    ref = {'RT42011': '40',
+           'RT12012': '41',
+           'RM42012': '42'}
+    return ref.get(producte, False)
