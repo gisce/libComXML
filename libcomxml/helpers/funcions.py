@@ -64,4 +64,4 @@ def codi_refacturacio(producte):
     ref = {'RT42011': '40',
            'RT12012': '41',
            'RM42012': '42'}
-    return ref.get('producte', False)
+    return ref.get(producte, False)

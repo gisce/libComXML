@@ -268,7 +268,7 @@ class ConceptoIVA(XmlModel):
         self.concepto = XmlField('Concepto')
         self.importe = XmlField('ImporteConceptoIVA',
                                  rep=lambda x: '%.4f' % x)
-        super(ConceptoIVA, self).__init__('ConceptoIVA', conceptoiva)
+        super(ConceptoIVA, self).__init__('ConceptoIVA', 'conceptoiva')
 
 
 class Refacturacion(XmlModel):
