@@ -300,8 +300,8 @@ class FacturaATR(XmlModel):
         self.reactiva = EnergiaReactiva()
         self.iese = ImpuestoElectrico()
         self.alquileres = Alquileres()
-        self.conceptoiva = XmlField('ConceptoIVA')
-        self.iva = IVA()
+        self.conceptoiva = []
+        self.iva = []
         self.refacturaciones =  XmlField('Refacturaciones')
         self.medidas = m.Medidas()
         super(FacturaATR, self).__init__('FacturaATR', 'factura')
