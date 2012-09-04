@@ -260,9 +260,37 @@ class IVA(XmlModel):
         super(IVA, self).__init__('IVA', 'iva')
 
 
+class ConceptoIVA(XmlModel):
+    _sort_order = ('conceptoiva', 'concepto', 'importe')
+
+    def __init__(self):
+        self.conceptoiva = XmlField('ConceptoIVA')
+        self.concepto = XmlField('Concepto')
+        self.importe = XmlField('ImporteConceptoIVA',
+                                 rep=lambda x: '%.4f' % x)
+        super(ConceptoIVA, self).__init__('ConceptoIVA', 'conceptoiva')
+
+
+class Refacturacion(XmlModel):
+    _sort_order = ('refacturacion', 'tipo', 'fecha_desde', 'fecha_hasta',
+                   'consumo', 'importe_total')
+    
+    def __init__(self):
+        self.refacturacion = XmlField('Refacturacion')
+        self.tipo = XmlField('Tipo')
+        self.fecha_desde = XmlField('RFechaDesde')
+        self.fecha_hasta = XmlField('RFechaHasta')
+        self.consumo = XmlField('RConsumo',
+                                rep=lambda x: '%.2f' % x)
+        self.importe_total = XmlField('ImporteTotal',
+                                      rep=lambda x: '%.4f' % x)
+        super(Refacturacion, self).__init__('Refacturacion', 'refacturacion')
+
+
 class FacturaATR(XmlModel):
     _sort_order = ('factura', 'datosatr', 'potencia', 'energia', 'reactiva',
-                   'iese', 'alquileres', 'iva', 'medidas')
+                   'iese', 'alquileres', 'conceptoiva', 'iva',
+                   'refacturaciones', 'medidas')
 
     def __init__(self):
         self.factura = XmlField('FacturaATR')
@@ -272,7 +300,9 @@ class FacturaATR(XmlModel):
         self.reactiva = EnergiaReactiva()
         self.iese = ImpuestoElectrico()
         self.alquileres = Alquileres()
-        self.iva = IVA()
+        self.conceptoiva = []
+        self.iva = []
+        self.refacturaciones =  XmlField('Refacturaciones')
         self.medidas = m.Medidas()
         super(FacturaATR, self).__init__('FacturaATR', 'factura')
 
@@ -306,8 +336,6 @@ class RegistroFin(XmlModel):
         self.ccc = CuentaBancaria()
         self.idremesa = XmlField('IdRemesa')
         super(RegistroFin, self).__init__('RegistroFin', 'registro')
-
-
 
 
 class MensajeFacturacion(XmlModel):
