@@ -260,6 +260,17 @@ class IVA(XmlModel):
         super(IVA, self).__init__('IVA', 'iva')
 
 
+class ConceptoIEIVA(XmlModel):
+    _sort_order = ('conceptoieiva', 'concepto', 'importe')
+
+    def __init__(self):
+        self.conceptoieiva = XmlField('ConceptoIEIVA')
+        self.concepto = XmlField('Concepto')
+        self.importe = XmlField('ImporteConceptoIEIVA',
+                                 rep=lambda x: '%.4f' % x)
+        super(ConceptoIEIVA, self).__init__('ConceptoIEIVA', 'conceptoieiva')
+
+
 class ConceptoIVA(XmlModel):
     _sort_order = ('conceptoiva', 'concepto', 'importe')
 
@@ -289,7 +300,7 @@ class Refacturacion(XmlModel):
 
 class FacturaATR(XmlModel):
     _sort_order = ('factura', 'datosatr', 'potencia', 'energia', 'reactiva',
-                   'iese', 'alquileres', 'conceptoiva', 'iva',
+                   'conceptoieiva', 'iese', 'alquileres', 'conceptoiva', 'iva',
                    'refacturaciones', 'medidas')
 
     def __init__(self):
@@ -298,6 +309,7 @@ class FacturaATR(XmlModel):
         self.potencia = Potencia()
         self.energia = EnergiaActiva()
         self.reactiva = EnergiaReactiva()
+        self.conceptoieiva = []
         self.iese = ImpuestoElectrico()
         self.alquileres = Alquileres()
         self.conceptoiva = []
