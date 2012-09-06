@@ -82,6 +82,6 @@ def parse_totals_refacturacio(cadena):
     totals = []
     for i, x in enumerate(cadena.split(' ')):
         if i in (4, 7):
-            totals.append(x)
+            totals.append(float(x))
     return totals
 
