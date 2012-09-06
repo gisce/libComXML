@@ -4,7 +4,8 @@
 """
 
 __all__ = ['codi_periode', 'codi_dh', 'extreu_periode', 'rodes',
-           'codi_refacturacio']
+           'codi_refacturacio', 'nom_refacturacio',
+           'parse_totals_refacturacio']
 
 def rodes(giro):
     """Retorna el nombre de rodes senceres segons el giro
@@ -65,3 +66,22 @@ def codi_refacturacio(producte):
            'RT12012': '41',
            'RM42012': '42'}
     return ref.get(producte, False)
+
+def nom_refacturacio(producte):
+    """Retorna el nom del producte
+    
+    :param producte: codi ocsum del producte
+    """
+    ref = {'40': 'RT42011',
+           '41': 'RT12012',
+           '42': 'RM42012'}
+    return ref.get(producte, False)
+
+def parse_totals_refacturacio(cadena):
+    """Retorna els totals de les línies de refacturacio"""
+    totals = []
+    for i, x in enumerate(cadena.split(' ')):
+        if i in (4, 7):
+            totals.append(float(x))
+    return totals
+
