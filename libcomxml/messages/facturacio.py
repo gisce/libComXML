@@ -3,6 +3,7 @@
 # pylint: disable=E1002
 # pylint: disable=E1101
 # pylint: disable=C0111
+import re
 
 from ..core import XmlModel, XmlField
 import libcomxml.messages.mesures as m
@@ -104,7 +105,8 @@ class DatosGeneralesFacturaATR(XmlModel):
         self.datos = XmlField('DatosGeneralesFacturaATR')
         self.direccion = DireccionSuministro()
         self.cliente = Cliente()
-        self.contrato = XmlField('Contrato')
+        self.contrato = XmlField('Contrato',
+                                         rep=lambda x: re.sub('[^0-9]', '', x))
         self.datosgrles = DatosGeneralesFactura()
         self.datosatr = DatosFacturaATR()
         super(DatosGeneralesFacturaATR,
