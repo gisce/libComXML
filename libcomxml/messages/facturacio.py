@@ -105,7 +105,8 @@ class DatosGeneralesFacturaATR(XmlModel):
         self.datos = XmlField('DatosGeneralesFacturaATR')
         self.direccion = DireccionSuministro()
         self.cliente = Cliente()
-        self.contrato = XmlField('Contrato', rep=lambda x: re.sub('[^0-9]', '', x))
+        self.contrato = XmlField('Contrato',
+                                         rep=lambda x: re.sub('[^0-9]', '', x))
         self.datosgrles = DatosGeneralesFactura()
         self.datosatr = DatosFacturaATR()
         super(DatosGeneralesFacturaATR,
