@@ -234,10 +234,10 @@ class ImpuestoElectrico(XmlModel):
 
     def __init__(self):
         self.iese = XmlField('ImpuestoElectrico')
-        self.base = XmlField('BaseImponible', rep=lambda x: '%.6f' % x)
+        self.base = XmlField('BaseImponible', rep=lambda x: '%.4f' % x)
         self.coef = XmlField('Coeficiente', rep=lambda x: '%.6f' % x)
-        self.percent = XmlField('Porcentaje', rep=lambda x: '%.6f' % x)
-        self.importe = XmlField('Importe', rep=lambda x: '%.2f' % x)
+        self.percent = XmlField('Porcentaje', rep=lambda x: '%.8f' % x)
+        self.importe = XmlField('Importe', rep=lambda x: '%.4f' % x)
         super(ImpuestoElectrico, self).__init__('ImpuestoElectrico', 'iese')
 
 
