@@ -167,7 +167,7 @@ class DatosAceptacion(XmlModel):
     def __init__(self):
         self.datos = XmlField('DatosAceptacion')
         self.fecha = XmlField('FechaAceptacion')
-        self.potencia = XmlField('PotenciaActual')
+        self.potencia = XmlField('PotenciaActual', rep=lambda x: '%d' % x)
         self.actuacion = XmlField('ActuacionCampo')
         self.ultlect = XmlField('FechaUltimaLectura')
         super(DatosAceptacion, self).__init__('DatosAceptacion', 'datos')
