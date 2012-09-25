@@ -48,7 +48,7 @@ class PotenciasContratadas(XmlModel):
 
     def __init__(self):
         self.potencies = XmlField('PotenciasContratadas')
-        self.p1 = XmlField('Potencia', attributes={'Periodo': '1'})
+        self.p1 = XmlField('Potencia', attributes={'Periodo': '1'}, rep=lambda x: '%d' % x)
         self.p2 = XmlField('Potencia', attributes={'Periodo': '2'})
         self.p3 = XmlField('Potencia', attributes={'Periodo': '3'})
         self.p4 = XmlField('Potencia', attributes={'Periodo': '4'})
