@@ -40,7 +40,7 @@ class Field(object):
         """self.__value getter
         """
         # if we have a rep function, use it
-        if self.rep:
+        if self.rep and self.__value is not None:
             return self.rep(self.__value)
         # else, return the raw value
         return self.__value
