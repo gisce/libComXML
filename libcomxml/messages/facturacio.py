@@ -3,6 +3,7 @@
 # pylint: disable=E1002
 # pylint: disable=E1101
 # pylint: disable=C0111
+import re
 
 from ..core import XmlModel, XmlField
 import libcomxml.messages.mesures as m
@@ -76,7 +77,8 @@ class DatosGeneralesFacturaATR(XmlModel):
         self.datos = XmlField('DatosGeneralesFacturaATR')
         self.direccion = DireccionSuministro()
         self.cliente = Cliente()
-        self.contrato = XmlField('Contrato')
+        self.contrato = XmlField('Contrato',
+                                         rep=lambda x: re.sub('[^0-9]', '', x))
         self.datosgrles = DatosGeneralesFactura()
         self.datosatr = DatosFacturaATR()
         super(DatosGeneralesFacturaATR,
@@ -204,10 +206,10 @@ class ImpuestoElectrico(XmlModel):
 
     def __init__(self):
         self.iese = XmlField('ImpuestoElectrico')
-        self.base = XmlField('BaseImponible')
-        self.coef = XmlField('Coeficiente')
-        self.percent = XmlField('Porcentaje')
-        self.importe = XmlField('Importe', rep=lambda x: '%.2f' % x)
+        self.base = XmlField('BaseImponible', rep=lambda x: '%.4f' % x)
+        self.coef = XmlField('Coeficiente', rep=lambda x: '%.6f' % x)
+        self.percent = XmlField('Porcentaje', rep=lambda x: '%.8f' % x)
+        self.importe = XmlField('Importe', rep=lambda x: '%.4f' % x)
         super(ImpuestoElectrico, self).__init__('ImpuestoElectrico', 'iese')
 
 
@@ -232,9 +234,48 @@ class IVA(XmlModel):
         super(IVA, self).__init__('IVA', 'iva')
 
 
+class ConceptoIEIVA(XmlModel):
+    _sort_order = ('conceptoieiva', 'concepto', 'importe')
+
+    def __init__(self):
+        self.conceptoieiva = XmlField('ConceptoIEIVA')
+        self.concepto = XmlField('Concepto')
+        self.importe = XmlField('ImporteConceptoIEIVA',
+                                 rep=lambda x: '%.4f' % x)
+        super(ConceptoIEIVA, self).__init__('ConceptoIEIVA', 'conceptoieiva')
+
+
+class ConceptoIVA(XmlModel):
+    _sort_order = ('conceptoiva', 'concepto', 'importe')
+
+    def __init__(self):
+        self.conceptoiva = XmlField('ConceptoIVA')
+        self.concepto = XmlField('Concepto')
+        self.importe = XmlField('ImporteConceptoIVA',
+                                 rep=lambda x: '%.4f' % x)
+        super(ConceptoIVA, self).__init__('ConceptoIVA', 'conceptoiva')
+
+
+class Refacturacion(XmlModel):
+    _sort_order = ('refacturacion', 'tipo', 'fecha_desde', 'fecha_hasta',
+                   'consumo', 'importe_total')
+    
+    def __init__(self):
+        self.refacturacion = XmlField('Refacturacion')
+        self.tipo = XmlField('Tipo')
+        self.fecha_desde = XmlField('RFechaDesde')
+        self.fecha_hasta = XmlField('RFechaHasta')
+        self.consumo = XmlField('RConsumo',
+                                rep=lambda x: '%.2f' % x)
+        self.importe_total = XmlField('ImporteTotal',
+                                      rep=lambda x: '%.4f' % x)
+        super(Refacturacion, self).__init__('Refacturacion', 'refacturacion')
+
+
 class FacturaATR(XmlModel):
     _sort_order = ('factura', 'datosatr', 'potencia', 'energia', 'reactiva',
-                   'iese', 'alquileres', 'iva', 'medidas')
+                   'conceptoieiva', 'iese', 'alquileres', 'conceptoiva', 'iva',
+                   'refacturaciones', 'medidas')
 
     def __init__(self):
         self.factura = XmlField('FacturaATR')
@@ -242,9 +283,12 @@ class FacturaATR(XmlModel):
         self.potencia = Potencia()
         self.energia = EnergiaActiva()
         self.reactiva = EnergiaReactiva()
+        self.conceptoieiva = []
         self.iese = ImpuestoElectrico()
         self.alquileres = Alquileres()
-        self.iva = IVA()
+        self.conceptoiva = []
+        self.iva = []
+        self.refacturaciones =  XmlField('Refacturaciones')
         self.medidas = m.Medidas()
         super(FacturaATR, self).__init__('FacturaATR', 'factura')
 
