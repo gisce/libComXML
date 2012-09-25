@@ -34,7 +34,7 @@ class Cliente(XmlModel):
     def __init__(self):
         self.cliente = XmlField('Cliente')
         self.cifnif = XmlField('TipoCIFNIF')
-        self.identificador = XmlField('Identificador', rep=lambda x: x[2:])
+        self.identificador = XmlField('Identificador', rep=lambda x: x[2:] if len(x)>9)
         super(Cliente, self).__init__('Cliente', 'cliente')
 
 
