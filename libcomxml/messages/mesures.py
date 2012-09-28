@@ -2,6 +2,7 @@
 
 # pylint: disable=E1002
 # pylint: disable=E1101
+import re
 
 from ..core import XmlModel, XmlField
 
@@ -56,7 +57,8 @@ class Aparato(XmlModel):
         self.aparato = XmlField('Aparato')
         self.tipo = XmlField('Tipo')
         self.marca = XmlField('Marca')
-        self.numserie = XmlField('NumeroSerie')
+        self.numserie = XmlField('NumeroSerie',
+                                 rep=lambda x: re.sub('[^0-9]', '', x)[:10])
         self.codigodh = XmlField('CodigoDH')
         self.integradores = []
         super(Aparato, self).__init__('Aparato', 'aparato')
