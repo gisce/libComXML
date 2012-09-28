@@ -77,7 +77,7 @@ def nom_refact(producte):
     
     :param producte: codi ocsum del producte
     """
-    ref = dict(((k,v) for k, v in CODIS_REFACT.items()))
+    ref = dict(((v, k) for k, v in CODIS_REFACT.items()))
     return ref.get(producte, False)
 
 def codi_reg_refact(producte):
@@ -92,7 +92,7 @@ def nom_reg_refact(producte):
 
     :param producte: codi ocsum del producte
     """
-    ref = dict(((k,v) for k, v in CODIS_REG_REFACT.items()))
+    ref = dict(((v, k) for k, v in CODIS_REG_REFACT.items()))
     return ref.get(producte, False)
 
 def parse_totals_refact(cadena):
