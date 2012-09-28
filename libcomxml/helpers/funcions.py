@@ -7,6 +7,14 @@ __all__ = ['codi_periode', 'codi_dh', 'extreu_periode', 'rodes',
            'codi_refact', 'nom_refact', 'codi_reg_refact', 'nom_reg_refact',
            'parse_totals_refact']
 
+CODIS_REFACT = {'RT42011': '40',
+                'RT12012': '41',
+                'RM42012': '42'}
+
+CODIS_REG_REFACT = {'RGT42011': '40',
+                    'RGT12012': '41',
+                    'RGM42012': '42'}
+
 def rodes(giro):
     """Retorna el nombre de rodes senceres segons el giro
     """
@@ -62,19 +70,14 @@ def codi_refact(producte):
     
     :param producte: nom del producte
     """
-    ref = {'RT42011': '40',
-           'RT12012': '41',
-           'RM42012': '42'}
-    return ref.get(producte, False)
+    return CODIS_REFACT.get(producte, False)
 
 def nom_refact(producte):
     """Retorna el nom del producte
     
     :param producte: codi ocsum del producte
     """
-    ref = {'40': 'RT42011',
-           '41': 'RT12012',
-           '42': 'RM42012'}
+    ref = dict(((k,v) for k, v in CODIS_REFACT.items()))
     return ref.get(producte, False)
 
 def codi_reg_refact(producte):
@@ -82,19 +85,14 @@ def codi_reg_refact(producte):
 
     :param producte: nom del producte
     """
-    ref = {'RGT42011': '40',
-           'RGT12012': '41',
-           'RGM42012': '42'}
-    return ref.get(producte, False)
+    return CODIS_REG_REFACT.get(producte, False)
 
 def nom_reg_refact(producte):
     """Retorna el nom del producte
 
     :param producte: codi ocsum del producte
     """
-    ref = {'40': 'RGT42011',
-           '41': 'RGT12012',
-           '42': 'RGM42012'}
+    ref = dict(((k,v) for k, v in CODIS_REG_REFACT.items()))
     return ref.get(producte, False)
 
 def parse_totals_refact(cadena):
