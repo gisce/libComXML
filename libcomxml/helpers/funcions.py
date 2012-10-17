@@ -5,7 +5,7 @@
 
 __all__ = ['codi_periode', 'codi_dh', 'extreu_periode', 'rodes',
            'codi_refact', 'nom_refact', 'codi_reg_refact', 'nom_reg_refact',
-           'parse_totals_refact', 'CODIS_REFACT', 'CODIS_REG_REFACT']
+           'parse_totals_refact']
 
 CODIS_REFACT = {'RT42011': '40',
                 'RT12012': '41',
