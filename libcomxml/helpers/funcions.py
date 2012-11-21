@@ -101,5 +101,5 @@ def parse_totals_refact(cadena):
     for i, x in enumerate(cadena.split(' ')):
         if i in (4, 7):
             totals.append(float(x))
-    return totals
+    return totals[0], totals[1]
 
