@@ -56,10 +56,10 @@ class Field(object):
 
 
     def __str__(self):
-        return "<Field:%s>" % (self.name,)
+        return (u"<Field:%s>" % (self.name,)).encode('utf8')
 
     def __unicode__(self):
-        return self.__str__()
+        return unicode(self.__str__(), 'utf8')
 
 
 class XmlField(Field):
@@ -93,7 +93,7 @@ class XmlField(Field):
             value = self.value
         if value:
             if isinstance(value, str):
-                element.text = value.encode('utf-8')
+                element.text = unicode(value, 'utf8')
             elif isinstance(value, XmlField):
                 element.append(value.element())
             elif isinstance(value, XmlModel):
@@ -124,10 +124,10 @@ class XmlField(Field):
 
         It does not take care of the parent field, if any.
         """
-        return etree.tostring(self.element())
+        return etree.tostring(self.element(), encoding='UTF-8')
 
     def __unicode__(self):
-        return self.__str__().encode('utf-8')
+        return unicode(self.__str__(), 'utf-8')
 
 
 class Model(object):
@@ -188,10 +188,10 @@ class Model(object):
 
 
     def __str__(self):
-        return "<Model:%s>" % (self.name,)
+        return (u"<Model:%s>" % (self.name,)).encode('utf8')
 
     def __unicode__(self):
-        return self.__str__()
+        return unicode(self.__str__(), 'utf8')
 
 class XmlModel(Model):
     """Model with XML capabilities
@@ -260,4 +260,6 @@ class XmlModel(Model):
                               encoding='UTF-8')
 
     def __unicode__(self):
-        return self.__str__()
+        return unicode(self.__str__(), 'utf-8')
+
+
