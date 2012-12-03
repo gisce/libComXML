@@ -9,7 +9,7 @@ setup(
     author='GISCE Enginyeria, SL',
     author_email='devel@gisce.net',
     packages=['libcomxml', 'libcomxml.core', 'libcomxml.messages',
-              'libcomxml.helpers'],
+              'libcomxml.helpers', 'libcomxml.messages.switching'],
     requires=['lxml'],
     license='None',
     description='libComXML',
