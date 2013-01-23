@@ -7,6 +7,7 @@
 from ..core import XmlModel, XmlField
 
 from libcomxml.messages.switching import Cabecera, IdCliente
+from mesures import Aparatos
 
 
 class DatosSolicitud(XmlModel):
@@ -260,7 +261,7 @@ class DatosActivacion(XmlModel):
 class PuntoDeMedida(XmlModel):
     _sort_order = ('punt_mesura', 'CodPM', 'TipoMovimiento', 'CUPS', 'TipoPM',
                    'ModoLectura', 'EstadoPM', 'Funcion', 'direccio', 'tensio',
-                   'FechaVigor', 'FechaAlta')
+                   'FechaVigor', 'FechaAlta', 'aparatos')
     
     def __init__(self):
         self.punt_mesura = XmlField('PuntoDeMedida')
@@ -275,6 +276,7 @@ class PuntoDeMedida(XmlModel):
         self.tensio = XmlField('TensionPM')
         self.FechaVigor = XmlField('FechaVigor')
         self.FechaAlta = XmlField('FechaAlta')
+        self.aparatos = Aparatos()
         super(PuntoDeMedida, self).__init__('PuntoDeMedida', 'punt_mesura')
 
 
@@ -285,6 +287,7 @@ class PuntosDeMedida(XmlModel):
         self.punts_mesura = XmlField('PuntosDeMedida')
         self.punt = PuntoDeMedida()
         super(PuntosDeMedida, self).__init__('PuntosDeMedida', 'punts_mesura')
+
 
 class ActivacionCambiodeComercializadoraSinCambios(XmlModel):
     _sort_order = ('activacio', 'dades', 'contracte', 'punts_mesura')
