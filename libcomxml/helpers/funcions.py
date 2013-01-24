@@ -61,7 +61,7 @@ def codi_dh(tarifa, nlectures=6):
         return '6'
     elif tarifa in ('003', '011'):
         if nlectures == 6:
-            return '4' 
+            return '6' 
         else:
             return '3'
 
