@@ -101,7 +101,7 @@ class Modelo(XmlModel):
 
 class Aparato(XmlModel):
     _sort_order = ('aparato', 'tipo', 'marca', 'numserie',
-                   'codigo_dh', 'integradores',
+                   'codigodh', 'integradores',
                    'model', 'tipus_moviment',
                    'tipus_em', 'propietat', 'precinte',
                    'datosnoicp', 'datosicp', 'medidas')
