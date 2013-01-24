@@ -61,8 +61,8 @@ class NoICP(XmlModel):
         self.num_serie = XmlField('NumeroSerie')
         self.funcio = XmlField('FuncionAparato')
         self.num_integradors = XmlField('NumIntegradores')
-        self.constant_energia = XmlField('ConstanteEnergia')
-        self.constant_max = XmlField('ConstanteMaximetro')
+        self.constant_energia = XmlField('ConstanteEnergia', rep=lambda x: '%.3f' % x)
+        self.constant_max = XmlField('ConstanteMaximetro', rep=lambda x: '%.3f' % x)
         self.enters = XmlField('RuedasEnteras')
         self.decimals = XmlField('RuedasDecimales')
         super(NoICP, self).__init__('DatosAparatoNoICP', 'noicp')
@@ -81,8 +81,8 @@ class ICP(XmlModel):
                                   rep=lambda x: x[:10])
         self.funcio = XmlField('FuncionAparato')
         self.num_integradors = XmlField('NumIntegradores')
-        self.constant_energia = XmlField('ConstanteEnergia')
-        self.constant_max = XmlField('ConstanteMaximetro')
+        self.constant_energia = XmlField('ConstanteEnergia', rep=lambda x: '%.3f' % x)
+        self.constant_max = XmlField('ConstanteMaximetro', rep=lambda x: '%.3f' % x)
         self.enters = XmlField('RuedasEnteras')
         self.decimals = XmlField('RuedasDecimales')
         super(ICP, self).__init__('DatosAparatoICP', 'icp')
@@ -100,12 +100,20 @@ class Modelo(XmlModel):
         super(Modelo, self).__init__('Modelo', 'modelo')
 
 class Aparato(XmlModel):
-    _sort_order = ('aparato', 'model', 'tipus_moviment',
+    _sort_order = ('aparato', 'tipo', 'marca', 'numserie',
+                   'codigo_dh', 'integradores',
+                   'model', 'tipus_moviment',
                    'tipus_em', 'propietat', 'precinte',
                    'datosnoicp', 'datosicp', 'medidas')
-
+    
     def __init__(self):
         self.aparato = XmlField('Aparato')
+        self.tipo = XmlField('Tipo')
+        self.marca = XmlField('Marca')
+        self.numserie = XmlField('NumeroSerie',
+                            rep=lambda x: re.sub('[^0-9]', '', x)[:10])
+        self.codigodh = XmlField('CodigoDH')
+        self.integradores = []
         self.model = Modelo()
         self.tipus_moviment = XmlField('TipoMovimiento')  
         self.tipus_em = XmlField('TipoEquipoMedida') 
@@ -136,16 +144,19 @@ class Medida(XmlModel):
         self.periode = XmlField('Periodo')
         self.magnitud = XmlField('MagnitudMedida')
         self.origen = XmlField('Procedencia')
-        self.lectura = XmlField('LecturaAnterior')
+        self.lectura = XmlField('LecturaAnterior', rep=lambda x: '%.2f' % x)
         self.anomalia = XmlField('Anomalia')
         self.text_anomalia = XmlField('TextoAnomalia')
         super(Medida, self).__init__('Medida', 'medida')
 
 
 class Medidas(XmlModel):
-    _sort_order = ('medidas', 'lista_medidas')
+    _sort_order = ('medidas', 'cups', 'aparatos', 'lista_medidas')
 
     def __init__(self):
         self.medidas = XmlField('Medidas')
+        self.cups = XmlField('CodUnificadoPuntoSuministro',
+                             rep=lambda x: x.ljust(22, ' '))
+        self.aparatos = []
         self.lista_medidas = []
         super(Medidas, self).__init__('Medidas', 'medidas')
