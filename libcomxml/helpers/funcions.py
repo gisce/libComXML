@@ -64,6 +64,8 @@ def codi_dh(tarifa, nlectures=6):
             return '6' 
         else:
             return '3'
+    elif tarifa in ('007', '008'):
+        return '8'
 
 def codi_refact(producte):
     """Retorna el codi ocsum de refacturació
