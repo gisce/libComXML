@@ -27,27 +27,25 @@ def extreu_periode(name):
         return name
     return name.split('(')[-1].split(')')[0]
 
-def codi_periode(tarifa, periode):
+def codi_periode(codi_dh, periode):
     """Retorna el codi OCSUM del periode segons
-    http://172.26.0.42:2500/wiki/show/Codificacio_Periodes_OCSUM
+       http://172.26.0.42:2500/wiki/show/Codificacio_Periodes_OCSUM
+       Taula 42 del document d'OCSUM:
+       OCSUM - E - Tablas de códigos 2012.05.23.doc
 
-    :param tarifa: codi ocsum de la tarifa
+    :param codi_dh: codi dh de la tarifa
     :param periode: nom del periode en format Px on x = {1...6}
     """
 
-    if tarifa in ('003', '011', '012', '013', '014', '015', '016'):
-        return '6%s' % (periode[-1],)
-    elif tarifa in ('001', '005'):
+    if codi_dh == '1':
         return '10'
-    elif tarifa in ('004', '006'):
-        if periode == 'P1':
-            return '01'
-        elif periode == 'P2':
-            return '03'
-
+    else:
+        return '%s%s' % (codi_dh, periode[-1])
 
 def codi_dh(tarifa, nlectures=6):
     """Retorna el codi ocsum de discriminació horaria
+       Taules 35 i 107 del document d'OCSUM:
+       OCSUM - E - Tablas de códigos 2012.05.23.doc
 
     :param tarifa: codi de la tarifa
     :param nlectures: nombre de lectures
@@ -57,13 +55,15 @@ def codi_dh(tarifa, nlectures=6):
         return '1'
     elif tarifa in ('004', '006'):
         return '2'
-    elif tarifa in ('012', '013', '014', '015', '016'):
+    elif tarifa in ('003', '012', '013', '014', '015', '016'):
         return '6'
-    elif tarifa in ('003', '011'):
+    elif tarifa == '011':
         if nlectures == 6:
-            return '4' 
+            return '6' 
         else:
             return '3'
+    elif tarifa in ('007', '008'):
+        return '8'
 
 def codi_refact(producte):
     """Retorna el codi ocsum de refacturació
