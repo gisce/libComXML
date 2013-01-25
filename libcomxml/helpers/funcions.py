@@ -29,7 +29,9 @@ def extreu_periode(name):
 
 def codi_periode(codi_dh, periode):
     """Retorna el codi OCSUM del periode segons
-    http://172.26.0.42:2500/wiki/show/Codificacio_Periodes_OCSUM
+       http://172.26.0.42:2500/wiki/show/Codificacio_Periodes_OCSUM
+       Taula 42 del document d'OCSUM:
+       OCSUM - E - Tablas de códigos 2012.05.23.doc
 
     :param codi_dh: codi dh de la tarifa
     :param periode: nom del periode en format Px on x = {1...6}
@@ -42,6 +44,8 @@ def codi_periode(codi_dh, periode):
 
 def codi_dh(tarifa, nlectures=6):
     """Retorna el codi ocsum de discriminació horaria
+       Taules 35 i 107 del document d'OCSUM:
+       OCSUM - E - Tablas de códigos 2012.05.23.doc
 
     :param tarifa: codi de la tarifa
     :param nlectures: nombre de lectures
