@@ -14,6 +14,12 @@ class Cabecera(XmlModel):
         codsol = ''.join([x for x in codsol if x.isalnum()])
         return codsol.ljust(12, '0')[:12]
 
+    def rep_fecha(self, fecha):
+        if len(fecha.strip()) == 10:
+            #We do not have time so add it
+            fecha += ' 00:00:00'
+        return 'T'.join(fecha.split(' '))
+
     def __init__(self):
         self.cabecera = XmlField('Cabecera')
         self.ree_emisora = XmlField('CodigoREEEmpresaEmisora')
@@ -23,7 +29,7 @@ class Cabecera(XmlModel):
         self.solicitud = XmlField('CodigoDeSolicitud', rep=self.rep_solicitud)
         self.secuencia = XmlField('SecuencialDeSolicitud')
         self.codigo = XmlField('Codigo', rep=lambda x: x.ljust(22, '0'))
-        self.fecha = XmlField('FechaSolicitud', rep=lambda x: '%sT00:00:00' % x)
+        self.fecha = XmlField('FechaSolicitud', rep=self.rep_fecha)
         self.version = XmlField('Version', value='02')
         super(Cabecera, self).__init__('Cabecera', 'cabecera')
 
