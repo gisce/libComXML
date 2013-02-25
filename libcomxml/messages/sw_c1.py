@@ -24,12 +24,37 @@ class DatosSolicitud(XmlModel):
         super(DatosSolicitud, self).__init__('DatosSolicitud', 'datos')
 
 
+class Direccion(XmlModel):
+    _sort_order = ('direccion', 'pais', 'provincia', 'municipio', 'poblacion',
+                   'tipovia', 'codpostal', 'calle', 'numfinca', 'dupfinca',
+                   'escalera', 'piso', 'puerta', 'tipoaclarador', 'aclarador')
+
+    def __init__(self):
+        self.direccion = XmlField('Direccion')
+        self.pais = XmlField('Pais')
+        self.provincia = XmlField('Provincia')
+        self.municipio = XmlField('Municipio')
+        self.poblacion = XmlField('Poblacion')
+        self.tipovia = XmlField('TipoVia')
+        self.codpostal = XmlField('CodPostal')
+        self.calle = XmlField('Calle')
+        self.numfinca = XmlField('NumeroFinca')
+        self.dupfinca = XmlField('DuplicadorFinca')
+        self.escalera = XmlField('Escalera')
+        self.piso = XmlField('Piso')
+        self.puerta = XmlField('Puerta')
+        self.tipoaclarador = XmlField('TipoAclaradorFinca')
+        self.aclarador = XmlField('AclaradorFinca')
+        super(Direccion, self).__init__('Direccion', 'direccion')
+
+
 class DireccionCorrespondencia(XmlModel):
-    _sort_order = ('direccion', 'indicador')
+    _sort_order = ('direccion', 'indicador', 'datos_direccion')
 
     def __init__(self):
         self.direccion = XmlField('DireccionCorrespondencia')
         self.indicador = XmlField('Indicador')
+        self.datos_direccion = Direccion()
         super(DireccionCorrespondencia, self).\
                         __init__('DireccionCorrespondencia', 'direccion')
 
@@ -116,13 +141,16 @@ class Telefono(XmlModel):
 
 
 class Cliente(XmlModel):
-    _sort_order = ('cliente', 'idcliente', 'nombre', 'telefono')
+    _sort_order = ('cliente', 'idcliente', 'nombre', 'telefono',
+                   'indicador', 'direccion')
 
     def __init__(self):
         self.cliente = XmlField('Cliente')
         self.idcliente = IdCliente()
         self.nombre = Nombre()
         self.telefono = Telefono()
+        self.indicador = XmlField('IndicadorTipoDireccion')
+        self.direccion = Direccion()
         super(Cliente, self).__init__('Cliente', 'cliente')
 
 
