@@ -221,7 +221,8 @@ class XmlModel(Model):
             if field != self.root:
                 if isinstance(field, XmlModel):
                     field.build_tree()
-                    if self.drop_empty and len(field.doc_root) == 0:
+                    if (self.drop_empty and field.drop_empty
+                        and len(field.doc_root) == 0):
                         continue
                     self.doc_root.append(field.doc_root)
                 elif isinstance(field, list):
