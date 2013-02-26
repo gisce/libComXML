@@ -99,6 +99,15 @@ class Modelo(XmlModel):
         self.model = XmlField('ModeloMarca')
         super(Modelo, self).__init__('Modelo', 'modelo')
 
+class Modelos(XmlModel):
+
+    _sort_order = ('modelos', 'modelo')
+
+    def __init__(self):
+        self.modelos = XmlField('ModelosAparato')
+        self.modelo = []
+        super(Modelos, self).__init__('ModelosAparato', 'modelos')
+
 class Aparato(XmlModel):
     _sort_order = ('aparato', 'tipo', 'marca', 'numserie',
                    'codigodh', 'integradores',
