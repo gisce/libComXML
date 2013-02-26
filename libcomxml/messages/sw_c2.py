@@ -24,6 +24,7 @@ class Medida(XmlModel):
         self.cp_installacio = XmlField('ControlPotenciaInstalacion')
         self.equip_aportat_client = XmlField('EquipoAportadoCliente')
         self.equip_installat_client = XmlField('EquipoInstaladoCliente')
+        self.tipus_equip = XmlField('TipoEquipoMedida')
         self.aparato = XmlField('ModelosAparato')
         super(Medida, self).__init__('Medida', 'medida')
 
