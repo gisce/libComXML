@@ -254,7 +254,7 @@ class RechazoATRDistribuidoras(XmlModel):
 
     def __init__(self):
         self.rechazoatr = XmlField('RechazoATRDistribuidoras')
-        self.rebuig = Rechazo()
+        self.rebuig = []
         super(RechazoATRDistribuidoras, self).\
                 __init__('RechazoATRDistribuidoras', 'rechazoatr')
 
@@ -453,7 +453,7 @@ class RechazoDeAnulacion(XmlModel):
 
     def __init__(self):
         self.rechazo = XmlField('RechazoDeAnulacion')
-        self.rebuig = Rechazo('RechazoAnulacion')
+        self.rebuig = []
         super(RechazoDeAnulacion, self).__init__('RechazoDeAnulacion', 'rechazo')
 
 
