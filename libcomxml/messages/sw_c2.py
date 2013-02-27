@@ -145,13 +145,13 @@ class MensajeAceptacionCambiodeComercializadoraConCambios(XmlModel):
 
 
 class IncidenciasATRDistribuidoras(XmlModel):
-    _sort_order = ('rechazoatr', 'rebuig')
+    _sort_order = ('incidenciaatr', 'incidencies')
 
     def __init__(self):
         self.incidenciaatr = XmlField('IncidenciasATRDistribuidoras')
         self.incidencies = [] #Mateixos camps que el rechazo, pero amb tag Incidencia
         super(IncidenciasATRDistribuidoras, self).\
-                __init__('RechazoATRDistribuidoras', 'rechazoatr')
+                __init__('IncidenciasATRDistribuidoras', 'incidenciaatr')
 
 
 class MensajeIncidenciasATRDistribuidoras(XmlModel):
