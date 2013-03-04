@@ -453,22 +453,24 @@ class RechazoDeAnulacion(XmlModel):
     _sort_order = ('rechazo', 'rebuig')
 
     def __init__(self):
-        self.rechazo = XmlField('RechazoDeAnulacion')
+        self.rechazoanu = XmlField('RechazoDeAnulacion')
         self.rebuig = []
-        super(RechazoDeAnulacion, self).__init__('RechazoDeAnulacion', 'rechazo')
+        super(RechazoDeAnulacion, self).__init__('RechazoDeAnulacion',
+                                                 'rechazoanu')
 
 
 class MensajeRechazoAnulacion(XmlModel):
-    _sort_order = ('mensaje', 'cabecera', 'rechazo')
+    _sort_order = ('mensaje', 'capcalera', 'rebuig')
 
     def __init__(self):
         self.doc_root = None
         self.mensaje = XmlField('MensajeRechazoAnulacion', attributes={
                           'xmlns': 'http://localhost/elegibilidad'})
-        self.cabecera = Cabecera()
-        self.rechazo = RechazoDeAnulacion()
-        super(MensajeRechazoAnulacion, self).__init__('MensajeRechazoAnulacion',
-                                                 'mensaje')
+        self.capcalera = Cabecera()
+        self.rebuig = RechazoDeAnulacion()
+        super(MensajeRechazoAnulacion,
+              self).__init__('MensajeRechazoAnulacion',
+                             'mensaje')
 
     def set_agente(self, agente):
         self.mensaje.attributes.update({'AgenteSolicitante': agente})
