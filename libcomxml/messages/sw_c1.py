@@ -254,7 +254,7 @@ class RechazoATRDistribuidoras(XmlModel):
 
     def __init__(self):
         self.rechazoatr = XmlField('RechazoATRDistribuidoras')
-        self.rebuig = Rechazo()
+        self.rebuig = []
         super(RechazoATRDistribuidoras, self).\
                 __init__('RechazoATRDistribuidoras', 'rechazoatr')
 
@@ -277,12 +277,13 @@ class MensajeRechazoATRDistribuidoras(XmlModel):
 
 
 class DatosActivacion(XmlModel):
-    _sort_order = ('dades', 'data', 'hora')
+    _sort_order = ('dades', 'data', 'hora', 'tipo')
     
     def __init__(self):
         self.dades = XmlField('DatosActivacion')
         self.data = XmlField('Fecha')
         self.hora = XmlField('Hora')
+        self.tipo = XmlField('TipoActivacion')
         super(DatosActivacion, self).__init__('DatosActivacion', 'dades')
 
 
@@ -452,22 +453,24 @@ class RechazoDeAnulacion(XmlModel):
     _sort_order = ('rechazo', 'rebuig')
 
     def __init__(self):
-        self.rechazo = XmlField('RechazoDeAnulacion')
-        self.rebuig = Rechazo('RechazoAnulacion')
-        super(RechazoDeAnulacion, self).__init__('RechazoDeAnulacion', 'rechazo')
+        self.rechazoanu = XmlField('RechazoDeAnulacion')
+        self.rebuig = []
+        super(RechazoDeAnulacion, self).__init__('RechazoDeAnulacion',
+                                                 'rechazoanu')
 
 
 class MensajeRechazoAnulacion(XmlModel):
-    _sort_order = ('mensaje', 'cabecera', 'rechazo')
+    _sort_order = ('mensaje', 'capcalera', 'rebuig')
 
     def __init__(self):
         self.doc_root = None
         self.mensaje = XmlField('MensajeRechazoAnulacion', attributes={
                           'xmlns': 'http://localhost/elegibilidad'})
-        self.cabecera = Cabecera()
-        self.rechazo = RechazoDeAnulacion()
-        super(MensajeRechazoAnulacion, self).__init__('MensajeRechazoAnulacion',
-                                                 'mensaje')
+        self.capcalera = Cabecera()
+        self.rebuig = RechazoDeAnulacion()
+        super(MensajeRechazoAnulacion,
+              self).__init__('MensajeRechazoAnulacion',
+                             'mensaje')
 
     def set_agente(self, agente):
         self.mensaje.attributes.update({'AgenteSolicitante': agente})

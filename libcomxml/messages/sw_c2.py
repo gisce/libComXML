@@ -7,7 +7,7 @@
 from ..core import XmlModel, XmlField
 
 from libcomxml.messages.switching import Cabecera, IdCliente
-from mesures import Aparatos
+from mesures import Aparatos, Modelos
 from sw_c1 import DatosSolicitud, Contrato, Cliente, DatosAceptacion
 from sw_c1 import DatosActivacion, PuntosDeMedida
 
@@ -16,7 +16,7 @@ class Medida(XmlModel):
 
     _sort_order = ('medida', 'cp_propietat', 'cp_installacio',
                    'equip_aportat_client', 'equip_installat_client',
-                   'tipus_equip', 'aparato')
+                   'tipus_equip', 'modelos')
 
     def __init__(self):
         self.medida = XmlField('Medida')
@@ -24,9 +24,55 @@ class Medida(XmlModel):
         self.cp_installacio = XmlField('ControlPotenciaInstalacion')
         self.equip_aportat_client = XmlField('EquipoAportadoCliente')
         self.equip_installat_client = XmlField('EquipoInstaladoCliente')
-        self.aparato = XmlField('ModelosAparato')
-        super(Medida, self).__init__('Medida', 'medida')
+        self.tipus_equip = XmlField('TipoEquipoMedida')
+        self.modelos = Modelos()
+        super(Medida, self).__init__('Medida', 'medida',
+                                     drop_empty=False)
 
+
+class RegistroDocumento(XmlModel):
+
+    _sort_order = ('registro', 'tipo', 'url')
+
+    def __init__(self):
+        self.registro = XmlField('RegistroDoc')
+        self.tipo = XmlField('TipoDocAportado')
+        self.url = XmlField('DireccionUrl')
+        super(RegistroDocumento, self).__init__('RegistroDocumento',
+                                                'registro')
+
+class RegistrosDocumento(XmlModel):
+
+    _sort_order = ('registros', 'registro')
+
+    def __init__(self):
+        self.registros = XmlField('RegistrosDocumento')
+        self.registro = []
+        super(RegistrosDocumento, self).__init__('RegistrosDocumento',
+                                                 'registros')
+
+class Comentario(XmlModel):
+
+    _sort_order = ('comentario', 'texto', 'fecha', 'hora')
+
+    def __init__(self):
+        self.comentario = XmlField('Comentario')
+        self.texto = XmlField('Texto')
+        self.fecha = XmlField('Fecha')
+        self.hora = XmlField('Hora')
+        super(Comentario, self).__init__('Comentario',
+                                         'comentario')
+
+class Comentarios(XmlModel):
+
+    _sort_order = ('comentarios', 'comentario')
+
+    def __init__(self):
+        self.comentarios = XmlField('Comentarios')
+        self.comentario = []
+        super(Comentarios, self).__init__('Comentarios',
+                                          'comentarios',
+                                          drop_empty=False)
 
 class CambiodeComercializadoraConCambios(XmlModel):
     _sort_order = ('cambio', 'solicitud', 'contrato', 'cliente',
@@ -40,14 +86,13 @@ class CambiodeComercializadoraConCambios(XmlModel):
         self.cliente = Cliente()
         self.medida = Medida()
         self.doctecnica = XmlField('DocTecnica')
-        self.comentario = XmlField('Comentarios')
-        self.registro = XmlField('RegistrosDocumento')
+        self.comentario = Comentarios()
+        self.registro = RegistrosDocumento()
         self.cnae = XmlField('CNAE')
         self.vivenda = XmlField('ViviendaHabitual')
         self.tipuscanvititular = XmlField('TipoCambioTitular')
         super(CambiodeComercializadoraConCambios, self).\
-                    __init__('CambiodeComercializadoraSinCambios', 'cambio', 
-                             drop_empty=False)
+                    __init__('CambiodeComercializadoraSinCambios', 'cambio')
 
 
 class MensajeCambiodeComercializadoraConCambios(XmlModel):
@@ -100,13 +145,13 @@ class MensajeAceptacionCambiodeComercializadoraConCambios(XmlModel):
 
 
 class IncidenciasATRDistribuidoras(XmlModel):
-    _sort_order = ('rechazoatr', 'rebuig')
+    _sort_order = ('incidenciaatr', 'incidencies')
 
     def __init__(self):
         self.incidenciaatr = XmlField('IncidenciasATRDistribuidoras')
         self.incidencies = [] #Mateixos camps que el rechazo, pero amb tag Incidencia
         super(IncidenciasATRDistribuidoras, self).\
-                __init__('RechazoATRDistribuidoras', 'rechazoatr')
+                __init__('IncidenciasATRDistribuidoras', 'incidenciaatr')
 
 
 class MensajeIncidenciasATRDistribuidoras(XmlModel):
