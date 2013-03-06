@@ -145,15 +145,17 @@ class Cliente(XmlModel):
     _sort_order = ('cliente', 'idcliente', 'nombre', 'titular_pagador',
                    'telefono', 'indicador', 'direccion', )
 
-    def __init__(self):
-        self.cliente = XmlField('Cliente')
+    def __init__(self, tagname=None):
+        if not tagname:
+            tagname = 'Cliente'
+        self.cliente = XmlField(tagname)
         self.idcliente = IdCliente()
         self.nombre = Nombre()
         self.telefono = Telefono()
         self.indicador = XmlField('IndicadorTipoDireccion')
         self.direccion = Direccion()
         self.titular_pagador = XmlField('TitularContratoVsTitularPago')
-        super(Cliente, self).__init__('Cliente', 'cliente')
+        super(Cliente, self).__init__(tagname, 'cliente')
 
 
 class CambiodeComercializadoraSinCambios(XmlModel):
