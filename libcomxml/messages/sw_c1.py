@@ -11,13 +11,14 @@ from mesures import Aparatos
 
 
 class DatosSolicitud(XmlModel):
-    _sort_order = ('datos', 'linea', 'solicitudadm', 'activacionlectura',
-                   'fechaprevista', 'sustituto')
+    _sort_order = ('datos', 'linea', 'solicitudadm', 'tipo_cambio',
+                   'activacionlectura', 'fechaprevista', 'sustituto')
     
     def __init__(self):
         self.datos = XmlField('DatosSolicitud')
         self.linea = XmlField('LineaNegocioElectrica')
         self.solicitudadm = XmlField('SolicitudAdmContractual')
+        self.tipo_cambio = XmlField('TipoCambioTitular')
         self.activacionlectura = XmlField('IndActivacionLectura')
         self.fechaprevista = XmlField('FechaPrevistaAccion')
         self.sustituto = XmlField('IndSustitutoMandatario') 
@@ -141,17 +142,20 @@ class Telefono(XmlModel):
 
 
 class Cliente(XmlModel):
-    _sort_order = ('cliente', 'idcliente', 'nombre', 'telefono',
-                   'indicador', 'direccion')
+    _sort_order = ('cliente', 'idcliente', 'nombre', 'titular_pagador',
+                   'telefono', 'indicador', 'direccion', )
 
-    def __init__(self):
-        self.cliente = XmlField('Cliente')
+    def __init__(self, tagname=None):
+        if not tagname:
+            tagname = 'Cliente'
+        self.cliente = XmlField(tagname)
         self.idcliente = IdCliente()
         self.nombre = Nombre()
         self.telefono = Telefono()
         self.indicador = XmlField('IndicadorTipoDireccion')
         self.direccion = Direccion()
-        super(Cliente, self).__init__('Cliente', 'cliente')
+        self.titular_pagador = XmlField('TitularContratoVsTitularPago')
+        super(Cliente, self).__init__(tagname, 'cliente')
 
 
 class CambiodeComercializadoraSinCambios(XmlModel):
