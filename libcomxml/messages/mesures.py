@@ -63,8 +63,8 @@ class NoICP(XmlModel):
         self.num_integradors = XmlField('NumIntegradores')
         self.constant_energia = XmlField('ConstanteEnergia', rep=lambda x: '%.3f' % x)
         self.constant_max = XmlField('ConstanteMaximetro', rep=lambda x: '%.3f' % x)
-        self.enters = XmlField('RuedasEnteras')
-        self.decimals = XmlField('RuedasDecimales')
+        self.enters = XmlField('RuedasEnteras', rep=lambda x: '%i' % x)
+        self.decimals = XmlField('RuedasDecimales', rep=lambda x: '%i' % x)
         super(NoICP, self).__init__('DatosAparatoNoICP', 'noicp')
 
 
@@ -98,6 +98,15 @@ class Modelo(XmlModel):
         self.marca = XmlField('Marca')
         self.model = XmlField('ModeloMarca')
         super(Modelo, self).__init__('Modelo', 'modelo')
+
+class Modelos(XmlModel):
+
+    _sort_order = ('modelos', 'modelo')
+
+    def __init__(self):
+        self.modelos = XmlField('ModelosAparato')
+        self.modelo = []
+        super(Modelos, self).__init__('ModelosAparato', 'modelos')
 
 class Aparato(XmlModel):
     _sort_order = ('aparato', 'tipo', 'marca', 'numserie',

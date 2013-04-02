@@ -11,25 +11,51 @@ from mesures import Aparatos
 
 
 class DatosSolicitud(XmlModel):
-    _sort_order = ('datos', 'linea', 'solicitudadm', 'activacionlectura',
-                   'fechaprevista', 'sustituto')
+    _sort_order = ('datos', 'linea', 'solicitudadm', 'tipo_cambio',
+                   'activacionlectura', 'fechaprevista', 'sustituto')
     
     def __init__(self):
         self.datos = XmlField('DatosSolicitud')
         self.linea = XmlField('LineaNegocioElectrica')
         self.solicitudadm = XmlField('SolicitudAdmContractual')
+        self.tipo_cambio = XmlField('TipoCambioTitular')
         self.activacionlectura = XmlField('IndActivacionLectura')
         self.fechaprevista = XmlField('FechaPrevistaAccion')
         self.sustituto = XmlField('IndSustitutoMandatario') 
         super(DatosSolicitud, self).__init__('DatosSolicitud', 'datos')
 
 
+class Direccion(XmlModel):
+    _sort_order = ('direccion', 'pais', 'provincia', 'municipio', 'poblacion',
+                   'tipovia', 'codpostal', 'calle', 'numfinca', 'dupfinca',
+                   'escalera', 'piso', 'puerta', 'tipoaclarador', 'aclarador')
+
+    def __init__(self):
+        self.direccion = XmlField('Direccion')
+        self.pais = XmlField('Pais')
+        self.provincia = XmlField('Provincia')
+        self.municipio = XmlField('Municipio')
+        self.poblacion = XmlField('Poblacion')
+        self.tipovia = XmlField('TipoVia')
+        self.codpostal = XmlField('CodPostal')
+        self.calle = XmlField('Calle')
+        self.numfinca = XmlField('NumeroFinca')
+        self.dupfinca = XmlField('DuplicadorFinca')
+        self.escalera = XmlField('Escalera')
+        self.piso = XmlField('Piso')
+        self.puerta = XmlField('Puerta')
+        self.tipoaclarador = XmlField('TipoAclaradorFinca')
+        self.aclarador = XmlField('AclaradorFinca')
+        super(Direccion, self).__init__('Direccion', 'direccion')
+
+
 class DireccionCorrespondencia(XmlModel):
-    _sort_order = ('direccion', 'indicador')
+    _sort_order = ('direccion', 'indicador', 'datos_direccion')
 
     def __init__(self):
         self.direccion = XmlField('DireccionCorrespondencia')
         self.indicador = XmlField('Indicador')
+        self.datos_direccion = Direccion()
         super(DireccionCorrespondencia, self).\
                         __init__('DireccionCorrespondencia', 'direccion')
 
@@ -116,14 +142,20 @@ class Telefono(XmlModel):
 
 
 class Cliente(XmlModel):
-    _sort_order = ('cliente', 'idcliente', 'nombre', 'telefono')
+    _sort_order = ('cliente', 'idcliente', 'nombre', 'titular_pagador',
+                   'telefono', 'indicador', 'direccion', )
 
-    def __init__(self):
-        self.cliente = XmlField('Cliente')
+    def __init__(self, tagname=None):
+        if not tagname:
+            tagname = 'Cliente'
+        self.cliente = XmlField(tagname)
         self.idcliente = IdCliente()
         self.nombre = Nombre()
         self.telefono = Telefono()
-        super(Cliente, self).__init__('Cliente', 'cliente')
+        self.indicador = XmlField('IndicadorTipoDireccion')
+        self.direccion = Direccion()
+        self.titular_pagador = XmlField('TitularContratoVsTitularPago')
+        super(Cliente, self).__init__(tagname, 'cliente')
 
 
 class CambiodeComercializadoraSinCambios(XmlModel):
@@ -226,7 +258,7 @@ class RechazoATRDistribuidoras(XmlModel):
 
     def __init__(self):
         self.rechazoatr = XmlField('RechazoATRDistribuidoras')
-        self.rebuig = Rechazo()
+        self.rebuig = []
         super(RechazoATRDistribuidoras, self).\
                 __init__('RechazoATRDistribuidoras', 'rechazoatr')
 
@@ -249,12 +281,13 @@ class MensajeRechazoATRDistribuidoras(XmlModel):
 
 
 class DatosActivacion(XmlModel):
-    _sort_order = ('dades', 'data', 'hora')
+    _sort_order = ('dades', 'data', 'hora', 'tipo')
     
     def __init__(self):
         self.dades = XmlField('DatosActivacion')
         self.data = XmlField('Fecha')
         self.hora = XmlField('Hora')
+        self.tipo = XmlField('TipoActivacion')
         super(DatosActivacion, self).__init__('DatosActivacion', 'dades')
 
 
@@ -424,22 +457,24 @@ class RechazoDeAnulacion(XmlModel):
     _sort_order = ('rechazo', 'rebuig')
 
     def __init__(self):
-        self.rechazo = XmlField('RechazoDeAnulacion')
-        self.rebuig = Rechazo('RechazoAnulacion')
-        super(RechazoDeAnulacion, self).__init__('RechazoDeAnulacion', 'rechazo')
+        self.rechazoanu = XmlField('RechazoDeAnulacion')
+        self.rebuig = []
+        super(RechazoDeAnulacion, self).__init__('RechazoDeAnulacion',
+                                                 'rechazoanu')
 
 
 class MensajeRechazoAnulacion(XmlModel):
-    _sort_order = ('mensaje', 'cabecera', 'rechazo')
+    _sort_order = ('mensaje', 'capcalera', 'rebuig')
 
     def __init__(self):
         self.doc_root = None
         self.mensaje = XmlField('MensajeRechazoAnulacion', attributes={
                           'xmlns': 'http://localhost/elegibilidad'})
-        self.cabecera = Cabecera()
-        self.rechazo = RechazoDeAnulacion()
-        super(MensajeRechazoAnulacion, self).__init__('MensajeRechazoAnulacion',
-                                                 'mensaje')
+        self.capcalera = Cabecera()
+        self.rebuig = RechazoDeAnulacion()
+        super(MensajeRechazoAnulacion,
+              self).__init__('MensajeRechazoAnulacion',
+                             'mensaje')
 
     def set_agente(self, agente):
         self.mensaje.attributes.update({'AgenteSolicitante': agente})
