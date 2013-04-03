@@ -9,3 +9,5 @@ libcomxml/messages/facturacio.py
 libcomxml/messages/mesures.py
 libcomxml/messages/switching.py
 libcomxml/messages/sw_c1.py
+libcomxml/messages/sw_c2.py
+libcomxml/messages/sw_m1.py
