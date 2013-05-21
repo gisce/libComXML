@@ -106,13 +106,24 @@ class Potencia(XmlModel):
                                 rep=lambda x: '%.2f' % x)
         super(Potencia, self).__init__('Potencia', 'potencia')
 
+
+class PeriodoExcesoPotencia(XmlModel):
+    _sort_order = ('periodo', 'valor')
+
+    def __init__(self):
+        self.periodo = XmlField('Periodo')
+        self.valor = XmlField('ValorExcesoPotencia', rep=lambda x: '%i' % x)
+        super(PeriodoExcesoPotencia, self).__init__('PeriodoExcesoPotencia', 'periodo')
+
+
 class ExcesoPotencia(XmlModel):
     _sort_order = ('exceso', 'periodos', 'importe')
 
     def __init__(self):
         self.exceso = XmlField('ExcesoPotencia')
         self.periodos = []
-        self.importe = XmlField('ImporteTotalExcesos')
+        self.importe = XmlField('ImporteTotalExcesos',
+                                        rep=lambda x: '%.4f' % x)
         super(ExcesoPotencia, self).__init__('ExcesoPotencia', 'exceso')
 
 
@@ -273,14 +284,16 @@ class Refacturacion(XmlModel):
 
 
 class FacturaATR(XmlModel):
-    _sort_order = ('factura', 'datosatr', 'potencia', 'energia', 'reactiva',
-                   'conceptoieiva', 'iese', 'alquileres', 'conceptoiva', 'iva',
+    _sort_order = ('factura', 'datosatr', 'potencia', 'exceso',
+                   'energia', 'reactiva', 'conceptoieiva', 'iese',
+                   'alquileres', 'conceptoiva', 'iva',
                    'refacturaciones', 'medidas')
 
     def __init__(self):
         self.factura = XmlField('FacturaATR')
         self.datosatr = DatosGeneralesFacturaATR()
         self.potencia = Potencia()
+        self.exceso = ExcesoPotencia()
         self.energia = EnergiaActiva()
         self.reactiva = EnergiaReactiva()
         self.conceptoieiva = []
