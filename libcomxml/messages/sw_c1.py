@@ -11,13 +11,15 @@ from mesures import Aparatos
 
 
 class DatosSolicitud(XmlModel):
-    _sort_order = ('datos', 'linea', 'solicitudadm', 'tipo_cambio',
+    _sort_order = ('datos', 'linea', 'solicitudadm',
+                   'periodicidad_facturacion', 'tipo_cambio',
                    'activacionlectura', 'fechaprevista', 'sustituto')
     
     def __init__(self):
         self.datos = XmlField('DatosSolicitud')
         self.linea = XmlField('LineaNegocioElectrica')
         self.solicitudadm = XmlField('SolicitudAdmContractual')
+        self.periodicidad_facturacion = XmlField('PeriodicidadFacturacion')
         self.tipo_cambio = XmlField('TipoCambioTitular')
         self.activacionlectura = XmlField('IndActivacionLectura')
         self.fechaprevista = XmlField('FechaPrevistaAccion')
