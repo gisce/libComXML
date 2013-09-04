@@ -92,11 +92,12 @@ class PotenciasContratadas(XmlModel):
 
 
 class CondicionesContractuales(XmlModel):
-    _sort_order = ('condicions', 'tarifa', 'potencies')
+    _sort_order = ('condicions', 'tarifa', 'periodicidad_facturacion', 'potencies')
 
     def __init__(self):
         self.condicions = XmlField('CondicionesContractuales')
         self.tarifa = XmlField('TarifaATR')
+        self.periodicidad_facturacion = XmlField('PeriodicidadFacturacion')
         self.potencies = PotenciasContratadas()
         super(CondicionesContractuales, self).\
                              __init__('CondicionesContractuales', 'condicions')
