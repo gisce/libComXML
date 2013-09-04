@@ -18,6 +18,7 @@ except ImportError:
     except ImportError:
         import xml.etree.ElementTree as etree
 
+xml_enc = 'UTF-8'
 
 class Field(object):
     """Base Field class
@@ -74,6 +75,8 @@ class XmlField(Field):
         :param attribute: the name of the parent field, for the XML repr.
         """
         self.parent = parent
+        self.xml_enc = xml_enc
+
         super(XmlField, self).__init__(name, value=value,
                                        attributes=attributes, rep=rep)
 
@@ -124,7 +127,7 @@ class XmlField(Field):
 
         It does not take care of the parent field, if any.
         """
-        return etree.tostring(self.element(), encoding='UTF-8')
+        return etree.tostring(self.element(), encoding=self.xml_enc)
 
     def __unicode__(self):
         return unicode(self.__str__(), 'utf-8')
@@ -207,7 +210,10 @@ class XmlModel(Model):
         self.doc_root = self.root.element()
         self.built = False
         self.drop_empty = drop_empty
+        self.xml_enc = xml_enc
 
+    def set_xml_encoding(self, encoding):
+        self.xml_enc = encoding
 
     def build_tree(self):
         """Bulids the tree with all the fields converted to Elements
@@ -258,7 +264,7 @@ class XmlModel(Model):
 
     def __str__(self):
         return etree.tostring(self.doc_root, xml_declaration=True,
-                              encoding='UTF-8')
+                              encoding=self.xml_enc)
 
     def __unicode__(self):
         return unicode(self.__str__(), 'utf-8')
