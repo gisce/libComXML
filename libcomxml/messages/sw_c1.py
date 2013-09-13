@@ -109,12 +109,12 @@ class Contrato(XmlModel):
                    'tipo', 'condiciones', 'direccion', 'consumoanual',
                    'tipoactivacion', 'fechaactivacion')
 
-    def __init__(self):
+    def __init__(self, tag_tipo='TipoContratoATR'):
         self.contrato = XmlField('Contrato')
         self.idcontrato = IdContrato()
         self.duracion = XmlField('Duracion')
         self.fechafin = XmlField('FechaFinalizacion')
-        self.tipo = XmlField('TipoContratoATR')
+        self.tipo = XmlField(tag_tipo)
         self.direccion = DireccionCorrespondencia()
         self.consumoanual = XmlField('ConsumoAnualEstimado')
         self.tipoactivacion = XmlField('TipoActivacionPrevista')
