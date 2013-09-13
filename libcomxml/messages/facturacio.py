@@ -52,6 +52,7 @@ class DatosFacturaATR(XmlModel):
         self.tipo = XmlField('TipoFacturacion')
         self.boe = XmlField('FechaBOE')
         self.tarifa = XmlField('CodigoTarifa')
+        self.mcp = XmlField('ModoControlPotencia')
         self.imab = XmlField('IndAltamedidoenBaja')
         self.periodo = Periodo()
         super(DatosFacturaATR, self).__init__('DatosFacturaATR', 'datos')
