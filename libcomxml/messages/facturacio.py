@@ -45,7 +45,7 @@ class Periodo(XmlModel):
 
 
 class DatosFacturaATR(XmlModel):
-    _sort_order = ('datos', 'tipo', 'boe', 'tarifa', 'imab', 'periodo')
+    _sort_order = ('datos', 'tipo', 'boe', 'tarifa', 'mcp', 'imab', 'periodo')
 
     def __init__(self):
         self.datos = XmlField('DatosFacturaATR')
