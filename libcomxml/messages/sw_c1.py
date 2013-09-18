@@ -13,7 +13,8 @@ from mesures import Aparatos
 class DatosSolicitud(XmlModel):
     _sort_order = ('datos', 'linea', 'solicitudadm',
                    'periodicidad_facturacion', 'tipo_cambio',
-                   'activacionlectura', 'fechaprevista', 'cnae', 'sustituto')
+                   'activacionlectura', 'fechaprevista', 'motivo',
+                   'cnae', 'sustituto')
     
     def __init__(self):
         self.datos = XmlField('DatosSolicitud')
@@ -23,7 +24,8 @@ class DatosSolicitud(XmlModel):
         self.tipo_cambio = XmlField('TipoCambioTitular')
         self.activacionlectura = XmlField('IndActivacionLectura')
         self.fechaprevista = XmlField('FechaPrevistaAccion')
-        self.cnae = XmlField('CNAE'),
+        self.motivo = XmlField('Motivo')
+        self.cnae = XmlField('CNAE')
         self.sustituto = XmlField('IndSustitutoMandatario') 
         super(DatosSolicitud, self).__init__('DatosSolicitud', 'datos')
 
