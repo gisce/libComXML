@@ -4,7 +4,7 @@ from ..core import XmlModel, XmlField
 
 from libcomxml.messages.switching import Cabecera
 from sw_c1 import DatosSolicitud, Cliente, DireccionCorrespondencia
-from sw_c1 import IdContrato
+from sw_c1 import IdContrato, DatosAceptacion
 from sw_c2 import Comentarios, RegistrosDocumento
 
 class BajaEnergia(XmlModel):
@@ -38,4 +38,33 @@ class MensajeBajaEnergia(XmlModel):
 
     def set_agente(self, agente):
         self.mensaje.attributes.update({'AgenteSolicitante': agente})
+        self.doc_root = self.root.element()
+        
+        
+class AceptacionBajaEnergia(XmlModel):
+    _sort_order = ('acceptacio', 'dades')
+
+    def __init__(self):
+        self.acceptacio = \
+                       XmlField('AceptacionBajaEnergia')
+        self.dades = DatosAceptacion()
+        super(AceptacionBajaEnergia, self).\
+         __init__('AceptacionModificacionDeATR', 'acceptacio')
+
+
+class MensajeAceptacionBajaEnergia(XmlModel):
+    _sort_order = ('missatge', 'capcalera', 'acceptacio')
+    
+    def __init__(self):
+        self.doc_root = None
+        self.missatge = XmlField('MensajeAceptacionBajaEnergia',
+                         attributes={'xmlns': 'http://localhost/elegibilidad'})
+        self.capcalera = Cabecera()
+        self.acceptacio = AceptacionBajaEnergia() 
+        super(MensajeAceptacionBajaEnergia, self).\
+                __init__('MensajeAceptacionBajaEnergia',
+                         'missatge')
+        
+    def set_agente(self, agente):
+        self.missatge.attributes.update({'AgenteSolicitante': agente})
         self.doc_root = self.root.element()
