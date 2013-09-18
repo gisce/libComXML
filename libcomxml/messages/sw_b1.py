@@ -3,19 +3,20 @@
 from ..core import XmlModel, XmlField
 
 from libcomxml.messages.switching import Cabecera
-from sw_c1 import DatosSolicitud, Contrato, Cliente, DatosAceptacion
-from sw_c1 import DatosActivacion, PuntosDeMedida
-from sw_c2 import Medida, Comentarios, RegistrosDocumento
+from sw_c1 import DatosSolicitud, Cliente, DireccionCorrespondencia
+from sw_c1 import IdContrato
+from sw_c2 import Comentarios, RegistrosDocumento
 
 class BajaEnergia(XmlModel):
-    _sort_order = ('cambio', 'solicitud', 'contrato', 'cliente',
-                   'comentario', 'registro')
+    _sort_order = ('cambio', 'solicitud', 'cliente', 'idcontrato',
+                   'direccion', 'comentario', 'registro')
 
     def __init__(self):
         self.cambio = XmlField('BajaEnergia')
         self.solicitud = DatosSolicitud()
-        self.contrato = Contrato()
         self.cliente = Cliente()
+        self.idcontrato = IdContrato()
+        self.direccion = DireccionCorrespondencia()
         self.comentario = Comentarios()
         self.registro = RegistrosDocumento()
         super(BajaEnergia, self).\
