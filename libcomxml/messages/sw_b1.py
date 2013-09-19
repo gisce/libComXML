@@ -42,14 +42,14 @@ class MensajeBajaEnergia(XmlModel):
         
         
 class AceptacionBajaEnergia(XmlModel):
-    _sort_order = ('acceptacio', 'dades')
+    _sort_order = ('acceptacio', 'dades', 'idcontracte')
 
     def __init__(self):
-        self.acceptacio = \
-                       XmlField('AceptacionBajaEnergia')
+        self.acceptacio = XmlField('AceptacionBajaEnergia')
         self.dades = DatosAceptacion()
+        self.idcontracte = IdContrato()
         super(AceptacionBajaEnergia, self).\
-         __init__('AceptacionModificacionDeATR', 'acceptacio')
+         __init__('AceptacionBajaEnergia', 'acceptacio')
 
 
 class MensajeAceptacionBajaEnergia(XmlModel):
@@ -60,7 +60,7 @@ class MensajeAceptacionBajaEnergia(XmlModel):
         self.missatge = XmlField('MensajeAceptacionBajaEnergia',
                          attributes={'xmlns': 'http://localhost/elegibilidad'})
         self.capcalera = Cabecera()
-        self.acceptacio = AceptacionBajaEnergia() 
+        self.acceptacio = AceptacionBajaEnergia()
         super(MensajeAceptacionBajaEnergia, self).\
                 __init__('MensajeAceptacionBajaEnergia',
                          'missatge')
