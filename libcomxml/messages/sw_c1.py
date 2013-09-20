@@ -289,12 +289,12 @@ class MensajeRechazoATRDistribuidoras(XmlModel):
 class DatosActivacion(XmlModel):
     _sort_order = ('dades', 'data', 'hora', 'tipo')
     
-    def __init__(self):
-        self.dades = XmlField('DatosActivacion')
+    def __init__(self, tagname='DatosActivacion'):
+        self.dades = XmlField(tagname)
         self.data = XmlField('Fecha')
         self.hora = XmlField('Hora')
         self.tipo = XmlField('TipoActivacion')
-        super(DatosActivacion, self).__init__('DatosActivacion', 'dades')
+        super(DatosActivacion, self).__init__(tagname, 'dades')
 
 
 class PuntoDeMedida(XmlModel):
