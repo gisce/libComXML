@@ -11,16 +11,21 @@ from mesures import Aparatos
 
 
 class DatosSolicitud(XmlModel):
-    _sort_order = ('datos', 'linea', 'solicitudadm', 'tipo_cambio',
-                   'activacionlectura', 'fechaprevista', 'sustituto')
+    _sort_order = ('datos', 'linea', 'solicitudadm',
+                   'periodicidad_facturacion', 'tipo_cambio',
+                   'activacionlectura', 'fechaprevista', 'motivo',
+                   'cnae', 'sustituto')
     
     def __init__(self):
         self.datos = XmlField('DatosSolicitud')
         self.linea = XmlField('LineaNegocioElectrica')
         self.solicitudadm = XmlField('SolicitudAdmContractual')
+        self.periodicidad_facturacion = XmlField('PeriodicidadFacturacion')
         self.tipo_cambio = XmlField('TipoCambioTitular')
         self.activacionlectura = XmlField('IndActivacionLectura')
         self.fechaprevista = XmlField('FechaPrevistaAccion')
+        self.motivo = XmlField('Motivo')
+        self.cnae = XmlField('CNAE')
         self.sustituto = XmlField('IndSustitutoMandatario') 
         super(DatosSolicitud, self).__init__('DatosSolicitud', 'datos')
 
@@ -90,11 +95,12 @@ class PotenciasContratadas(XmlModel):
 
 
 class CondicionesContractuales(XmlModel):
-    _sort_order = ('condicions', 'tarifa', 'potencies')
+    _sort_order = ('condicions', 'tarifa', 'periodicidad_facturacion', 'potencies')
 
     def __init__(self):
         self.condicions = XmlField('CondicionesContractuales')
         self.tarifa = XmlField('TarifaATR')
+        self.periodicidad_facturacion = XmlField('PeriodicidadFacturacion')
         self.potencies = PotenciasContratadas()
         super(CondicionesContractuales, self).\
                              __init__('CondicionesContractuales', 'condicions')
@@ -105,12 +111,12 @@ class Contrato(XmlModel):
                    'tipo', 'condiciones', 'direccion', 'consumoanual',
                    'tipoactivacion', 'fechaactivacion')
 
-    def __init__(self):
+    def __init__(self, tag_tipo='TipoContratoATR'):
         self.contrato = XmlField('Contrato')
         self.idcontrato = IdContrato()
         self.duracion = XmlField('Duracion')
         self.fechafin = XmlField('FechaFinalizacion')
-        self.tipo = XmlField('TipoContratoATR')
+        self.tipo = XmlField(tag_tipo)
         self.direccion = DireccionCorrespondencia()
         self.consumoanual = XmlField('ConsumoAnualEstimado')
         self.tipoactivacion = XmlField('TipoActivacionPrevista')
@@ -283,12 +289,12 @@ class MensajeRechazoATRDistribuidoras(XmlModel):
 class DatosActivacion(XmlModel):
     _sort_order = ('dades', 'data', 'hora', 'tipo')
     
-    def __init__(self):
-        self.dades = XmlField('DatosActivacion')
+    def __init__(self, tagname='DatosActivacion'):
+        self.dades = XmlField(tagname)
         self.data = XmlField('Fecha')
         self.hora = XmlField('Hora')
         self.tipo = XmlField('TipoActivacion')
-        super(DatosActivacion, self).__init__('DatosActivacion', 'dades')
+        super(DatosActivacion, self).__init__(tagname, 'dades')
 
 
 class PuntoDeMedida(XmlModel):
