@@ -269,6 +269,7 @@ class XmlModel(Model):
 
     def __str__(self):
         return etree.tostring(self.doc_root, xml_declaration=True,
+                              pretty_print=True,
                               encoding=self.xml_enc)
 
     def __unicode__(self):
