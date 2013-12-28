@@ -215,6 +215,7 @@ class XmlModel(Model):
         self.doc_root = self.root.element()
         self.built = False
         self.drop_empty = drop_empty
+        self._pretty_print = False
         self.xml_enc = get_xml_default_encoding()
 
     def set_xml_encoding(self, encoding):
@@ -267,8 +268,19 @@ class XmlModel(Model):
                     #    raise RuntimeError("No parent found!")
         self.built = True
 
+    @property
+    def pretty_print(self):
+        return self._pretty_print
+
+    @pretty_print.setter
+    def pretty_print(self, val):
+        if not isinstance(val, bool):
+            raise TypeError
+        self._pretty_print = val
+
     def __str__(self):
         return etree.tostring(self.doc_root, xml_declaration=True,
+                              pretty_print=self.pretty_print,
                               encoding=self.xml_enc)
 
     def __unicode__(self):
