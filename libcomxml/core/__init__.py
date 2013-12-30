@@ -30,8 +30,7 @@ class Field(object):
     """
 
     def __init__(self, name, value=None, attributes=None, rep=None):
-        """Constructor
-
+        """
         :param name: the name of the field super(Cabecera, self).__init__(name, root)
         :param value: the value of the field
         :param attributes: a dict with optional field attributes
@@ -73,11 +72,12 @@ class XmlField(Field):
     """
     def __init__(self, name, value=None, parent=None, attributes=None,
                  rep=None):
-        """Constructor
-
-        .. see: Field.__init__
-
-        :param attribute: the name of the parent field, for the XML repr.
+        """
+        :param name: the name of the field super(Cabecera, self).__init__(name, root)
+        :param value: the value of the field
+        :param parent: the parent node
+        :param attributes: a dict with optional field attributes
+        :param rep: function that returns the representation of 'value'
         """
         self.parent = parent
         self.xml_enc = get_xml_default_encoding()
@@ -145,10 +145,8 @@ class Model(object):
     __fields = None
     _sort_order = None
 
-
     def __init__(self, name):
         self.name = name
-
 
     def sorted_fields(self):
         """Returns a sorted list of the model fields' names.
@@ -156,7 +154,6 @@ class Model(object):
         if self._sort_order:
             return [field for field in self._sort_order if field in dir(self)]
         return self._fields.keys()
-
 
     def _get_fields(self):
         """Lookups the fields of the model and store them in a dict using the
@@ -176,7 +173,6 @@ class Model(object):
         return fields
 
     _fields = property(fget=_get_fields)
-
 
     def feed(self, vals):
         """Populates the vals dictionary to the value property of the fields.
@@ -200,6 +196,7 @@ class Model(object):
 
     def __unicode__(self):
         return unicode(self.__str__(), 'utf8')
+
 
 class XmlModel(Model):
     """Model with XML capabilities
@@ -285,5 +282,3 @@ class XmlModel(Model):
 
     def __unicode__(self):
         return unicode(self.__str__(), self.xml_enc)
-
-
