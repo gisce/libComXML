@@ -28,19 +28,22 @@ from libcomxml.core import XmlModel, XmlField
 
 
 class Cd(XmlModel):
-    def __init__(self, 'CD'):
-        data = XmlField('CD')
-        title = XmlField('TITLE')
-        artist = XmlField('ARTIST')
-        country = XmlField('COUNTRY')
-        company = XmlField('COMPANY')
-        price = XmlField('PRICE')
-        year = XmlField('YEAR')
+    def __init__(self):
+        self.data = XmlField('CD')
+        self.title = XmlField('TITLE')
+        self.artist = XmlField('ARTIST')
+        self.country = XmlField('COUNTRY')
+        self.company = XmlField('COMPANY')
+        self.price = XmlField('PRICE')
+        self.year = XmlField('YEAR')
+        super(Cd, self).__init__('CD', 'data')
 
 
 class Catalog(XmlModel):
-    def __init__(self, 'CATALOG'):
+    def __init__(self):
+        self.catalog = XmlField('CATALOG')
         self.cds = []
+        super(Catalog, self).__init__('CATALOG', 'catalog')
 
 
 catalog = Catalog()
