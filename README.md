@@ -1,5 +1,7 @@
 # libComXML
 
+[![Build Status](https://travis-ci.org/gisce/libComXML.png?branch=master)](https://travis-ci.org/gisce/libComXML)
+
 This library permits XML generation from Python objects
 
 ```xml
