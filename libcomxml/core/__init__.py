@@ -235,7 +235,8 @@ class XmlModel(Model):
                         continue
                     self.doc_root.append(field.doc_root)
                 elif isinstance(field, list):
-                    # we just allow XmlFields and XmlModels in the list
+                    # we just allow XmlFields and XmlModels
+                    # Also xml as str for memory management
                     for item in field:
                         if isinstance(item, XmlField):
                             ele = item.element()
@@ -247,6 +248,9 @@ class XmlModel(Model):
                             if self.drop_empty and len(item.doc_root) == 0:
                                 continue
                             self.doc_root.append(item.doc_root)
+                        elif isinstance(item, str):
+                            ele = etree.fromstring(item)
+                            self.doc_root.append(ele)
                         item = None
                 elif (field.parent or self.root.name) == self.root.name:
                     ele = field.element()
