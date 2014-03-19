@@ -17,12 +17,17 @@ except ImportError:
         import xml.etree.cElementTree as etree
     except ImportError:
         import xml.etree.ElementTree as etree
+import re
 
 
 def get_xml_default_encoding():
     xml_enc = 'UTF-8'
 
     return xml_enc
+
+
+def clean_xml(xml_string):
+    return re.sub('\s+<', '<', xml_string)
 
 
 class Field(object):
@@ -249,7 +254,7 @@ class XmlModel(Model):
                                 continue
                             self.doc_root.append(item.doc_root)
                         elif isinstance(item, str):
-                            ele = etree.fromstring(item)
+                            ele = etree.fromstring(clean_xml(item))
                             self.doc_root.append(ele)
                         item = None
                 elif (field.parent or self.root.name) == self.root.name:
