@@ -22,6 +22,14 @@ This library permits XML generation from Python objects
     <PRICE>9.90</PRICE>
     <YEAR>1988</YEAR>
   </CD>
+  <CD>
+    <TITLE>Tupelo Honey</TITLE>
+    <ARTIST>Van Morrison</ARTIST>
+    <COUNTRY>UK</COUNTRY>
+    <COMPANY>Polydor</COMPANY>
+    <PRICE>8.20</PRICE>
+    <YEAR>1971</YEAR>
+  </CD>
 </CATALOG>
 ```
 
@@ -69,6 +77,16 @@ cd.feed({
     'year': 1988
 })
 catalog.cds.append(cd)
+# Also we can add XML String directly as a new element
+cd = """<CD>
+        <TITLE>Tupelo Honey</TITLE>
+        <ARTIST>Van Morrison</ARTIST>
+        <COUNTRY>UK</COUNTRY>
+        <COMPANY>Polydor</COMPANY>
+        <PRICE>8.20</PRICE>
+        <YEAR>1971</YEAR>
+        </CD>"""
+self.catalog.cds.append(cd)
 catalog.build_tree()
 print catalog
 ```
