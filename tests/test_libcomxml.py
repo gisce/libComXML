@@ -2,7 +2,7 @@
 from . import unittest
 import locale
 import re
-from libcomxml.core import XmlField, XmlModel
+from libcomxml.core import XmlField, XmlModel, clean_xml
 
 
 class Cd(XmlModel):
@@ -22,6 +22,31 @@ class Catalog(XmlModel):
         self.catalog = XmlField('CATALOG')
         self.cds = []
         super(Catalog, self).__init__('CATALOG', 'catalog')
+
+
+class TestCleaned(unittest.TestCase):
+    def setUp(self):
+        self.xml = "<?xml version='1.0' encoding='UTF-8'?>\n"
+        self.xml += """
+<CATALOG>
+    <CD>
+        <ARTIST>Bob Dylan</ARTIST>
+        <ARTIST>Bob Dylan</ARTIST>
+        <COMPANY>Columbia</COMPANY>
+        <TITLE>Empire Burlesque</TITLE>
+        <YEAR>1985</YEAR>
+        <PRICE>10.9</PRICE>
+    </CD>
+</CATALOG>"""
+        self.cleaned_xml = "<?xml version='1.0' encoding='UTF-8'?>"
+        self.cleaned_xml += "<CATALOG><CD><ARTIST>Bob Dylan</ARTIST>"
+        self.cleaned_xml += "<ARTIST>Bob Dylan</ARTIST>"
+        self.cleaned_xml += "<COMPANY>Columbia</COMPANY>"
+        self.cleaned_xml += "<TITLE>Empire Burlesque</TITLE><YEAR>1985</YEAR>"
+        self.cleaned_xml += "<PRICE>10.9</PRICE></CD></CATALOG>"
+
+    def test_clean(self):
+        self.assertEqual(clean_xml(self.xml), self.cleaned_xml)
 
 
 class TestFields(unittest.TestCase):
@@ -76,6 +101,14 @@ class TestModel(unittest.TestCase):
         <YEAR>1988</YEAR>
         <PRICE>9.9</PRICE>
     </CD>
+    <CD>
+        <TITLE>Tupelo Honey</TITLE>
+        <ARTIST>Van Morrison</ARTIST>
+        <COUNTRY>UK</COUNTRY>
+        <COMPANY>Polydor</COMPANY>
+        <PRICE>8.20</PRICE>
+        <YEAR>1971</YEAR>
+    </CD>
 </CATALOG>""")
         self.catalog = Catalog()
         cd = Cd()
@@ -99,7 +132,16 @@ class TestModel(unittest.TestCase):
             'year': 1988
         })
         self.catalog.cds.append(cd)
+        cd = """<CD>
+        <TITLE>Tupelo Honey</TITLE>
+        <ARTIST>Van Morrison</ARTIST>
+        <COUNTRY>UK</COUNTRY>
+        <COMPANY>Polydor</COMPANY>
+        <PRICE>8.20</PRICE>
+        <YEAR>1971</YEAR>
+        </CD>"""
+        self.catalog.cds.append(cd)
         self.catalog.build_tree()
 
     def test_xml(self):
-         self.assertEqual(str(self.catalog), self.xml)
+        self.assertEqual(str(self.catalog), self.xml)
