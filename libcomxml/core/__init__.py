@@ -228,6 +228,7 @@ class XmlModel(Model):
         """
         if self.built:
             return
+        self.doc_root = self.root.element()
         for key in self.sorted_fields():
             if not key in self._fields:
                 continue
