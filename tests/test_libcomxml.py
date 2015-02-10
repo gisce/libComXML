@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
-from . import unittest
+import sys
+
+if sys.version_info[:2] < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
 import locale
 import re
 from libcomxml.core import XmlField, XmlModel, clean_xml
