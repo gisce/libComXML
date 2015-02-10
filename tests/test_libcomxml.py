@@ -145,3 +145,43 @@ class TestModel(unittest.TestCase):
 
     def test_xml(self):
         self.assertEqual(str(self.catalog), self.xml)
+
+
+class TestEmpty(unittest.TestCase):
+
+    def setUp(self):
+        self.xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        self.xml += "<test>foo</test><link href=\"http://example.com\"/>"
+        self.xml += "<entry><val>1</val></entry><entry><val>2</val></entry>"
+        self.xml += "</feed>"
+
+    def test_empty(self):
+
+        class Feed(XmlModel):
+            def __init__(self):
+                self._sort_order = ('test', 'link', 'entries')
+                self.rss_feed = XmlField('feed')
+                self.link = XmlField('link')
+                self.test = XmlField('test')
+                self.entries = []
+                super(Feed, self).__init__('feed', 'rss_feed', drop_empty=False)
+
+        class Entry(XmlModel):
+            def __init__(self):
+                self.entry = XmlField('entry')
+                self.val = XmlField('val')
+                super(Entry, self).__init__('entry', 'entry')
+
+
+        feed = Feed()
+        feed.link.attributes.update({'href': 'http://example.com'})
+        feed.feed({'test': 'foo'})
+
+        for elem in (1, 2):
+            entry = Entry()
+            entry.feed({'val': elem})
+            feed.entries.append(entry)
+
+        feed.build_tree()
+
+        self.assertEqual(self.xml, str(feed))

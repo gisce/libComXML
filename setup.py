@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 setup(
     name='libComXML',
     version='2.1.0',
-    url='http://git.gisce.lan/libComXML.git',
+    url='https://github.com/gisce/libComXML',
     author='GISCE Enginyeria, SL',
     author_email='devel@gisce.net',
     packages=find_packages(),
