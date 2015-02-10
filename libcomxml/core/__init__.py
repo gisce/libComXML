@@ -76,7 +76,7 @@ class XmlField(Field):
     """Field with XML capabilities
     """
     def __init__(self, name, value=None, parent=None, attributes=None,
-                 rep=None):
+                 rep=None, namespace=None):
         """
         :param name: the name of the field super(Cabecera, self).__init__(name, root)
         :param value: the value of the field
@@ -86,6 +86,7 @@ class XmlField(Field):
         """
         self.parent = parent
         self.xml_enc = get_xml_default_encoding()
+        self.namespace = namespace
 
         super(XmlField, self).__init__(name, value=value,
                                        attributes=attributes, rep=rep)
@@ -125,12 +126,15 @@ class XmlField(Field):
         :param parent: an etree Element to be used as parent for this one
         """
         if parent is not None:
-            ele = etree.SubElement(parent, self.name, **self.attributes)
+            if self.namespace:
+                name = '{%s}%s' % (self.namespace, self.name)
+            else:
+                name = self.name
+            ele = etree.SubElement(parent, name, **self.attributes)
         else:
             ele = etree.Element(self.name, **self.attributes)
         ele = self._parse_value(ele)
         return ele
-
 
     def __str__(self):
         """Returns the XML repr of the field
@@ -230,7 +234,7 @@ class XmlModel(Model):
             return
         self.doc_root = self.root.element()
         for key in self.sorted_fields():
-            if not key in self._fields:
+            if key not in self._fields:
                 continue
             field = self._fields[key]
             if field != self.root:

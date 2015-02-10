@@ -213,3 +213,67 @@ class RootWithAttributes(unittest.TestCase):
         l.build_tree()
 
         self.assertEqual(self.xml, str(l))
+
+
+class Namespaces(unittest.TestCase):
+    def setUp(self):
+        self.xml = "<?xml version='1.0' encoding='UTF-8'?>\n"
+        self.xml += "<rss "
+        self.xml += "xmlns:opensearch=\"http://a9.com/-/spec/opensearch/1.1/\" "
+        self.xml += "xmlns:atom=\"http://www.w3.org/2005/Atom\" "
+        self.xml += "version=\"2.0\">"
+        self.xml += "<channel><link>http://example.com/New+York+history</link>"
+        self.xml += "<atom:link "
+        self.xml += "href=\"http://example.com/opensearchdescription.xml\" "
+        self.xml += "rel=\"search\" "
+        self.xml += "type=\"application/opensearchdescription+xml\"/>"
+        self.xml += "<opensearch:totalResults>4230000</opensearch:totalResults>"
+        self.xml += "</channel>"
+        self.xml += "</rss>"
+
+    def test_namesapces_root(self):
+
+
+        NAMESPACES = {
+            'opensearch': 'http://a9.com/-/spec/opensearch/1.1/',
+            'atom': 'http://www.w3.org/2005/Atom'
+        }
+
+        class Channel(XmlModel):
+
+            _sort_order = ('link', 'atom_link', 'os_total_results')
+
+            def __init__(self):
+                self.channel = XmlField('channel')
+                self.link = XmlField('link')
+                self.atom_link = XmlField(
+                    'link', namespace=NAMESPACES['atom']
+                )
+                self.os_total_results = XmlField(
+                    'totalResults', namespace=NAMESPACES['opensearch']
+                )
+                super(Channel, self).__init__('Channel', 'channel', drop_empty=False)
+
+        class Rss(XmlModel):
+
+            _sort_order = ('channel', )
+
+            def __init__(self):
+                self.tag = XmlField('rss', attributes={
+                    'version': '2.0', 'nsmap': NAMESPACES
+                })
+                self.channel = Channel()
+                super(Rss, self).__init__('RSS', 'tag', drop_empty=False)
+
+        rss = Rss()
+        rss.channel.atom_link.attributes.update({
+            'rel': 'search',
+            'type': 'application/opensearchdescription+xml',
+            'href': 'http://example.com/opensearchdescription.xml'
+        })
+        rss.channel.feed({
+            'link': 'http://example.com/New+York+history',
+            'os_total_results': 4230000,
+        })
+        rss.build_tree()
+        self.assertEqual(self.xml, str(rss))
