@@ -190,3 +190,26 @@ class TestEmpty(unittest.TestCase):
         feed.build_tree()
 
         self.assertEqual(self.xml, str(feed))
+
+
+class RootWithAttributes(unittest.TestCase):
+
+    def setUp(self):
+        self.xml = "<?xml version='1.0' encoding='UTF-8'?>\n"
+        self.xml += "<link href=\"http://example.com\"/>"
+
+    def test_root_with_attributes(self):
+
+        class Link(XmlModel):
+
+            _sort_order = ('tag', )
+
+            def __init__(self):
+                self.tag = XmlField('link')
+                super(Link, self).__init__('Link', 'tag', drop_empty=False)
+
+        l = Link()
+        l.tag.attributes.update({'href': 'http://example.com'})
+        l.build_tree()
+
+        self.assertEqual(self.xml, str(l))
