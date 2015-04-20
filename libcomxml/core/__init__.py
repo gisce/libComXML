@@ -76,7 +76,7 @@ class XmlField(Field):
     """Field with XML capabilities
     """
     def __init__(self, name, value=None, parent=None, attributes=None,
-                 rep=None, namespace=None, nsmap=None):
+                 rep=None, namespace=None):
         """
         :param name: the name of the field super(Cabecera, self).__init__(name, root)
         :param value: the value of the field
@@ -84,12 +84,10 @@ class XmlField(Field):
         :param attributes: a dict with optional field attributes
         :param rep: function that returns the representation of 'value'
         :param namespace: namespace associated with element
-        :param nsmap: dict with namespace mapping
         """
         self.parent = parent
         self.xml_enc = get_xml_default_encoding()
         self.namespace = namespace
-        self.nsmap = nsmap
 
         super(XmlField, self).__init__(name, value=value,
                                        attributes=attributes, rep=rep)
@@ -133,11 +131,9 @@ class XmlField(Field):
         else:
             name = self.name
         if parent is not None:
-            ele = etree.SubElement(parent, name, nsmap=self.nsmap,
-                                   **self.attributes)
+            ele = etree.SubElement(parent, name, **self.attributes)
         else:
-            ele = etree.Element(name, nsmap=self.nsmap,
-                                **self.attributes)
+            ele = etree.Element(name, **self.attributes)
         ele = self._parse_value(ele)
         return ele
 
