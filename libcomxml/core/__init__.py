@@ -34,8 +34,7 @@ class Field(object):
     """Base Field class
     """
 
-    def __init__(self, name, value=None, attributes=None,
-                 rep=None):
+    def __init__(self, name, value=None, attributes=None, rep=None):
         """
         :param name: the name of the field super(Cabecera, self).__init__(name, root)
         :param value: the value of the field
