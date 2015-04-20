@@ -83,6 +83,7 @@ class XmlField(Field):
         :param parent: the parent node
         :param attributes: a dict with optional field attributes
         :param rep: function that returns the representation of 'value'
+        :param namespace: namespace associated with element
         """
         self.parent = parent
         self.xml_enc = get_xml_default_encoding()
@@ -125,14 +126,14 @@ class XmlField(Field):
 
         :param parent: an etree Element to be used as parent for this one
         """
+        if self.namespace:
+            name = '{%s}%s' % (self.namespace, self.name)
+        else:
+            name = self.name
         if parent is not None:
-            if self.namespace:
-                name = '{%s}%s' % (self.namespace, self.name)
-            else:
-                name = self.name
             ele = etree.SubElement(parent, name, **self.attributes)
         else:
-            ele = etree.Element(self.name, **self.attributes)
+            ele = etree.Element(name, **self.attributes)
         ele = self._parse_value(ele)
         return ele
 
