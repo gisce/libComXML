@@ -1,4 +1,4 @@
-.. marshmallow documentation master file
+.. LibComXML documentation master file
 
 ******************************************
 LibComXML: Python object XML serialization
