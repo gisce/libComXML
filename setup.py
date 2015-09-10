@@ -10,5 +10,5 @@ setup(
     packages=find_packages(),
     install_requires=['lxml'],
     license='None',
-    description='libComXML'
+    description='This library permits XML generation from Python objects'
 )
