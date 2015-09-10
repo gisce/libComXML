@@ -1,2 +1,2 @@
-include AUTHOR COPYING README.md
+include AUTHOR COPYING README.rst
 recursive-include libcomxml *.py
