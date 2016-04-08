@@ -66,7 +66,7 @@ class Field(object):
 
 
     def __str__(self):
-        return (u"<Field:%s>" % (self.name,)).encode('utf8')
+        return (u"<Field:{0!s}>".format(self.name)).encode('utf8')
 
     def __unicode__(self):
         return unicode(self.__str__(), 'utf8')
@@ -117,7 +117,7 @@ class XmlField(Field):
             elif isinstance(value, list):
                 self._parse_list(element, value)
             else:  # default: cast to unicode
-                element.text = u"%s" % value
+                element.text = u"{0!s}".format(value)
 
         return element
 
@@ -127,7 +127,7 @@ class XmlField(Field):
         :param parent: an etree Element to be used as parent for this one
         """
         if self.namespace:
-            name = '{%s}%s' % (self.namespace, self.name)
+            name = '{{{0!s}}}{1!s}'.format(self.namespace, self.name)
         else:
             name = self.name
         if parent is not None:
@@ -202,7 +202,7 @@ class Model(object):
 
 
     def __str__(self):
-        return (u"<Model:%s>" % (self.name,)).encode('utf8')
+        return (u"<Model:{0!s}>".format(self.name)).encode('utf8')
 
     def __unicode__(self):
         return unicode(self.__str__(), 'utf8')

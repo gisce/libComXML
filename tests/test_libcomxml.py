@@ -76,7 +76,7 @@ class TestFields(unittest.TestCase):
                                                      grouping=True)
         self.assertEqual(formated, self.field.element().text)
         self.assertEqual(str(self.field),
-                         '<Quantity uom="unit">%s</Quantity>' % formated)
+                         '<Quantity uom="unit">{0!s}</Quantity>'.format(formated))
 
     def test_update_attributes(self):
         self.field.attributes.update({'uom': 'kg'})
