@@ -10,5 +10,6 @@ setup(
     packages=find_packages(),
     install_requires=['lxml'],
     license='None',
-    description='This library permits XML generation from Python objects'
+    description='This library permits XML generation from Python objects',
+    test_suite='tests'
 )

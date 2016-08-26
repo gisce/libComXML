@@ -5,6 +5,10 @@ libComXML
 .. image:: https://travis-ci.org/gisce/libComXML.png?branch=master
     :target: https://travis-ci.org/gisce/libComXML
     :alt: Build Status
+    
+.. image:: https://coveralls.io/repos/github/gisce/libComXML/badge.svg?branch=master
+    :target: https://coveralls.io/github/gisce/libComXML?branch=master
+
 
 This library permits XML generation from Python objects
 
