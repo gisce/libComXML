@@ -1,11 +1,19 @@
 language: python
 python:
-  - "2.7"
+- '2.7'
 install:
-  - "pip install ."
-  - "pip install coveralls"
+- pip install .
+- pip install coveralls
 script:
-  - coverage run setup.py test
+- coverage run setup.py test
 after_success:
-  - coveralls
-  - coverage report
+- coveralls
+- coverage report
+deploy:
+  provider: pypi
+  user: gisce
+  password:
+    secure: DnHZXDNTsrnnnc/cB+wYOGklsZ2zrnoss/PKSuYsbTSh7AAOU/8BCXfebB095zjLTBx7pGPhrLFM/sTuxAs1PXDT6s6q66w7hKVupIeU+232kRkneBcHOAjfc9HhrWwfrAhw5NIkRy8pA2xOkI54leopW6zA4CZXmIM71lsHIuY=
+  on:
+    tags: true
+    repo: gisce/libComXML
