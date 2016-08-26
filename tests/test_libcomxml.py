@@ -219,8 +219,8 @@ class Namespaces(unittest.TestCase):
     def setUp(self):
         self.xml = "<?xml version='1.0' encoding='UTF-8'?>\n"
         self.xml += "<rss "
-        self.xml += "xmlns:opensearch=\"http://a9.com/-/spec/opensearch/1.1/\" "
         self.xml += "xmlns:atom=\"http://www.w3.org/2005/Atom\" "
+        self.xml += "xmlns:opensearch=\"http://a9.com/-/spec/opensearch/1.1/\" "
         self.xml += "version=\"2.0\">"
         self.xml += "<channel><link>http://example.com/New+York+history</link>"
         self.xml += "<atom:link "
