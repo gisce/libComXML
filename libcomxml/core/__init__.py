@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from builtins import str
+
 
 """
 Core classes for libComXML
@@ -69,7 +71,7 @@ class Field(object):
         return (u"<Field:{0!s}>".format(self.name)).encode('utf8')
 
     def __unicode__(self):
-        return unicode(self.__str__(), 'utf8')
+        return self.__str__()
 
 
 class XmlField(Field):
@@ -108,7 +110,7 @@ class XmlField(Field):
             value = self.value
         if value:
             if isinstance(value, str):
-                element.text = unicode(value, 'utf8')
+                element.text = u"%s" % str(value)
             elif isinstance(value, XmlField):
                 element.append(value.element())
             elif isinstance(value, XmlModel):
@@ -145,7 +147,7 @@ class XmlField(Field):
         return etree.tostring(self.element(), encoding=self.xml_enc)
 
     def __unicode__(self):
-        return unicode(self.__str__(), self.xml_enc)
+        return  u"%s" % str(self.__str__())
 
 
 class Model(object):
@@ -205,7 +207,7 @@ class Model(object):
         return (u"<Model:{0!s}>".format(self.name)).encode('utf8')
 
     def __unicode__(self):
-        return unicode(self.__str__(), 'utf8')
+        return self.__str__()
 
 
 class XmlModel(Model):
@@ -296,4 +298,4 @@ class XmlModel(Model):
                               encoding=self.xml_enc)
 
     def __unicode__(self):
-        return unicode(self.__str__(), self.xml_enc)
+        return u"%s" % str(self.__str__())
