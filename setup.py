@@ -11,5 +11,11 @@ setup(
     install_requires=['lxml', 'six'],
     license='None',
     description='This library permits XML generation from Python objects',
-    test_suite='tests'
+    test_suite='tests',
+    classifiers=[
+        'Topic :: Text Processing :: Markup :: XML',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.5'
+    ]
 )
