@@ -8,6 +8,9 @@ This package contains the very basic classes needed for working with the
 models that need to be mapped to XML.
 
 """
+from __future__ import absolute_import, unicode_literals
+import six
+
 
 # etree import chain
 try:
@@ -30,6 +33,7 @@ def clean_xml(xml_string):
     return re.sub('\s+<', '<', xml_string)
 
 
+@six.python_2_unicode_compatible
 class Field(object):
     """Base Field class
     """
@@ -55,23 +59,18 @@ class Field(object):
         # else, return the raw value
         return self.__value
 
-
     def set_value(self, value):
         """self.__value setter
         """
         self.__value = value
 
-
     value = property(get_value, set_value)
 
-
     def __str__(self):
-        return (u"<Field:{0!s}>".format(self.name)).encode('utf8')
-
-    def __unicode__(self):
-        return unicode(self.__str__(), 'utf8')
+        return six.text_type("<Field:{0!s}>".format(self.name))
 
 
+@six.python_2_unicode_compatible
 class XmlField(Field):
     """Field with XML capabilities
     """
@@ -107,7 +106,7 @@ class XmlField(Field):
         if not value:
             value = self.value
         if value:
-            if isinstance(value, str):
+            if six.PY2 and isinstance(value, str):
                 element.text = unicode(value, 'utf8')
             elif isinstance(value, XmlField):
                 element.append(value.element())
@@ -138,16 +137,12 @@ class XmlField(Field):
         return ele
 
     def __str__(self):
-        """Returns the XML repr of the field
-
-        It does not take care of the parent field, if any.
-        """
-        return etree.tostring(self.element(), encoding=self.xml_enc)
-
-    def __unicode__(self):
-        return unicode(self.__str__(), self.xml_enc)
+        return six.text_type(
+            etree.tostring(self.element(), encoding='unicode')
+        )
 
 
+@six.python_2_unicode_compatible
 class Model(object):
     """Base Model class
     """
@@ -200,12 +195,8 @@ class Model(object):
                 else:
                     setattr(self, key, vals[key])
 
-
     def __str__(self):
-        return (u"<Model:{0!s}>".format(self.name)).encode('utf8')
-
-    def __unicode__(self):
-        return unicode(self.__str__(), 'utf8')
+        return six.text_type("<Model:{0!s}>".format(self.name))
 
 
 class XmlModel(Model):
@@ -259,7 +250,7 @@ class XmlModel(Model):
                             if self.drop_empty and len(item.doc_root) == 0:
                                 continue
                             self.doc_root.append(item.doc_root)
-                        elif isinstance(item, str):
+                        elif isinstance(item, six.text_type):
                             ele = etree.fromstring(clean_xml(item))
                             self.doc_root.append(ele)
                         item = None
@@ -290,10 +281,26 @@ class XmlModel(Model):
             raise TypeError
         self._pretty_print = val
 
-    def __str__(self):
-        return etree.tostring(self.doc_root, xml_declaration=True,
-                              pretty_print=self.pretty_print,
-                              encoding=self.xml_enc)
-
     def __unicode__(self):
-        return unicode(self.__str__(), self.xml_enc)
+        return etree.tostring(
+            self.doc_root,
+            pretty_print=self.pretty_print,
+            encoding='unicode'
+        )
+
+    def __str__(self):
+        if six.PY2:
+            return self.serialize()
+        else:
+            return etree.tostring(
+                self.doc_root,
+                pretty_print=self.pretty_print,
+                encoding='unicode'
+            )
+
+    def serialize(self):
+        return etree.tostring(
+            self.doc_root, xml_declaration=True,
+            pretty_print=self.pretty_print,
+            encoding=self.xml_enc
+        )
