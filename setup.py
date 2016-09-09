@@ -3,9 +3,9 @@ from setuptools import setup, find_packages
 
 setup(
     name='libComXML',
-    version='2.2.3',
+    version='3.0.0',
     url='https://github.com/gisce/libComXML',
-    author='GISCE Enginyeria, SL',
+    author='GISCE-TI, S.L',
     author_email='devel@gisce.net',
     packages=find_packages(),
     install_requires=['lxml', 'six'],
