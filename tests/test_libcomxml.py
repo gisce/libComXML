@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
-import sys
+from __future__ import unicode_literals, print_function
 
-if sys.version_info[:2] < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
+import six
+
+import unittest
 import locale
 import re
 from libcomxml.core import XmlField, XmlModel, clean_xml
 
 
 class Cd(XmlModel):
+
+    _sort_order = (
+        'artist', 'country', 'company', 'title', 'year', 'price'
+    )
+
     def __init__(self):
         self.data = XmlField('CD')
         self.title = XmlField('TITLE')
@@ -63,7 +67,7 @@ class TestFields(unittest.TestCase):
         self.assertEqual(self.field.element().items(), [('uom', 'unit')])
 
     def test_str(self):
-        self.assertEqual(str(self.field),
+        self.assertEqual(six.text_type(self.field),
                          '<Quantity uom="unit">10000</Quantity>')
 
     def test_value(self):
@@ -107,12 +111,12 @@ class TestModel(unittest.TestCase):
         <PRICE>9.9</PRICE>
     </CD>
     <CD>
-        <TITLE>Tupelo Honey</TITLE>
         <ARTIST>Van Morrison</ARTIST>
         <COUNTRY>UK</COUNTRY>
         <COMPANY>Polydor</COMPANY>
-        <PRICE>8.20</PRICE>
+        <TITLE>Tupelo Honey</TITLE>
         <YEAR>1971</YEAR>
+        <PRICE>8.20</PRICE>
     </CD>
 </CATALOG>""")
         self.catalog = Catalog()
@@ -138,18 +142,22 @@ class TestModel(unittest.TestCase):
         })
         self.catalog.cds.append(cd)
         cd = """<CD>
-        <TITLE>Tupelo Honey</TITLE>
         <ARTIST>Van Morrison</ARTIST>
         <COUNTRY>UK</COUNTRY>
         <COMPANY>Polydor</COMPANY>
-        <PRICE>8.20</PRICE>
+        <TITLE>Tupelo Honey</TITLE>
         <YEAR>1971</YEAR>
+        <PRICE>8.20</PRICE>
         </CD>"""
         self.catalog.cds.append(cd)
         self.catalog.build_tree()
 
     def test_xml(self):
-        self.assertEqual(str(self.catalog), self.xml)
+        with open('/tmp/x1.xml', 'wb') as f:
+            f.write(self.xml.encode('utf8'))
+        with open('/tmp/x2.xml', 'wb') as f:
+            f.write(self.catalog.serialize())
+        self.assertEqual(self.xml.encode('utf8'), self.catalog.serialize())
 
 
 class TestEmpty(unittest.TestCase):
@@ -159,6 +167,7 @@ class TestEmpty(unittest.TestCase):
         self.xml += "<test>foo</test><link href=\"http://example.com\"/>"
         self.xml += "<entry><val>1</val></entry><entry><val>2</val></entry>"
         self.xml += "</feed>"
+        self.xml = self.xml.encode('utf8')
 
     def test_empty(self):
 
@@ -189,7 +198,7 @@ class TestEmpty(unittest.TestCase):
 
         feed.build_tree()
 
-        self.assertEqual(self.xml, str(feed))
+        self.assertEqual(self.xml, feed.serialize())
 
 
 class RootWithAttributes(unittest.TestCase):
@@ -197,6 +206,7 @@ class RootWithAttributes(unittest.TestCase):
     def setUp(self):
         self.xml = "<?xml version='1.0' encoding='UTF-8'?>\n"
         self.xml += "<link href=\"http://example.com\"/>"
+        self.xml = self.xml.encode('utf8')
 
     def test_root_with_attributes(self):
 
@@ -212,7 +222,7 @@ class RootWithAttributes(unittest.TestCase):
         l.tag.attributes.update({'href': 'http://example.com'})
         l.build_tree()
 
-        self.assertEqual(self.xml, str(l))
+        self.assertEqual(self.xml, l.serialize())
 
 
 class Namespaces(unittest.TestCase):
@@ -230,9 +240,11 @@ class Namespaces(unittest.TestCase):
         self.xml += "<opensearch:totalResults>4230000</opensearch:totalResults>"
         self.xml += "</channel>"
         self.xml += "</rss>"
+        self.xml = self.xml.encode('utf8')
 
     def test_namesapces_root(self):
 
+        self.maxDiff = None
 
         NAMESPACES = {
             'opensearch': 'http://a9.com/-/spec/opensearch/1.1/',
@@ -276,4 +288,8 @@ class Namespaces(unittest.TestCase):
             'os_total_results': 4230000,
         })
         rss.build_tree()
-        self.assertEqual(self.xml, str(rss))
+
+        self.assertEqual(
+            self.xml, rss.serialize()
+        )
+
