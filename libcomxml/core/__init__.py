@@ -105,7 +105,7 @@ class XmlField(Field):
         """
         if not value:
             value = self.value
-        if value:
+        if value is not None:
             if six.PY2 and isinstance(value, str):
                 element.text = unicode(value, 'utf8')
             elif isinstance(value, XmlField):
