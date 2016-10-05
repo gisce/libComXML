@@ -191,6 +191,56 @@ class TestEmpty(unittest.TestCase):
 
         self.assertEqual(self.xml, str(feed))
 
+class TestEmptyValue(unittest.TestCase):
+
+
+    def _test_drop(self, drop_empty=False, xml=None):
+
+        class Feed(XmlModel):
+            def __init__(self):
+                self._sort_order = ('test', 'link', 'entries')
+                self.rss_feed = XmlField('feed')
+                self.link = XmlField('link')
+                self.test = XmlField('test')
+                self.entries = []
+                super(Feed, self).__init__('feed', 'rss_feed',
+                        drop_empty=drop_empty)
+
+        class Entry(XmlModel):
+            def __init__(self):
+                self.entry = XmlField('entry')
+                self.val = XmlField('val')
+                super(Entry, self).__init__('entry', 'entry')
+
+
+        feed = Feed()
+        feed.link.attributes.update({'href': 'http://example.com'})
+        feed.feed({'test': 'foo'})
+
+        for elem in (1, 0):
+            entry = Entry()
+            entry.feed({'val': elem})
+            feed.entries.append(entry)
+
+        feed.build_tree()
+
+        self.assertEqual(xml, feed.serialize())
+
+    def test_drop_empty_disabled(self):
+        xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        xml += "<test>foo</test><link href=\"http://example.com\"/>"
+        xml += "<entry><val>1</val></entry><entry><val>0</val></entry>"
+        xml += "</feed>"
+        xml = xml.encode('utf8')
+        self._test_drop(False, xml)
+
+    def test_drop_empty_enabled(self):
+        xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        xml += "<test>foo</test>"
+        xml += "<entry><val>1</val></entry><entry><val>0</val></entry>"
+        xml += "</feed>"
+        xml = xml.encode('utf8')
+        self._test_drop(True, xml)
 
 class RootWithAttributes(unittest.TestCase):
 
