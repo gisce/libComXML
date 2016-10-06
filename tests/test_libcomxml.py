@@ -191,11 +191,11 @@ class TestEmpty(unittest.TestCase):
 
         self.assertEqual(self.xml, str(feed))
 
-class TestEmptyValue(unittest.TestCase):
 
+class TestValue(unittest.TestCase):
+    value = None
 
     def _test_drop(self, drop_empty=False, xml=None):
-
         class Feed(XmlModel):
             def __init__(self):
                 self._sort_order = ('test', 'link', 'entries')
@@ -212,12 +212,11 @@ class TestEmptyValue(unittest.TestCase):
                 self.val = XmlField('val')
                 super(Entry, self).__init__('entry', 'entry')
 
-
         feed = Feed()
         feed.link.attributes.update({'href': 'http://example.com'})
         feed.feed({'test': 'foo'})
 
-        for elem in (1, 0):
+        for elem in (1, self.value):
             entry = Entry()
             entry.feed({'val': elem})
             feed.entries.append(entry)
@@ -225,6 +224,10 @@ class TestEmptyValue(unittest.TestCase):
         feed.build_tree()
 
         self.assertEqual(xml, feed.serialize())
+
+
+class TestZeroValue(TestValue):
+    value = 0
 
     def test_drop_empty_disabled(self):
         xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
@@ -238,6 +241,26 @@ class TestEmptyValue(unittest.TestCase):
         xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
         xml += "<test>foo</test>"
         xml += "<entry><val>1</val></entry><entry><val>0</val></entry>"
+        xml += "</feed>"
+        xml = xml.encode('utf8')
+        self._test_drop(True, xml)
+
+
+class TestNoneValue(TestValue):
+    value = None
+
+    def test_drop_empty_disabled(self):
+        xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        xml += "<test>foo</test><link href=\"http://example.com\"/>"
+        xml += "<entry><val>1</val></entry><entry/>"
+        xml += "</feed>"
+        xml = xml.encode('utf8')
+        self._test_drop(False, xml)
+
+    def test_drop_empty_enabled(self):
+        xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        xml += "<test>foo</test>"
+        xml += "<entry><val>1</val></entry>"
         xml += "</feed>"
         xml = xml.encode('utf8')
         self._test_drop(True, xml)
