@@ -106,7 +106,7 @@ class XmlField(Field):
         """
         if not value:
             value = self.value
-        if value:
+        if value is not None:
             if isinstance(value, str):
                 element.text = unicode(value, 'utf8')
             elif isinstance(value, XmlField):
@@ -297,3 +297,10 @@ class XmlModel(Model):
 
     def __unicode__(self):
         return unicode(self.__str__(), self.xml_enc)
+
+    def serialize(self):
+        return etree.tostring(
+            self.doc_root, xml_declaration=True,
+            pretty_print=self.pretty_print,
+            encoding=self.xml_enc
+        )
