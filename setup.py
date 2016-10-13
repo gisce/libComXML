@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='libComXML',
-    version='3.0.0',
+    version='3.0.1',
     url='https://github.com/gisce/libComXML',
     author='GISCE-TI, S.L',
     author_email='devel@gisce.net',
