@@ -10,6 +10,18 @@ import re
 from libcomxml.core import XmlField, XmlModel, clean_xml
 
 
+def assertXmlEqual(self, got, want):
+    from lxml.doctestcompare import LXMLOutputChecker
+    from doctest import Example
+
+    checker = LXMLOutputChecker()
+    if checker.check_output(want, got, 0):
+        return
+    message = checker.output_difference(Example("", want), got, 0)
+    raise AssertionError(message)
+
+unittest.TestCase.assertXmlEqual = assertXmlEqual
+
 class Cd(XmlModel):
     def __init__(self):
         self.data = XmlField('CD')
@@ -349,4 +361,4 @@ class Namespaces(unittest.TestCase):
             'os_total_results': 4230000,
         })
         rss.build_tree()
-        self.assertEqual(self.xml, str(rss))
+        self.assertXmlEqual(self.xml, str(rss))
