@@ -8,21 +8,27 @@ import locale
 import re
 from libcomxml.core import XmlField, XmlModel, clean_xml
 import os
+import sys
 
 _ROOT = os.path.abspath(os.path.dirname(__file__))
 
-def assertXmlEqual(self, got, want):
-    from lxml.doctestcompare import LXMLOutputChecker
-    from doctest import Example
 
-    checker = LXMLOutputChecker()
-    if checker.check_output(want, got, 0):
-        return
-    message = checker.output_difference(Example("", want), got, 0)
-    raise AssertionError(message)
+if sys.version_info[0] < 3:
+    # python2
+    def assertXmlEqual(self, got, want):
+        from lxml.doctestcompare import LXMLOutputChecker
+        from doctest import Example
 
-unittest.TestCase.assertXmlEqual = assertXmlEqual
+        checker = LXMLOutputChecker()
+        if checker.check_output(want, got, 0):
+            return
+        message = checker.output_difference(Example("", want), got, 0)
+        raise AssertionError(message)
 
+    unittest.TestCase.assertXmlEqual = assertXmlEqual
+else:
+    # python3
+    unittest.TestCase.assertXmlEqual = unittest.TestCase.assertEqual
 
 class Cd(XmlModel):
 
@@ -276,7 +282,7 @@ class TestFalseValue(TestValue):
     def test_false_drop_empty_disabled(self):
         xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
         xml += "<test>foo</test><link href=\"http://example.com\"/>"
-        xml += "<entry><val>1</val></entry><entry></entry>"
+        xml += "<entry><val>1</val></entry><entry/>"
         xml += "</feed>"
         xml = xml.encode('utf8')
         self._test_drop(False, xml)
