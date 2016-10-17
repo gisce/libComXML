@@ -258,6 +258,26 @@ class TestZeroValue(TestValue):
         self._test_drop(True, xml)
 
 
+class TestFalseValue(TestValue):
+    value = False
+
+    def test_false_drop_empty_disabled(self):
+        xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        xml += "<test>foo</test><link href=\"http://example.com\"/>"
+        xml += "<entry><val>1</val></entry><entry/>"
+        xml += "</feed>"
+        xml = xml.encode('utf8')
+        self._test_drop(False, xml)
+
+    def test_false_drop_empty_enabled(self):
+        xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        xml += "<test>foo</test>"
+        xml += "<entry><val>1</val></entry>"
+        xml += "</feed>"
+        xml = xml.encode('utf8')
+        self._test_drop(True, xml)
+
+
 class TestNoneValue(TestValue):
     value = None
 
