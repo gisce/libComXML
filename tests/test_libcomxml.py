@@ -7,6 +7,21 @@ import unittest
 import locale
 import re
 from libcomxml.core import XmlField, XmlModel, clean_xml
+import os
+
+_ROOT = os.path.abspath(os.path.dirname(__file__))
+
+def assertXmlEqual(self, got, want):
+    from lxml.doctestcompare import LXMLOutputChecker
+    from doctest import Example
+
+    checker = LXMLOutputChecker()
+    if checker.check_output(want, got, 0):
+        return
+    message = checker.output_difference(Example("", want), got, 0)
+    raise AssertionError(message)
+
+unittest.TestCase.assertXmlEqual = assertXmlEqual
 
 
 class Cd(XmlModel):
@@ -157,7 +172,7 @@ class TestModel(unittest.TestCase):
             f.write(self.xml.encode('utf8'))
         with open('/tmp/x2.xml', 'wb') as f:
             f.write(self.catalog.serialize())
-        self.assertEqual(self.xml.encode('utf8'), self.catalog.serialize())
+        self.assertXmlEqual(self.xml.encode('utf8'), self.catalog.serialize())
 
 
 class TestEmpty(unittest.TestCase):
@@ -198,7 +213,7 @@ class TestEmpty(unittest.TestCase):
 
         feed.build_tree()
 
-        self.assertEqual(self.xml, feed.serialize())
+        self.assertXmlEqual(self.xml, feed.serialize())
 
 
 class TestValue(unittest.TestCase):
@@ -232,7 +247,7 @@ class TestValue(unittest.TestCase):
 
         feed.build_tree()
 
-        self.assertEqual(xml, feed.serialize())
+        self.assertXmlEqual(xml, feed.serialize())
 
 
 class TestZeroValue(TestValue):
@@ -295,7 +310,7 @@ class RootWithAttributes(unittest.TestCase):
         l.tag.attributes.update({'href': 'http://example.com'})
         l.build_tree()
 
-        self.assertEqual(self.xml, l.serialize())
+        self.assertXmlEqual(self.xml, l.serialize())
 
 
 class Namespaces(unittest.TestCase):
@@ -362,7 +377,7 @@ class Namespaces(unittest.TestCase):
         })
         rss.build_tree()
 
-        self.assertEqual(
+        self.assertXmlEqual(
             self.xml, rss.serialize()
         )
 
