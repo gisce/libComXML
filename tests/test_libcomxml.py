@@ -7,6 +7,23 @@ import unittest
 import locale
 import re
 from libcomxml.core import XmlField, XmlModel, clean_xml
+import os
+import sys
+
+_ROOT = os.path.abspath(os.path.dirname(__file__))
+
+
+class XMLTest(unittest.TestCase):
+
+    def assertXmlEqual(self, got, want):
+        from lxml.doctestcompare import LXMLOutputChecker
+        from doctest import Example
+
+        checker = LXMLOutputChecker()
+        if checker.check_output(want, got, 0):
+            return
+        message = checker.output_difference(Example("", want), got, 0)
+        raise AssertionError(message)
 
 
 class Cd(XmlModel):
@@ -88,11 +105,10 @@ class TestFields(unittest.TestCase):
         self.assertEqual(self.field.element().items(), [('uom', 'kg')])
 
 
-class TestModel(unittest.TestCase):
+class TestModel(XMLTest):
 
     def setUp(self):
-        self.xml = "<?xml version='1.0' encoding='UTF-8'?>\n"
-        self.xml += re.sub('\s+<', '<', """
+        self.xml = re.sub('\s+<', '<', """
 <CATALOG>
     <CD>
         <ARTIST>Bob Dylan</ARTIST>
@@ -153,21 +169,16 @@ class TestModel(unittest.TestCase):
         self.catalog.build_tree()
 
     def test_xml(self):
-        with open('/tmp/x1.xml', 'wb') as f:
-            f.write(self.xml.encode('utf8'))
-        with open('/tmp/x2.xml', 'wb') as f:
-            f.write(self.catalog.serialize())
-        self.assertEqual(self.xml.encode('utf8'), self.catalog.serialize())
+        self.assertXmlEqual(self.xml, str(self.catalog))
 
 
-class TestEmpty(unittest.TestCase):
+class TestEmpty(XMLTest):
 
     def setUp(self):
-        self.xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        self.xml = "<feed>"
         self.xml += "<test>foo</test><link href=\"http://example.com\"/>"
         self.xml += "<entry><val>1</val></entry><entry><val>2</val></entry>"
         self.xml += "</feed>"
-        self.xml = self.xml.encode('utf8')
 
     def test_empty(self):
 
@@ -198,10 +209,10 @@ class TestEmpty(unittest.TestCase):
 
         feed.build_tree()
 
-        self.assertEqual(self.xml, feed.serialize())
+        self.assertXmlEqual(self.xml, str(feed))
 
 
-class TestValue(unittest.TestCase):
+class TestValue(XMLTest):
     value = None
 
     def _test_drop(self, drop_empty=False, xml=None):
@@ -232,26 +243,42 @@ class TestValue(unittest.TestCase):
 
         feed.build_tree()
 
-        self.assertEqual(xml, feed.serialize())
+        self.assertXmlEqual(xml, str(feed))
 
 
 class TestZeroValue(TestValue):
     value = 0
 
     def test_drop_empty_disabled(self):
-        xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        xml = "<feed>"
         xml += "<test>foo</test><link href=\"http://example.com\"/>"
         xml += "<entry><val>1</val></entry><entry><val>0</val></entry>"
         xml += "</feed>"
-        xml = xml.encode('utf8')
         self._test_drop(False, xml)
 
     def test_drop_empty_enabled(self):
-        xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        xml = "<feed>"
         xml += "<test>foo</test>"
         xml += "<entry><val>1</val></entry><entry><val>0</val></entry>"
         xml += "</feed>"
-        xml = xml.encode('utf8')
+        self._test_drop(True, xml)
+
+
+class TestFalseValue(TestValue):
+    value = False
+
+    def test_false_drop_empty_disabled(self):
+        xml = "<feed>"
+        xml += "<test>foo</test><link href=\"http://example.com\"/>"
+        xml += "<entry><val>1</val></entry><entry/>"
+        xml += "</feed>"
+        self._test_drop(False, xml)
+
+    def test_false_drop_empty_enabled(self):
+        xml = "<feed>"
+        xml += "<test>foo</test>"
+        xml += "<entry><val>1</val></entry>"
+        xml += "</feed>"
         self._test_drop(True, xml)
 
 
@@ -259,27 +286,24 @@ class TestNoneValue(TestValue):
     value = None
 
     def test_drop_empty_disabled(self):
-        xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        xml = "<feed>"
         xml += "<test>foo</test><link href=\"http://example.com\"/>"
         xml += "<entry><val>1</val></entry><entry/>"
         xml += "</feed>"
-        xml = xml.encode('utf8')
         self._test_drop(False, xml)
 
     def test_drop_empty_enabled(self):
-        xml = "<?xml version='1.0' encoding='UTF-8'?>\n<feed>"
+        xml = "<feed>"
         xml += "<test>foo</test>"
         xml += "<entry><val>1</val></entry>"
         xml += "</feed>"
-        xml = xml.encode('utf8')
         self._test_drop(True, xml)
 
-class RootWithAttributes(unittest.TestCase):
+
+class RootWithAttributes(XMLTest):
 
     def setUp(self):
-        self.xml = "<?xml version='1.0' encoding='UTF-8'?>\n"
-        self.xml += "<link href=\"http://example.com\"/>"
-        self.xml = self.xml.encode('utf8')
+        self.xml = "<link href=\"http://example.com\"/>"
 
     def test_root_with_attributes(self):
 
@@ -295,13 +319,12 @@ class RootWithAttributes(unittest.TestCase):
         l.tag.attributes.update({'href': 'http://example.com'})
         l.build_tree()
 
-        self.assertEqual(self.xml, l.serialize())
+        self.assertXmlEqual(self.xml, str(l))
 
 
-class Namespaces(unittest.TestCase):
+class Namespaces(XMLTest):
     def setUp(self):
-        self.xml = "<?xml version='1.0' encoding='UTF-8'?>\n"
-        self.xml += "<rss "
+        self.xml = "<rss "
         self.xml += "xmlns:atom=\"http://www.w3.org/2005/Atom\" "
         self.xml += "xmlns:opensearch=\"http://a9.com/-/spec/opensearch/1.1/\" "
         self.xml += "version=\"2.0\">"
@@ -313,7 +336,6 @@ class Namespaces(unittest.TestCase):
         self.xml += "<opensearch:totalResults>4230000</opensearch:totalResults>"
         self.xml += "</channel>"
         self.xml += "</rss>"
-        self.xml = self.xml.encode('utf8')
 
     def test_namesapces_root(self):
 
@@ -362,7 +384,7 @@ class Namespaces(unittest.TestCase):
         })
         rss.build_tree()
 
-        self.assertEqual(
-            self.xml, rss.serialize()
+        self.assertXmlEqual(
+            self.xml, str(rss)
         )
 
