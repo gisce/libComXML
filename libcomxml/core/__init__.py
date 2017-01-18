@@ -250,7 +250,7 @@ class XmlModel(Model):
                             if self.drop_empty and len(item.doc_root) == 0:
                                 continue
                             self.doc_root.append(item.doc_root)
-                        elif isinstance(item, six.text_type):
+                        elif isinstance(item, (six.text_type, six.string_types)):
                             ele = etree.fromstring(clean_xml(item))
                             self.doc_root.append(ele)
                         item = None
