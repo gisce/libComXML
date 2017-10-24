@@ -30,7 +30,8 @@ def get_xml_default_encoding():
 
 
 def clean_xml(xml_string):
-    return re.sub('\s+<', '<', xml_string)
+    tmp_string = re.sub('\s+<', '<', xml_string)
+    return re.sub('\s+$', '', tmp_string)
 
 
 @six.python_2_unicode_compatible

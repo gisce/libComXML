@@ -63,7 +63,7 @@ class TestCleaned(unittest.TestCase):
         <YEAR>1985</YEAR>
         <PRICE>10.9</PRICE>
     </CD>
-</CATALOG>"""
+</CATALOG>                             """
         self.cleaned_xml = "<?xml version='1.0' encoding='UTF-8'?>"
         self.cleaned_xml += "<CATALOG><CD><ARTIST>Bob Dylan</ARTIST>"
         self.cleaned_xml += "<ARTIST>Bob Dylan</ARTIST>"
