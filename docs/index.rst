@@ -6,8 +6,8 @@ LibComXML: Python object XML serialization
 
 Release v\ |version|
 
-.. image:: https://travis-ci.org/gisce/libComXML.png?branch=master
-    :target: https://travis-ci.org/gisce/libComXML
+.. image:: https://github.com/gisce/libComXML/workflows/CI/badge.svg
+    :target: https://github.com/gisce/libComXML/actions
 
 Guide
 =====
