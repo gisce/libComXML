@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['2.7', '3.11']
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        pip install .
+        pip install coveralls
+    
+    - name: Run tests with coverage
+      run: |
+        coverage run setup.py test
+    
+    - name: Upload coverage to Coveralls
+      if: success()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COVERALLS_FLAG_NAME: python-${{ matrix.python-version }}
+        COVERALLS_PARALLEL: true
+      run: |
+        coveralls --service=github
+    
+    - name: Generate coverage report
+      if: success()
+      run: |
+        coverage report
+
+  coveralls-finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true
