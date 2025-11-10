@@ -96,7 +96,7 @@ class XmlField(Field):
         for val in value:
             if isinstance(val, XmlField):
                 val.parent = element.tag
-                self.parse_value(element, val)
+                self._parse_value(element, val)
             elif isinstance(val, XmlModel):
                 val.build_tree()
                 element.append(val.doc_root)
@@ -220,6 +220,13 @@ class XmlModel(Model):
     def set_xml_encoding(self, encoding):
         self.xml_enc = encoding
 
+    def element_is_empty(self, element):
+        return (
+                (element.text is None or element.text.strip() == "") and
+                len(element) == 0 and
+                len(element.attrib) == 0
+        )
+
     def build_tree(self):
         """Bulids the tree with all the fields converted to Elements
         """
@@ -243,7 +250,7 @@ class XmlModel(Model):
                     for item in field:
                         if isinstance(item, XmlField):
                             ele = item.element()
-                            if self.drop_empty and len(ele) == 0:
+                            if self.drop_empty and self.element_is_empty(ele):
                                 continue
                             self.doc_root.append(ele)
                         elif isinstance(item, XmlModel):
