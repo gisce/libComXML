@@ -321,6 +321,52 @@ class RootWithAttributes(XMLTest):
 
         self.assertXmlEqual(self.xml, str(l))
 
+class TestElementIsEmptyMethod(XMLTest):
+
+    def setUp(self):
+        self.xml_empty = "<LegalLiterals/>"
+
+        self.xml = "<LegalLiterals>"
+        self.xml += "<LegalReference>Demo Text</LegalReference>"
+        self.xml += "</LegalLiterals>"
+
+    def test_element_is_empty(self):
+
+        class LegalLiterals(XmlModel):
+            _sort_order = ('legalliterals', 'legalreference')
+
+            def __init__(self):
+                self.legalliterals = XmlField('LegalLiterals')
+                self.legalreference = []
+                super(LegalLiterals, self).__init__('LegalLiterals', 'legalliterals')
+
+        class LegalReference(XmlField):
+
+            def __init__(self, value=None):
+                super(LegalReference, self).__init__('LegalReference', value=value)
+
+        #There is no value inside legal literal: the legal reference is empty
+        legalliterals = LegalLiterals()
+        text = ''
+        legalreference = LegalReference(value=text)
+        legalliterals.legalreference = [legalreference]
+        is_empty = legalliterals.element_is_empty(legalliterals.legalreference[0].element())
+        self.assertTrue(is_empty)
+
+        legalliterals.build_tree()
+        self.assertXmlEqual(self.xml_empty, str(legalliterals))
+
+        #There is a value inside legal literal: the legal reference is not empty
+        legalliterals = LegalLiterals()
+        text = 'Demo Text'
+        legalreference = LegalReference(value=text)
+        legalliterals.legalreference = [legalreference]
+        is_empty = legalliterals.element_is_empty(legalliterals.legalreference[0].element())
+        self.assertFalse(is_empty)
+
+        legalliterals.build_tree()
+        self.assertXmlEqual(self.xml, str(legalliterals))
+
 
 class Namespaces(XMLTest):
     def setUp(self):
