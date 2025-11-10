@@ -7,21 +7,14 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
+  test-python27:
     runs-on: ubuntu-latest
+    container: python:2.7-slim
     permissions:
       contents: read
-    strategy:
-      matrix:
-        python-version: ['2.7', '3.11']
     
     steps:
     - uses: actions/checkout@v4
-    
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
     
     - name: Install dependencies
       run: |
@@ -36,7 +29,43 @@ jobs:
       if: success()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COVERALLS_FLAG_NAME: python-${{ matrix.python-version }}
+        COVERALLS_FLAG_NAME: python-2.7
+        COVERALLS_PARALLEL: true
+      run: |
+        coveralls --service=github
+    
+    - name: Generate coverage report
+      if: success()
+      run: |
+        coverage report
+
+  test-python311:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install .
+        pip install coveralls
+    
+    - name: Run tests with coverage
+      run: |
+        coverage run setup.py test
+    
+    - name: Upload coverage to Coveralls
+      if: success()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COVERALLS_FLAG_NAME: python-3.11
         COVERALLS_PARALLEL: true
       run: |
         coveralls --service=github
@@ -47,7 +76,7 @@ jobs:
         coverage report
 
   coveralls-finish:
-    needs: test
+    needs: [test-python27, test-python311]
     runs-on: ubuntu-latest
     permissions:
       contents: read
