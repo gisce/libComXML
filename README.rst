@@ -2,8 +2,8 @@
 libComXML
 =========
 
-.. image:: https://travis-ci.org/gisce/libComXML.png?branch=master
-    :target: https://travis-ci.org/gisce/libComXML
+.. image:: https://github.com/gisce/libComXML/workflows/CI/badge.svg
+    :target: https://github.com/gisce/libComXML/actions
     :alt: Build Status
     
 .. image:: https://coveralls.io/repos/github/gisce/libComXML/badge.svg?branch=master

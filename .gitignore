@@ -6,3 +6,4 @@ libcomxml/bindings/*.py
 build/*
 .*.swp
 dist/*
+*.egg-info/
