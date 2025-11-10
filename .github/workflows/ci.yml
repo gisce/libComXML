@@ -19,25 +19,10 @@ jobs:
     - name: Install dependencies
       run: |
         pip install .
-        pip install coveralls
     
-    - name: Run tests with coverage
+    - name: Run tests
       run: |
-        coverage run setup.py test
-    
-    - name: Upload coverage to Coveralls
-      if: success()
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COVERALLS_FLAG_NAME: python-2.7
-        COVERALLS_PARALLEL: true
-      run: |
-        coveralls --service=github
-    
-    - name: Generate coverage report
-      if: success()
-      run: |
-        coverage report
+        python setup.py test
 
   test-python311:
     runs-on: ubuntu-latest
@@ -55,34 +40,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install .
-        pip install coveralls
     
-    - name: Run tests with coverage
+    - name: Run tests
       run: |
-        coverage run setup.py test
-    
-    - name: Upload coverage to Coveralls
-      if: success()
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COVERALLS_FLAG_NAME: python-3.11
-        COVERALLS_PARALLEL: true
-      run: |
-        coveralls --service=github
-    
-    - name: Generate coverage report
-      if: success()
-      run: |
-        coverage report
-
-  coveralls-finish:
-    needs: [test-python27, test-python311]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-    - name: Coveralls Finished
-      uses: coverallsapp/github-action@v2
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        parallel-finished: true
+        python setup.py test
